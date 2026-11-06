@@ -1,0 +1,743 @@
+/**
+ * Flo Lite TV - Web Progressive Player
+ * Ultra-fast, lightweight IPTV & Radio client with HLS.js, EPG, & Winamp Visualizer.
+ */
+
+// Application State
+const state = {
+  channels: [],
+  tvChannels: [],
+  radioChannels: [],
+  epg: {},
+  currentMode: 'tv', // 'tv' or 'radio'
+  currentCategory: 'TOATE',
+  searchQuery: '',
+  filteredChannels: [],
+  currentChannel: null,
+  focusedIndex: 0,
+  proxyMode: localStorage.getItem('flolite_proxy_mode') || 'auto',
+  customProxyUrl: localStorage.getItem('flolite_custom_proxy') || '',
+  visualizerTheme: localStorage.getItem('flolite_vis_theme') || 'classic',
+  hls: null,
+  audioContext: null,
+  analyser: null,
+  audioSource: null,
+  isVisualizerRunning: false,
+  osdTimeout: null,
+  numBuffer: '',
+  numBufferTimeout: null
+};
+
+// DOM References
+const dom = {
+  video: document.getElementById('video-player'),
+  playerWrapper: document.getElementById('player-wrapper'),
+  radioBackdrop: document.getElementById('radio-backdrop'),
+  visualizerCanvas: document.getElementById('visualizer-canvas'),
+  radioLogo: document.getElementById('radio-logo'),
+  radioName: document.getElementById('radio-name'),
+  radioGenre: document.getElementById('radio-genre'),
+  radioThemeName: document.getElementById('visualizer-theme-name'),
+  osdBanner: document.getElementById('osd-banner'),
+  osdLogo: document.getElementById('osd-logo'),
+  osdNum: document.getElementById('osd-channel-num'),
+  osdName: document.getElementById('osd-channel-name'),
+  osdRes: document.getElementById('osd-badge-res'),
+  osdGroup: document.getElementById('osd-group'),
+  osdEpgNow: document.getElementById('osd-epg-now'),
+  osdEpgTitle: document.getElementById('osd-epg-title'),
+  osdEpgTime: document.getElementById('osd-epg-time'),
+  osdProgressBar: document.getElementById('osd-progress-bar'),
+  osdProgressFill: document.getElementById('osd-progress-fill'),
+  spinner: document.getElementById('player-spinner'),
+  pillChannel: document.getElementById('pill-current-channel'),
+  detailName: document.getElementById('detail-name'),
+  detailSub: document.getElementById('detail-sub'),
+  detailLogo: document.getElementById('detail-logo'),
+  badgeTechRes: document.getElementById('badge-tech-res'),
+  badgeTechCodec: document.getElementById('badge-tech-codec'),
+  epgLiveTime: document.getElementById('epg-live-time'),
+  epgLiveTitle: document.getElementById('epg-live-title'),
+  epgLiveSynopsis: document.getElementById('epg-live-synopsis'),
+  epgMeterFill: document.getElementById('epg-meter-fill'),
+  categoriesBar: document.getElementById('categories-bar'),
+  channelsContainer: document.getElementById('channels-container'),
+  channelCounter: document.getElementById('channel-counter'),
+  btnModeTv: document.getElementById('btn-mode-tv'),
+  btnModeRadio: document.getElementById('btn-mode-radio'),
+  searchInput: document.getElementById('search-input'),
+  btnClearSearch: document.getElementById('btn-clear-search'),
+  btnPlayPause: document.getElementById('btn-play-pause'),
+  btnPrev: document.getElementById('btn-prev'),
+  btnNext: document.getElementById('btn-next'),
+  btnMute: document.getElementById('btn-mute'),
+  volumeSlider: document.getElementById('volume-slider'),
+  btnFullscreen: document.getElementById('btn-fullscreen'),
+  btnPip: document.getElementById('btn-pip'),
+  btnSettings: document.getElementById('btn-settings'),
+  settingsModal: document.getElementById('settings-modal'),
+  btnCloseSettings: document.getElementById('btn-close-settings'),
+  btnSaveSettings: document.getElementById('btn-save-settings'),
+  proxyModeSelect: document.getElementById('proxy-mode-select'),
+  customProxyGroup: document.getElementById('custom-proxy-group'),
+  customProxyInput: document.getElementById('custom-proxy-url'),
+  visThemeSelect: document.getElementById('visualizer-theme-select')
+};
+
+// Initialize Application
+async function init() {
+  setupEventListeners();
+  setupSettings();
+  setupKeyboardShortcuts();
+
+  // Load Channels & EPG in parallel
+  try {
+    const [channelsRes, epgRes] = await Promise.all([
+      fetch('channels.json').then(r => r.json()),
+      fetch('epg_initial.json').then(r => r.json()).catch(() => ({}))
+    ]);
+
+    state.channels = channelsRes;
+    state.tvChannels = channelsRes.filter(c => !c.is_radio);
+    state.radioChannels = channelsRes.filter(c => c.is_radio);
+    state.epg = epgRes || {};
+
+    switchMode('tv', false);
+
+    // Auto-play first TV channel if permitted or restore last
+    const lastId = localStorage.getItem('flolite_last_channel_id');
+    const target = state.tvChannels.find(c => c.id === lastId) || state.tvChannels[0];
+    if (target) {
+      playChannel(target);
+    }
+
+    // Periodic EPG progress tick
+    setInterval(updateLiveEpgUI, 30000);
+  } catch (err) {
+    console.error('Eroare la incarcarea datelor:', err);
+    alert('Eroare la incarcarea canalelor. Verifica conexiunea la server.');
+  }
+}
+
+// Switch Mode (TV / Radio)
+function switchMode(mode, playFirst = true) {
+  state.currentMode = mode;
+  state.currentCategory = 'TOATE';
+
+  if (mode === 'tv') {
+    dom.btnModeTv.classList.add('active');
+    dom.btnModeRadio.classList.remove('active');
+  } else {
+    dom.btnModeRadio.classList.add('active');
+    dom.btnModeTv.classList.remove('active');
+  }
+
+  buildCategories();
+  filterAndRenderChannels();
+
+  if (playFirst && state.filteredChannels.length > 0) {
+    playChannel(state.filteredChannels[0]);
+  }
+}
+
+// Build Categories Chips
+function buildCategories() {
+  const currentList = (state.currentMode === 'tv') ? state.tvChannels : state.radioChannels;
+  const groupsSet = new Set();
+  groupsSet.add('TOATE');
+
+  currentList.forEach(c => {
+    let grp = c.group || 'Altele';
+    if (state.currentMode === 'radio') {
+      grp = grp.replace('Radio - ', '').replace('Romania', 'România').trim();
+    }
+    groupsSet.add(grp);
+  });
+
+  const categories = Array.from(groupsSet);
+  dom.categoriesBar.innerHTML = '';
+
+  categories.forEach(cat => {
+    const chip = document.createElement('button');
+    chip.className = `category-chip ${cat === state.currentCategory ? 'active' : ''}`;
+    chip.textContent = cat;
+    chip.addEventListener('click', () => {
+      state.currentCategory = cat;
+      document.querySelectorAll('.category-chip').forEach(el => el.classList.remove('active'));
+      chip.classList.add('active');
+      filterAndRenderChannels();
+    });
+    dom.categoriesBar.appendChild(chip);
+  });
+}
+
+// Filter and Render Channel Cards
+function filterAndRenderChannels() {
+  const sourceList = (state.currentMode === 'tv') ? state.tvChannels : state.radioChannels;
+  const query = state.searchQuery.toLowerCase().trim();
+
+  state.filteredChannels = sourceList.filter(c => {
+    // Category match
+    if (state.currentCategory !== 'TOATE') {
+      let grp = (c.group || 'Altele').replace('Radio - ', '').replace('Romania', 'România').trim();
+      if (grp !== state.currentCategory && c.group !== state.currentCategory) {
+        return false;
+      }
+    }
+    // Search query match
+    if (query) {
+      const matchName = c.name && c.name.toLowerCase().includes(query);
+      const matchGroup = c.group && c.group.toLowerCase().includes(query);
+      return matchName || matchGroup;
+    }
+    return true;
+  });
+
+  dom.channelCounter.textContent = `${state.filteredChannels.length} ${state.currentMode === 'tv' ? 'Canale TV' : 'Posturi Radio'}`;
+  dom.channelsContainer.innerHTML = '';
+
+  state.filteredChannels.forEach((c, index) => {
+    const card = document.createElement('div');
+    const isPlaying = state.currentChannel && state.currentChannel.id === c.id;
+    card.className = `channel-card ${isPlaying ? 'active' : ''}`;
+    card.tabIndex = 10 + index;
+    card.dataset.index = index;
+
+    // EPG Snippet
+    let epgSnippet = c.group || '';
+    if (!c.is_radio && c.epg_id && state.epg[c.epg_id]) {
+      const currentProg = getCurrentEpg(c.epg_id);
+      if (currentProg) {
+        epgSnippet = `Acum: ${currentProg.title}`;
+      }
+    }
+
+    // Badge
+    let badgeHtml = '';
+    if (!c.is_radio) {
+      const res = (c.resolution || 'HD').toUpperCase();
+      badgeHtml = `<span class="channel-card-badge ${res === '4K' ? 'badge-4k' : ''}">${res}</span>`;
+    }
+
+    const logoSrc = c.logo ? c.logo : (c.is_radio ? 'logos/discomix.png' : 'logos/acasa4k.png');
+
+    card.innerHTML = `
+      <span class="channel-card-num">${index + 1}</span>
+      <img class="channel-card-logo" src="${logoSrc}" alt="" loading="lazy" onerror="this.src='logos/acasa4k.png'">
+      <div class="channel-card-info">
+        <div class="channel-card-name">${isPlaying ? '▶ ' : ''}${c.name}</div>
+        <div class="channel-card-epg">${epgSnippet}</div>
+      </div>
+      ${badgeHtml}
+    `;
+
+    card.addEventListener('click', () => {
+      playChannel(c);
+      focusCard(index);
+    });
+
+    dom.channelsContainer.appendChild(card);
+  });
+}
+
+// Resolve Proxy URL
+function resolveStreamUrl(channel) {
+  let rawUrl = (channel.streams && channel.streams.length > 0) ? channel.streams[0].url : channel.url;
+  if (!rawUrl) return '';
+
+  const referer = (channel.headers && channel.headers.Referer) ? channel.headers.Referer : 'https://canale-tv.net/';
+
+  // Proxy decision
+  if (state.proxyMode === 'direct') {
+    return rawUrl;
+  }
+
+  if (state.proxyMode === 'custom' && state.customProxyUrl) {
+    const base = state.customProxyUrl.endsWith('=') ? state.customProxyUrl : state.customProxyUrl + '?url=';
+    return `${base}${encodeURIComponent(rawUrl)}&ref=${encodeURIComponent(referer)}`;
+  }
+
+  // Relative / Auto: Use relative /proxy?url=
+  // This automatically works with the included Node.js server OR Cloudflare Worker
+  const isLocalServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '';
+  if (state.proxyMode === 'relative' || state.proxyMode === 'auto') {
+    // If hosted on GitHub Pages or custom static host without backend proxy, user can specify custom worker
+    return `/proxy?url=${encodeURIComponent(rawUrl)}&ref=${encodeURIComponent(referer)}`;
+  }
+
+  return rawUrl;
+}
+
+// Play Channel
+function playChannel(channel) {
+  state.currentChannel = channel;
+  localStorage.setItem('flolite_last_channel_id', channel.id);
+
+  dom.spinner.classList.remove('hidden');
+  updateDetailsPanel(channel);
+  showOsd(channel);
+
+  // Update active state in list
+  document.querySelectorAll('.channel-card').forEach(el => el.classList.remove('active'));
+  const card = dom.channelsContainer.querySelector(`.channel-card[data-index="${state.filteredChannels.indexOf(channel)}"]`);
+  if (card) card.classList.add('active');
+
+  const streamUrl = resolveStreamUrl(channel);
+  console.log(`[FloLiteTV] Redare ${channel.name} -> ${streamUrl}`);
+
+  if (channel.is_radio) {
+    dom.radioBackdrop.classList.remove('hidden');
+    dom.radioName.textContent = channel.name;
+    dom.radioGenre.textContent = channel.group || 'Radio Live HD';
+    dom.radioLogo.src = channel.logo || 'logos/discomix.png';
+    startVisualizer();
+  } else {
+    dom.radioBackdrop.classList.add('hidden');
+    stopVisualizer();
+  }
+
+  // Destroy previous HLS player
+  if (state.hls) {
+    state.hls.destroy();
+    state.hls = null;
+  }
+
+  // Check HLS.js support vs Native HLS
+  const isHls = streamUrl.includes('.m3u8') || streamUrl.includes('/proxy');
+
+  if (isHls && window.Hls && Hls.isSupported()) {
+    const hls = new Hls({
+      enableWorker: true,
+      lowLatencyMode: true,
+      backBufferLength: 30,
+      maxBufferLength: 8,
+      maxMaxBufferLength: 15,
+      liveSyncDurationCount: 3,
+      liveMaxLatencyDurationCount: 6,
+      manifestLoadingTimeOut: 10000,
+      manifestLoadingMaxRetry: 4,
+      levelLoadingTimeOut: 10000,
+      fragLoadingTimeOut: 12000
+    });
+
+    state.hls = hls;
+    hls.loadSource(streamUrl);
+    hls.attachMedia(dom.video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      dom.video.play().catch(() => {});
+      dom.spinner.classList.add('hidden');
+    });
+
+    hls.on(Hls.Events.ERROR, (event, data) => {
+      if (data.fatal) {
+        console.warn('[Hls.js Error]', data);
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            console.log('Eroare retea, reincercare...');
+            hls.startLoad();
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            console.log('Eroare media, recuperare decodor...');
+            hls.recoverMediaError();
+            break;
+          default:
+            hls.destroy();
+            dom.spinner.classList.add('hidden');
+            break;
+        }
+      }
+    });
+  } else {
+    // Native HTML5 / Safari HLS / MP3 Radio
+    dom.video.src = streamUrl;
+    dom.video.play().catch(() => {});
+    dom.video.onloadeddata = () => dom.spinner.classList.add('hidden');
+  }
+
+  dom.btnPlayPause.textContent = '⏸';
+}
+
+// OSD Banner Display
+function showOsd(channel) {
+  const idx = state.filteredChannels.indexOf(channel);
+  dom.osdNum.textContent = (idx >= 0 ? idx + 1 : 1);
+  dom.osdName.textContent = channel.name;
+  dom.osdGroup.textContent = channel.group || 'Live';
+  dom.osdRes.textContent = (channel.resolution || (channel.is_radio ? 'RADIO' : 'HD')).toUpperCase();
+  dom.osdLogo.src = channel.logo || (channel.is_radio ? 'logos/discomix.png' : 'logos/acasa4k.png');
+
+  // EPG
+  if (!channel.is_radio && channel.epg_id && state.epg[channel.epg_id]) {
+    const p = getCurrentEpg(channel.epg_id);
+    if (p) {
+      dom.osdEpgTitle.textContent = p.title;
+      dom.osdEpgTime.textContent = `${formatTime(p.start)} - ${formatTime(p.stop)}`;
+      dom.osdEpgNow.classList.remove('hidden');
+      dom.osdProgressBar.classList.remove('hidden');
+      const progress = getProgressPercent(p.start, p.stop);
+      dom.osdProgressFill.style.width = `${progress}%`;
+    } else {
+      dom.osdEpgNow.classList.add('hidden');
+      dom.osdProgressBar.classList.add('hidden');
+    }
+  } else {
+    dom.osdEpgNow.classList.add('hidden');
+    dom.osdProgressBar.classList.add('hidden');
+  }
+
+  dom.osdBanner.classList.remove('hidden');
+  if (state.osdTimeout) clearTimeout(state.osdTimeout);
+  state.osdTimeout = setTimeout(() => {
+    dom.osdBanner.classList.add('hidden');
+  }, 5000);
+}
+
+// Details Panel & EPG Update
+function updateDetailsPanel(channel) {
+  dom.detailName.textContent = channel.name;
+  dom.detailSub.textContent = `${channel.group || 'Live'} • Canal ${state.filteredChannels.indexOf(channel) + 1}`;
+  dom.detailLogo.src = channel.logo || (channel.is_radio ? 'logos/discomix.png' : 'logos/acasa4k.png');
+  dom.badgeTechRes.textContent = (channel.resolution || 'HD').toUpperCase();
+  dom.pillChannel.textContent = `${channel.name} (${channel.group || 'Live'})`;
+
+  updateLiveEpgUI();
+}
+
+function updateLiveEpgUI() {
+  if (!state.currentChannel) return;
+  const c = state.currentChannel;
+
+  if (!c.is_radio && c.epg_id && state.epg[c.epg_id]) {
+    const p = getCurrentEpg(c.epg_id);
+    if (p) {
+      dom.epgLiveTime.textContent = `${formatTime(p.start)} - ${formatTime(p.stop)}`;
+      dom.epgLiveTitle.textContent = p.title;
+      dom.epgLiveSynopsis.textContent = p.desc || 'Emisiune în direct';
+      const pct = getProgressPercent(p.start, p.stop);
+      dom.epgMeterFill.style.width = `${pct}%`;
+      return;
+    }
+  }
+
+  dom.epgLiveTime.textContent = 'LIVE';
+  dom.epgLiveTitle.textContent = c.is_radio ? 'Emisie Radio Live Hi-Fi' : 'Transmisiune TV Live HD';
+  dom.epgLiveSynopsis.textContent = 'Ghidul electronic este actualizat în timp real din stream.';
+  dom.epgMeterFill.style.width = '100%';
+}
+
+// EPG Helpers
+function getCurrentEpg(epgId) {
+  const list = state.epg[epgId];
+  if (!list || list.length === 0) return null;
+  const now = Date.now();
+  return list.find(p => p.start <= now && p.stop > now) || null;
+}
+
+function formatTime(timestamp) {
+  const d = new Date(timestamp);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function getProgressPercent(start, stop) {
+  const now = Date.now();
+  const total = stop - start;
+  if (total <= 0) return 0;
+  return Math.min(100, Math.max(0, Math.round(((now - start) / total) * 100)));
+}
+
+// Web Audio API Winamp Spectrum Visualizer
+function startVisualizer() {
+  if (state.isVisualizerRunning) return;
+  state.isVisualizerRunning = true;
+
+  try {
+    if (!state.audioContext) {
+      state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      state.analyser = state.audioContext.createAnalyser();
+      state.analyser.fftSize = 256;
+      state.audioSource = state.audioContext.createMediaElementSource(dom.video);
+      state.audioSource.connect(state.analyser);
+      state.analyser.connect(state.audioContext.destination);
+    }
+    if (state.audioContext.state === 'suspended') {
+      state.audioContext.resume();
+    }
+  } catch (e) {
+    // Cross-origin audio or browser policy fallback to synth visualizer
+  }
+
+  drawVisualizerFrame();
+}
+
+function stopVisualizer() {
+  state.isVisualizerRunning = false;
+}
+
+function drawVisualizerFrame() {
+  if (!state.isVisualizerRunning) return;
+
+  const canvas = dom.visualizerCanvas;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const width = canvas.parentElement.clientWidth;
+  const height = canvas.parentElement.clientHeight;
+
+  if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+  }
+
+  ctx.clearRect(0, 0, width, height);
+
+  const numBars = 48;
+  const bufferLength = state.analyser ? state.analyser.frequencyBinCount : numBars;
+  const dataArray = new Uint8Array(bufferLength);
+
+  if (state.analyser) {
+    state.analyser.getByteFrequencyData(dataArray);
+  } else {
+    // Simulated lively spectrum if AudioContext is blocked by cross-origin
+    const time = Date.now() / 150;
+    for (let i = 0; i < bufferLength; i++) {
+      dataArray[i] = Math.max(10, Math.sin(time + i * 0.3) * 100 + Math.cos(time * 0.5 + i * 0.1) * 80 + 70);
+    }
+  }
+
+  const barWidth = (width / numBars) - 3;
+  const bottom = height - 10;
+
+  for (let i = 0; i < numBars; i++) {
+    const rawVal = dataArray[i] || 0;
+    const barHeight = (rawVal / 255) * (height * 0.7);
+    const x = i * (barWidth + 3);
+    const y = bottom - barHeight;
+
+    // Gradient styling
+    const grad = ctx.createLinearGradient(0, bottom, 0, y);
+    if (state.visualizerTheme === 'classic') {
+      grad.addColorStop(0, '#00ff66');
+      grad.addColorStop(0.6, '#ffff00');
+      grad.addColorStop(1, '#ff0033');
+    } else {
+      grad.addColorStop(0, '#00e5ff');
+      grad.addColorStop(0.5, '#7928ca');
+      grad.addColorStop(1, '#ff007f');
+    }
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(x, y, barWidth, barHeight);
+
+    // Peak dot
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(x, Math.max(10, y - 4), barWidth, 2);
+  }
+
+  requestAnimationFrame(drawVisualizerFrame);
+}
+
+// UI Event Listeners
+function setupEventListeners() {
+  dom.btnModeTv.addEventListener('click', () => switchMode('tv'));
+  dom.btnModeRadio.addEventListener('click', () => switchMode('radio'));
+
+  dom.searchInput.addEventListener('input', (e) => {
+    state.searchQuery = e.target.value;
+    dom.btnClearSearch.classList.toggle('hidden', !state.searchQuery);
+    filterAndRenderChannels();
+  });
+
+  dom.btnClearSearch.addEventListener('click', () => {
+    state.searchQuery = '';
+    dom.searchInput.value = '';
+    dom.btnClearSearch.classList.add('hidden');
+    filterAndRenderChannels();
+  });
+
+  dom.btnPlayPause.addEventListener('click', () => {
+    if (dom.video.paused) {
+      dom.video.play();
+      dom.btnPlayPause.textContent = '⏸';
+    } else {
+      dom.video.pause();
+      dom.btnPlayPause.textContent = '▶';
+    }
+  });
+
+  dom.btnPrev.addEventListener('click', playPreviousChannel);
+  dom.btnNext.addEventListener('click', playNextChannel);
+
+  dom.volumeSlider.addEventListener('input', (e) => {
+    dom.video.volume = parseFloat(e.target.value);
+    dom.btnMute.textContent = dom.video.volume === 0 ? '🔇' : '🔊';
+  });
+
+  dom.btnMute.addEventListener('click', () => {
+    dom.video.muted = !dom.video.muted;
+    dom.btnMute.textContent = dom.video.muted ? '🔇' : '🔊';
+  });
+
+  dom.btnFullscreen.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      dom.playerWrapper.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  dom.btnPip.addEventListener('click', async () => {
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      } else if (document.pictureInPictureEnabled) {
+        await dom.video.requestPictureInPicture();
+      }
+    } catch (e) {}
+  });
+
+  dom.video.addEventListener('waiting', () => dom.spinner.classList.remove('hidden'));
+  dom.video.addEventListener('playing', () => dom.spinner.classList.add('hidden'));
+}
+
+// Channel Hopping
+function playNextChannel() {
+  if (state.filteredChannels.length === 0) return;
+  const currentIdx = state.filteredChannels.indexOf(state.currentChannel);
+  const nextIdx = (currentIdx + 1) >= state.filteredChannels.length ? 0 : currentIdx + 1;
+  playChannel(state.filteredChannels[nextIdx]);
+  focusCard(nextIdx);
+}
+
+function playPreviousChannel() {
+  if (state.filteredChannels.length === 0) return;
+  const currentIdx = state.filteredChannels.indexOf(state.currentChannel);
+  const prevIdx = (currentIdx - 1) < 0 ? state.filteredChannels.length - 1 : currentIdx - 1;
+  playChannel(state.filteredChannels[prevIdx]);
+  focusCard(prevIdx);
+}
+
+function focusCard(index) {
+  state.focusedIndex = index;
+  const cards = dom.channelsContainer.querySelectorAll('.channel-card');
+  cards.forEach(c => c.classList.remove('focused'));
+  if (cards[index]) {
+    cards[index].classList.add('focused');
+    cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// Settings Modal & Persistence
+function setupSettings() {
+  dom.btnSettings.addEventListener('click', () => {
+    dom.proxyModeSelect.value = state.proxyMode;
+    dom.customProxyInput.value = state.customProxyUrl;
+    dom.customProxyGroup.classList.toggle('hidden', state.proxyMode !== 'custom');
+    dom.visThemeSelect.value = state.visualizerTheme;
+    dom.settingsModal.classList.remove('hidden');
+  });
+
+  dom.btnCloseSettings.addEventListener('click', () => dom.settingsModal.classList.add('hidden'));
+
+  dom.proxyModeSelect.addEventListener('change', (e) => {
+    dom.customProxyGroup.classList.toggle('hidden', e.target.value !== 'custom');
+  });
+
+  dom.btnSaveSettings.addEventListener('click', () => {
+    state.proxyMode = dom.proxyModeSelect.value;
+    state.customProxyUrl = dom.customProxyInput.value.trim();
+    state.visualizerTheme = dom.visThemeSelect.value;
+
+    localStorage.setItem('flolite_proxy_mode', state.proxyMode);
+    localStorage.setItem('flolite_custom_proxy', state.customProxyUrl);
+    localStorage.setItem('flolite_vis_theme', state.visualizerTheme);
+
+    dom.settingsModal.classList.add('hidden');
+    if (state.currentChannel) {
+      playChannel(state.currentChannel);
+    }
+  });
+}
+
+// Keyboard & TV Remote Control Navigation
+function setupKeyboardShortcuts() {
+  window.addEventListener('keydown', (e) => {
+    // If typing in input, don't intercept navigation
+    if (document.activeElement === dom.searchInput || document.activeElement === dom.customProxyInput) {
+      if (e.key === 'Escape') {
+        document.activeElement.blur();
+      }
+      return;
+    }
+
+    // Direct channel digits (0-9)
+    if (e.key >= '0' && e.key <= '9') {
+      state.numBuffer += e.key;
+      clearTimeout(state.numBufferTimeout);
+      dom.pillChannel.textContent = `Salt la canalul #${state.numBuffer}...`;
+      state.numBufferTimeout = setTimeout(() => {
+        const num = parseInt(state.numBuffer, 10);
+        state.numBuffer = '';
+        if (num > 0 && num <= state.filteredChannels.length) {
+          playChannel(state.filteredChannels[num - 1]);
+          focusCard(num - 1);
+        }
+      }, 1200);
+      return;
+    }
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        if (state.focusedIndex + 1 < state.filteredChannels.length) {
+          focusCard(state.focusedIndex + 1);
+        }
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        if (state.focusedIndex - 1 >= 0) {
+          focusCard(state.focusedIndex - 1);
+        }
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (state.filteredChannels[state.focusedIndex]) {
+          playChannel(state.filteredChannels[state.focusedIndex]);
+        }
+        break;
+      case 'PageDown':
+      case 'ChannelDown':
+        e.preventDefault();
+        playNextChannel();
+        break;
+      case 'PageUp':
+      case 'ChannelUp':
+        e.preventDefault();
+        playPreviousChannel();
+        break;
+      case ' ':
+        e.preventDefault();
+        dom.btnPlayPause.click();
+        break;
+      case 'f':
+      case 'F':
+        dom.btnFullscreen.click();
+        break;
+      case 'm':
+      case 'M':
+        dom.btnMute.click();
+        break;
+      case 'i':
+      case 'I':
+        if (state.currentChannel) showOsd(state.currentChannel);
+        break;
+      case '/':
+        e.preventDefault();
+        dom.searchInput.focus();
+        break;
+    }
+  });
+}
+
+// Start
+init();

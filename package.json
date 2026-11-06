@@ -1,0 +1,12 @@
+{
+  "name": "flolite-web",
+  "version": "1.0.0",
+  "description": "Flo Lite TV - Responsive Web Client & Stream Proxy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["iptv", "web", "player", "hls", "radio", "tv"],
+  "author": "",
+  "license": "MIT"
+}
