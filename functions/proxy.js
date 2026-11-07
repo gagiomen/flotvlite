@@ -38,6 +38,7 @@ export async function onRequest(context) {
     }
 
     const isPlaylistCandidate = targetUrl.includes('.m3u8') || targetUrl.includes('playlist');
+    const isStaticSegment = targetUrl.includes('.ts') || targetUrl.includes('.m4s') || targetUrl.includes('.mp4');
 
     const fetchOptions = {
       method: request.method,
@@ -45,8 +46,8 @@ export async function onRequest(context) {
       redirect: 'follow',
     };
 
-    // Cache static immutable media segments at Cloudflare Edge PoP
-    if (!isPlaylistCandidate) {
+    // Cache ONLY static immutable video segments at Cloudflare Edge PoP (never cache live radio streams or playlists!)
+    if (isStaticSegment) {
       fetchOptions.cf = {
         cacheEverything: true,
         cacheTtl: 60,
@@ -132,6 +133,8 @@ export async function onRequest(context) {
       responseHeaders.set('Content-Type', 'video/mp4');
     } else if (targetUrl.includes('.aac')) {
       responseHeaders.set('Content-Type', 'audio/aac');
+    } else if (targetUrl.includes('.mp3') || targetUrl.includes('stream') || targetUrl.includes('listen') || targetUrl.includes(':8')) {
+      responseHeaders.set('Content-Type', 'audio/mpeg');
     }
 
     const cl = upstreamRes.headers.get('content-length');
@@ -141,8 +144,12 @@ export async function onRequest(context) {
     const ar = upstreamRes.headers.get('accept-ranges');
     if (ar) responseHeaders.set('Accept-Ranges', ar);
 
-    // Cache immutable video segments at edge PoP
-    responseHeaders.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+    // Cache immutable video segments at edge PoP, but never live radio streams
+    if (isStaticSegment) {
+      responseHeaders.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+    } else {
+      responseHeaders.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
 
     return new Response(upstreamRes.body, {
       status: upstreamRes.status,

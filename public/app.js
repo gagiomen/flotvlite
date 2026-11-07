@@ -159,9 +159,38 @@ function switchMode(mode, playTarget = true) {
   }
 }
 
+// Favorites Management
+function getFavorites() {
+  try {
+    return JSON.parse(localStorage.getItem('flolite_favorites')) || [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function isFavorite(channelId) {
+  return getFavorites().includes(channelId);
+}
+
+function toggleFavorite(channelId) {
+  let favs = getFavorites();
+  if (favs.includes(channelId)) {
+    favs = favs.filter(id => id !== channelId);
+  } else {
+    favs.push(channelId);
+  }
+  localStorage.setItem('flolite_favorites', JSON.stringify(favs));
+  return favs.includes(channelId);
+}
+
+function normalizeCategory(str) {
+  return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
+
 // Category Icon Resolver
 function getCategoryIcon(cat, mode) {
-  const norm = (cat || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const norm = normalizeCategory(cat);
+  if (norm === 'favorite' || norm === 'favorit') return '⭐';
   if (norm === 'toate') return mode === 'tv' ? '✨' : '📻';
   if (norm.includes('general')) return '📡';
   if (norm.includes('stiri')) return '📰';
@@ -173,7 +202,6 @@ function getCategoryIcon(cat, mode) {
   if (norm.includes('desene') || norm.includes('copii') || norm.includes('kids') || norm.includes('animat')) return '🧸';
   if (norm.includes('4k') || norm.includes('uhd')) return '💎';
   if (norm.includes('adult')) return '🔞';
-  if (norm.includes('favorit')) return '⭐';
   if (norm.includes('moldova')) return '🇲🇩';
   if (norm.includes('romania') || norm.includes('national')) return '🇷🇴';
   if (norm.includes('transilvania')) return '🌲';
@@ -192,24 +220,46 @@ function getCategoryIcon(cat, mode) {
 
 // Build Categories Chips
 function buildCategories() {
-  const currentList = (state.currentMode === 'tv') ? state.tvChannels : state.radioChannels;
-  const groupsSet = new Set();
-  groupsSet.add('TOATE');
+  let categories = [];
+  if (state.currentMode === 'tv') {
+    // Exact requested order: Favorite, Toate, 4K, Generaliste, Stiri, Sport, Filme, Documentare, Desene animate, Muzica, Muzica folclorica, Moldova, Adult
+    categories = [
+      'Favorite',
+      'Toate',
+      '4K',
+      'Generaliste',
+      'Știri',
+      'Sport',
+      'Filme',
+      'Documentare',
+      'Desene animate',
+      'Muzică',
+      'Muzica Folclorica',
+      'Moldova',
+      'Adult'
+    ];
+  } else {
+    const radioGroups = new Set();
+    state.radioChannels.forEach(c => {
+      let grp = (c.group || 'Altele').replace('Radio - ', '').replace('Romania', 'România').trim();
+      radioGroups.add(grp);
+    });
+    const sortedRadioGroups = Array.from(radioGroups).sort((a, b) => a.localeCompare(b, 'ro'));
+    categories = ['Favorite', 'Toate', ...sortedRadioGroups];
+  }
 
-  currentList.forEach(c => {
-    let grp = c.group || 'Altele';
-    if (state.currentMode === 'radio') {
-      grp = grp.replace('Radio - ', '').replace('Romania', 'România').trim();
-    }
-    groupsSet.add(grp);
-  });
+  // Ensure current category is valid
+  const validNorms = categories.map(c => normalizeCategory(c));
+  if (!validNorms.includes(normalizeCategory(state.currentCategory))) {
+    state.currentCategory = 'Toate';
+  }
 
-  const categories = Array.from(groupsSet);
   dom.categoriesBar.innerHTML = '';
 
   categories.forEach(cat => {
     const chip = document.createElement('button');
-    chip.className = `category-chip ${cat === state.currentCategory ? 'active' : ''}`;
+    const isActive = normalizeCategory(cat) === normalizeCategory(state.currentCategory);
+    chip.className = `category-chip ${isActive ? 'active' : ''}`;
     const icon = getCategoryIcon(cat, state.currentMode);
     chip.innerHTML = `<span class="category-icon">${icon}</span><span class="category-text">${cat}</span>`;
     chip.addEventListener('click', () => {
@@ -226,15 +276,37 @@ function buildCategories() {
 function filterAndRenderChannels() {
   const sourceList = (state.currentMode === 'tv') ? state.tvChannels : state.radioChannels;
   const query = state.searchQuery.toLowerCase().trim();
+  const currentCatNorm = normalizeCategory(state.currentCategory);
+  const favList = getFavorites();
 
   state.filteredChannels = sourceList.filter(c => {
-    // Category match
-    if (state.currentCategory !== 'TOATE') {
-      let grp = (c.group || 'Altele').replace('Radio - ', '').replace('Romania', 'România').trim();
-      if (grp !== state.currentCategory && c.group !== state.currentCategory) {
+    const channelGroupNorm = normalizeCategory(c.group);
+
+    // 1. Favorite Category Filter
+    if (currentCatNorm === 'favorite' || currentCatNorm === 'favorit') {
+      if (!favList.includes(c.id)) {
         return false;
       }
     }
+    // 2. Toate Category Filter: ELIMINATE Adult channels!
+    else if (currentCatNorm === 'toate') {
+      if (channelGroupNorm.includes('adult')) {
+        return false; // Adult channels are excluded from Toate!
+      }
+    }
+    // 3. Adult Category Filter
+    else if (currentCatNorm === 'adult') {
+      if (!channelGroupNorm.includes('adult')) {
+        return false;
+      }
+    }
+    // 4. Specific Category Match
+    else {
+      if (channelGroupNorm !== currentCatNorm && !channelGroupNorm.includes(currentCatNorm) && !currentCatNorm.includes(channelGroupNorm)) {
+        return false;
+      }
+    }
+
     // Search query match
     if (query) {
       const matchName = c.name && c.name.toLowerCase().includes(query);
@@ -254,9 +326,33 @@ function filterAndRenderChannels() {
   }
   dom.channelsContainer.innerHTML = '';
 
+  if (state.filteredChannels.length === 0) {
+    if (currentCatNorm === 'favorite' || currentCatNorm === 'favorit') {
+      dom.channelsContainer.innerHTML = `
+        <div class="empty-favorites-box">
+          <span class="empty-fav-icon">⭐</span>
+          <h3>Niciun canal la Favorite</h3>
+          <p>Apasă pe steluța ☆ de pe orice canal pentru a-l salva în lista ta de favorite!</p>
+        </div>
+      `;
+      return;
+    } else {
+      dom.channelsContainer.innerHTML = `
+        <div class="empty-favorites-box">
+          <span class="empty-fav-icon">🔍</span>
+          <h3>Niciun rezultat găsit</h3>
+          <p>Nu există canale care să corespundă căutării în această categorie.</p>
+        </div>
+      `;
+      return;
+    }
+  }
+
   state.filteredChannels.forEach((c, index) => {
     const card = document.createElement('div');
     const isPlaying = state.currentChannel && state.currentChannel.id === c.id;
+    const isFav = favList.includes(c.id);
+
     card.className = `channel-card ${isPlaying ? 'active' : ''}`;
     card.tabIndex = 10 + index;
     card.dataset.index = index;
@@ -287,7 +383,26 @@ function filterAndRenderChannels() {
         <div class="channel-card-epg">${epgSnippet}</div>
       </div>
       ${badgeHtml}
+      <button class="btn-fav-star ${isFav ? 'active' : ''}" title="${isFav ? 'Elimină din Favorite' : 'Adaugă la Favorite'}" aria-label="Favorite">
+        ${isFav ? '★' : '☆'}
+      </button>
     `;
+
+    // Star Click: Toggle Favorite
+    const starBtn = card.querySelector('.btn-fav-star');
+    if (starBtn) {
+      starBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nowFav = toggleFavorite(c.id);
+        starBtn.classList.toggle('active', nowFav);
+        starBtn.textContent = nowFav ? '★' : '☆';
+        starBtn.title = nowFav ? 'Elimină din Favorite' : 'Adaugă la Favorite';
+
+        if (currentCatNorm === 'favorite' || currentCatNorm === 'favorit') {
+          filterAndRenderChannels();
+        }
+      });
+    }
 
     card.addEventListener('click', () => {
       playChannel(c);
@@ -375,8 +490,10 @@ function playChannel(channel) {
   dom.video.removeAttribute('src');
   dom.video.load();
 
-  // Check HLS.js support vs Native HLS
-  const isHls = streamUrl.includes('.m3u8') || streamUrl.includes('/proxy');
+  // Check HLS.js support vs Native HTML5 Audio/Video
+  // Note: Only use Hls.js for actual .m3u8 playlists. Direct MP3/AAC radio streams MUST play via native HTML5!
+  const rawUrl = (channel.streams && channel.streams.length > 0) ? channel.streams[0].url : channel.url;
+  const isHls = Boolean(rawUrl && (rawUrl.includes('.m3u8') || rawUrl.includes('playlist') || (!channel.is_radio && !rawUrl.includes('.mp4') && !rawUrl.includes('.mp3'))));
 
   if (isHls && window.Hls && Hls.isSupported()) {
     const hls = new Hls({
@@ -438,10 +555,19 @@ function playChannel(channel) {
       }
     });
   } else {
-    // Native HTML5 / Safari HLS / MP3 Radio
+    // Native HTML5 Audio / Video (MP3 / AAC / Direct Audio Stream)
     dom.video.src = streamUrl;
-    dom.video.play().catch(() => {});
+    const playPromise = dom.video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        dom.spinner.classList.add('hidden');
+      }).catch(err => {
+        console.warn('Native play error / autoplay blocked:', err);
+        dom.spinner.classList.add('hidden');
+      });
+    }
     dom.video.onloadeddata = () => dom.spinner.classList.add('hidden');
+    dom.video.oncanplay = () => dom.spinner.classList.add('hidden');
   }
 
   dom.btnPlayPause.textContent = '⏸';
@@ -539,23 +665,6 @@ function getProgressPercent(start, stop) {
 function startVisualizer() {
   if (state.isVisualizerRunning) return;
   state.isVisualizerRunning = true;
-
-  try {
-    if (!state.audioContext) {
-      state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      state.analyser = state.audioContext.createAnalyser();
-      state.analyser.fftSize = 256;
-      state.audioSource = state.audioContext.createMediaElementSource(dom.video);
-      state.audioSource.connect(state.analyser);
-      state.analyser.connect(state.audioContext.destination);
-    }
-    if (state.audioContext.state === 'suspended') {
-      state.audioContext.resume();
-    }
-  } catch (e) {
-    // Cross-origin audio or browser policy fallback to synth visualizer
-  }
-
   drawVisualizerFrame();
 }
 

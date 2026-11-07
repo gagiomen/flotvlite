@@ -127,6 +127,8 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
                     self.send_response(status)
                     if ".ts" in target_url:
                         self.send_header("Content-Type", "video/mp2t")
+                    elif ".mp3" in target_url or ":8" in target_url:
+                        self.send_header("Content-Type", "audio/mpeg")
                     elif content_type:
                         self.send_header("Content-Type", content_type)
                     length = response.headers.get("Content-Length")
@@ -135,7 +137,10 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
                     crange = response.headers.get("Content-Range")
                     if crange:
                         self.send_header("Content-Range", crange)
-                    self.send_header("Cache-Control", "public, max-age=60")
+                    if ".ts" in target_url or ".m4s" in target_url:
+                        self.send_header("Cache-Control", "public, max-age=60")
+                    else:
+                        self.send_header("Cache-Control", "no-cache, no-store")
                     self.end_headers()
 
                     if not is_head:

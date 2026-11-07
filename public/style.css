@@ -777,6 +777,72 @@ body {
   color: #000;
 }
 
+/* Favorite Star Button on Channel Cards */
+.btn-fav-star {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-left: 6px;
+  padding: 0;
+  user-select: none;
+}
+
+.btn-fav-star:hover {
+  color: #ffb700;
+  background: rgba(255, 183, 0, 0.12);
+  transform: scale(1.15);
+}
+
+.btn-fav-star.active {
+  color: #ffb700;
+  text-shadow: 0 0 10px rgba(255, 183, 0, 0.65);
+}
+
+/* Empty Favorites State */
+.empty-favorites-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.empty-fav-icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+  color: #ffb700;
+  filter: drop-shadow(0 0 12px rgba(255, 183, 0, 0.45));
+}
+
+.empty-favorites-box h3 {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.empty-favorites-box p {
+  font-size: 13.5px;
+  max-width: 320px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
 /* Modal */
 .modal {
   position: fixed;

@@ -41,6 +41,7 @@ export default {
       }
 
       const isPlaylistCandidate = targetUrl.includes('.m3u8') || targetUrl.includes('playlist');
+      const isStaticSegment = targetUrl.includes('.ts') || targetUrl.includes('.m4s') || targetUrl.includes('.mp4');
 
       const fetchOptions = {
         method: request.method,
@@ -48,7 +49,7 @@ export default {
         redirect: 'follow',
       };
 
-      if (!isPlaylistCandidate) {
+      if (isStaticSegment) {
         fetchOptions.cf = {
           cacheEverything: true,
           cacheTtl: 60,
@@ -131,6 +132,8 @@ export default {
         responseHeaders.set('Content-Type', 'video/mp4');
       } else if (targetUrl.includes('.aac')) {
         responseHeaders.set('Content-Type', 'audio/aac');
+      } else if (targetUrl.includes('.mp3') || targetUrl.includes('stream') || targetUrl.includes('listen') || targetUrl.includes(':8')) {
+        responseHeaders.set('Content-Type', 'audio/mpeg');
       }
 
       const cl = upstreamRes.headers.get('content-length');
@@ -140,7 +143,11 @@ export default {
       const ar = upstreamRes.headers.get('accept-ranges');
       if (ar) responseHeaders.set('Accept-Ranges', ar);
 
-      responseHeaders.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+      if (isStaticSegment) {
+        responseHeaders.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+      } else {
+        responseHeaders.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+      }
 
       return new Response(upstreamRes.body, {
         status: upstreamRes.status,
