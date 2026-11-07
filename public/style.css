@@ -43,122 +43,160 @@ body {
 
 /* Header */
 .app-header {
-  height: var(--header-height);
-  background: rgba(10, 11, 16, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(10, 11, 16, 0.95);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px;
+  z-index: 100;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  z-index: 100;
-  flex-shrink: 0;
+  width: 100%;
+  gap: 12px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .brand-logo {
-  font-size: 24px;
+  font-size: 22px;
+  line-height: 1;
 }
 
 .brand-title {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 800;
   letter-spacing: -0.5px;
+  color: #fff;
+  white-space: nowrap;
 }
 
 .brand-title .highlight {
   color: var(--accent-cyan);
 }
 
-.brand-badge {
-  background: rgba(0, 229, 255, 0.12);
-  color: var(--accent-cyan);
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.header-controls {
+.header-nav-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
-.mode-switch {
-  display: flex;
+/* Uniform Aesthetic Buttons for TV Live, Radio, Info, Setări */
+.btn-header-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
   background: var(--bg-card);
-  padding: 3px;
-  border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-}
-
-.btn-toggle {
-  background: transparent;
-  border: none;
+  border-radius: var(--radius-md);
   color: var(--text-muted);
-  padding: 6px 14px;
   font-size: 13px;
   font-weight: 600;
-  border-radius: 7px;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
 }
 
-.btn-toggle.active {
+.btn-header-nav .btn-nav-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.btn-header-nav .btn-nav-text {
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+.btn-header-nav:hover,
+.btn-header-nav:focus-visible {
+  border-color: var(--accent-cyan);
+  color: #fff;
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+  outline: none;
+}
+
+.btn-header-nav.active {
   background: var(--accent-cyan);
   color: #000;
+  border-color: var(--accent-cyan);
+  font-weight: 700;
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
 }
 
-.search-box {
+.btn-header-nav.active .btn-nav-text {
+  color: #000;
+}
+
+/* Row 2: Search Row occupying full width */
+.header-search-row {
+  width: 100%;
+}
+
+.search-box.full-width {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.search-box input {
+.search-icon-symbol {
+  position: absolute;
+  left: 14px;
+  font-size: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-box.full-width input {
+  width: 100%;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-main);
-  padding: 8px 14px;
+  padding: 8px 38px 8px 38px;
   border-radius: var(--radius-md);
-  font-size: 13px;
-  width: 240px;
-  transition: all 0.2s ease;
+  font-size: 13.5px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.search-box input:focus {
+.search-box.full-width input:focus {
   outline: none;
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
-  width: 280px;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
 }
 
-.btn-icon {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.btn-clear-icon {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 16px;
+  padding: 2px 6px;
+  line-height: 1;
 }
 
-.btn-icon:hover, .btn-icon:focus-visible {
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
-  outline: none;
+.btn-clear-icon:hover {
+  color: #fff;
 }
 
 /* Main Content: Split layout */
@@ -421,14 +459,16 @@ body {
   padding: 16px 20px;
   z-index: 25;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
   transform: translateY(6px);
 }
 
 .player-controls-bar.visible,
 .player-wrapper.show-controls .player-controls-bar {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
 }
@@ -604,11 +644,24 @@ body {
   color: var(--text-muted);
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.category-chip .category-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.category-chip .category-text {
+  font-weight: 600;
 }
 
 .category-chip:hover, .category-chip:focus-visible {
@@ -621,7 +674,11 @@ body {
   background: var(--accent-cyan);
   color: #000;
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+}
+
+.category-chip.active .category-text {
+  color: #000;
 }
 
 .channels-container {
@@ -983,16 +1040,12 @@ body {
 /* Smartphone Specific Adaptations (<= 768px) */
 @media (max-width: 768px) {
   .app-header {
-    height: auto;
-    min-height: 52px;
-    padding: 8px 12px;
-    flex-wrap: wrap;
+    padding: 8px 12px 6px 12px;
     gap: 8px;
-    justify-content: space-between;
   }
 
-  .brand {
-    gap: 6px;
+  .header-top-row {
+    gap: 8px;
   }
 
   .brand-logo {
@@ -1003,43 +1056,28 @@ body {
     font-size: 16px;
   }
 
-  .brand-badge {
-    display: none;
-  }
-
-  .header-controls {
-    flex: 1;
-    justify-content: flex-end;
+  .header-nav-group {
     gap: 6px;
   }
 
-  .mode-switch {
-    padding: 2px;
+  .btn-header-nav {
+    height: 33px;
+    padding: 0 9px;
+    font-size: 12px;
+    gap: 4px;
   }
 
-  .mode-switch .btn-toggle {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-
-  .btn-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-    border-radius: var(--radius-sm);
-  }
-
-  .search-box {
-    width: 100%;
-    order: 3;
-    margin-top: 2px;
-  }
-
-  .search-box input {
-    width: 100% !important;
-    max-width: 100%;
+  .btn-header-nav .btn-nav-icon {
     font-size: 13px;
-    padding: 7px 12px;
+  }
+
+  .btn-header-nav .btn-nav-text {
+    font-size: 11.5px;
+  }
+
+  .search-box.full-width input {
+    font-size: 13px;
+    padding: 7px 34px;
   }
 
   .player-controls-bar {
@@ -1059,5 +1097,31 @@ body {
 
   .channel-info-pill {
     display: none;
+  }
+}
+
+@media (max-width: 440px) {
+  .app-header {
+    padding: 6px 8px 6px 8px;
+    gap: 6px;
+  }
+
+  .brand-title {
+    font-size: 15px;
+  }
+
+  .header-nav-group {
+    gap: 4px;
+  }
+
+  .btn-header-nav {
+    height: 32px;
+    padding: 0 7px;
+    font-size: 11px;
+    gap: 3px;
+  }
+
+  .btn-header-nav .btn-nav-text {
+    font-size: 11px;
   }
 }

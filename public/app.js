@@ -14,6 +14,8 @@ const state = {
   searchQuery: '',
   filteredChannels: [],
   currentChannel: null,
+  lastTvChannel: null,
+  lastRadioChannel: null,
   focusedIndex: 0,
   proxyMode: localStorage.getItem('flolite_proxy_mode') || 'auto',
   customProxyUrl: localStorage.getItem('flolite_custom_proxy') || '',
@@ -110,14 +112,9 @@ async function init() {
     state.radioChannels = channelsRes.filter(c => c.is_radio);
     state.epg = epgRes || {};
 
-    switchMode('tv', false);
-
-    // Auto-play first TV channel if permitted or restore last
-    const lastId = localStorage.getItem('flolite_last_channel_id');
-    const target = state.tvChannels.find(c => c.id === lastId) || state.tvChannels[0];
-    if (target) {
-      playChannel(target);
-    }
+    // Restore last mode & last played channel
+    const savedMode = localStorage.getItem('flolite_last_mode') || 'tv';
+    switchMode(savedMode, true);
 
     // Periodic EPG progress tick
     setInterval(updateLiveEpgUI, 30000);
@@ -128,9 +125,10 @@ async function init() {
 }
 
 // Switch Mode (TV / Radio)
-function switchMode(mode, playFirst = true) {
+function switchMode(mode, playTarget = true) {
   state.currentMode = mode;
   state.currentCategory = 'TOATE';
+  localStorage.setItem('flolite_last_mode', mode);
 
   if (mode === 'tv') {
     dom.btnModeTv.classList.add('active');
@@ -143,9 +141,53 @@ function switchMode(mode, playFirst = true) {
   buildCategories();
   filterAndRenderChannels();
 
-  if (playFirst && state.filteredChannels.length > 0) {
-    playChannel(state.filteredChannels[0]);
+  if (playTarget) {
+    let target = null;
+    if (mode === 'tv') {
+      const savedTvId = localStorage.getItem('flolite_last_tv_channel_id') || localStorage.getItem('flolite_last_channel_id');
+      target = state.lastTvChannel || state.tvChannels.find(c => c.id === savedTvId) || state.tvChannels[0];
+    } else {
+      const savedRadioId = localStorage.getItem('flolite_last_radio_channel_id');
+      target = state.lastRadioChannel || state.radioChannels.find(c => c.id === savedRadioId) || state.radioChannels[0];
+    }
+
+    if (target) {
+      playChannel(target);
+      const cardIdx = state.filteredChannels.indexOf(target);
+      if (cardIdx >= 0) focusCard(cardIdx);
+    }
   }
+}
+
+// Category Icon Resolver
+function getCategoryIcon(cat, mode) {
+  const norm = (cat || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  if (norm === 'toate') return mode === 'tv' ? '✨' : '📻';
+  if (norm.includes('general')) return '📡';
+  if (norm.includes('stiri')) return '📰';
+  if (norm.includes('sport')) return '⚽';
+  if (norm.includes('film') || norm.includes('cinema') || norm.includes('hbo')) return '🎬';
+  if (norm.includes('doc')) return '🦁';
+  if (norm.includes('folclor')) return '🎻';
+  if (norm.includes('muzic') || norm.includes('music')) return '🎵';
+  if (norm.includes('desene') || norm.includes('copii') || norm.includes('kids') || norm.includes('animat')) return '🧸';
+  if (norm.includes('4k') || norm.includes('uhd')) return '💎';
+  if (norm.includes('adult')) return '🔞';
+  if (norm.includes('favorit')) return '⭐';
+  if (norm.includes('moldova')) return '🇲🇩';
+  if (norm.includes('romania') || norm.includes('national')) return '🇷🇴';
+  if (norm.includes('transilvania')) return '🌲';
+  if (norm.includes('banat')) return '🏰';
+  if (norm.includes('muntenia')) return '🏙️';
+  if (norm.includes('oltenia')) return '🌄';
+  if (norm.includes('dobrogea') || norm.includes('mare')) return '🌊';
+  if (norm.includes('diaspora')) return '✈️';
+  if (norm.includes('internat')) return '🌍';
+  if (norm.includes('oldies') || norm.includes('retro')) return '🎙️';
+  if (norm.includes('greek')) return '🏛️';
+  if (norm.includes('rock') || norm.includes('alt') || norm.includes('pop')) return '🎸';
+  if (norm.includes('undernet') || norm.includes('ip') || norm.includes('online')) return '🌐';
+  return mode === 'tv' ? '📺' : '📻';
 }
 
 // Build Categories Chips
@@ -168,7 +210,8 @@ function buildCategories() {
   categories.forEach(cat => {
     const chip = document.createElement('button');
     chip.className = `category-chip ${cat === state.currentCategory ? 'active' : ''}`;
-    chip.textContent = cat;
+    const icon = getCategoryIcon(cat, state.currentMode);
+    chip.innerHTML = `<span class="category-icon">${icon}</span><span class="category-text">${cat}</span>`;
     chip.addEventListener('click', () => {
       state.currentCategory = cat;
       document.querySelectorAll('.category-chip').forEach(el => el.classList.remove('active'));
@@ -201,7 +244,14 @@ function filterAndRenderChannels() {
     return true;
   });
 
-  dom.channelCounter.textContent = `${state.filteredChannels.length} ${state.currentMode === 'tv' ? 'Canale TV' : 'Posturi Radio'}`;
+  // Sort alphabetically in all categories (including TOATE) with Romanian locale collation
+  state.filteredChannels.sort((a, b) => {
+    return (a.name || '').localeCompare(b.name || '', 'ro', { sensitivity: 'base', numeric: true });
+  });
+
+  if (dom.channelCounter) {
+    dom.channelCounter.textContent = `${state.filteredChannels.length} ${state.currentMode === 'tv' ? 'Canale TV' : 'Posturi Radio'}`;
+  }
   dom.channelsContainer.innerHTML = '';
 
   state.filteredChannels.forEach((c, index) => {
@@ -280,6 +330,14 @@ function resolveStreamUrl(channel) {
 function playChannel(channel) {
   state.currentChannel = channel;
   localStorage.setItem('flolite_last_channel_id', channel.id);
+
+  if (channel.is_radio) {
+    state.lastRadioChannel = channel;
+    localStorage.setItem('flolite_last_radio_channel_id', channel.id);
+  } else {
+    state.lastTvChannel = channel;
+    localStorage.setItem('flolite_last_tv_channel_id', channel.id);
+  }
 
   dom.spinner.classList.remove('hidden');
   updateDetailsPanel(channel);
@@ -589,6 +647,7 @@ function setupEventListeners() {
   // Controls Tap/Click Toggle & Auto-Hide on Mobile/Desktop
   let controlsTimer = null;
   let controlsVisible = false;
+  let lastToggleTime = 0;
 
   function showControls(autoHide = true) {
     controlsVisible = true;
@@ -608,6 +667,10 @@ function setupEventListeners() {
   }
 
   function toggleControls() {
+    const now = Date.now();
+    if (now - lastToggleTime < 250) return;
+    lastToggleTime = now;
+
     if (controlsVisible) {
       hideControls();
     } else {
@@ -623,15 +686,18 @@ function setupEventListeners() {
     toggleControls();
   });
 
-  dom.playerWrapper.addEventListener('mousemove', () => {
-    showControls(true);
-  });
+  // Only bind mousemove on desktop mice, preventing touchscreen synthetic mousemove
+  if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    dom.playerWrapper.addEventListener('mousemove', () => {
+      showControls(true);
+    });
 
-  dom.playerWrapper.addEventListener('mouseleave', () => {
-    if (!dom.video.paused) {
-      hideControls();
-    }
-  });
+    dom.playerWrapper.addEventListener('mouseleave', () => {
+      if (!dom.video.paused) {
+        hideControls();
+      }
+    });
+  }
 
   dom.btnPlayPause.addEventListener('click', () => {
     if (dom.video.paused) {

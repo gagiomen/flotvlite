@@ -13,25 +13,39 @@
   <div class="app-layout">
     <!-- Header -->
     <header class="app-header">
-      <div class="brand">
-        <span class="brand-logo">📺</span>
-        <span class="brand-title">FloLite <span class="highlight">3.0</span></span>
-        <span class="brand-badge" id="channel-counter">0 Canale</span>
+      <div class="header-top-row">
+        <div class="brand">
+          <span class="brand-logo">📺</span>
+          <span class="brand-title">FloLite <span class="highlight">3.0</span></span>
+          <span id="channel-counter" class="hidden">0 Canale</span>
+        </div>
+
+        <div class="header-nav-group">
+          <button id="btn-mode-tv" class="btn-header-nav active" tabindex="1" title="Mod Televiziune Live">
+            <span class="btn-nav-icon">📺</span>
+            <span class="btn-nav-text">TV Live</span>
+          </button>
+          <button id="btn-mode-radio" class="btn-header-nav" tabindex="2" title="Mod Posturi Radio">
+            <span class="btn-nav-icon">📻</span>
+            <span class="btn-nav-text">Radio</span>
+          </button>
+          <button id="btn-about" class="btn-header-nav" tabindex="3" title="Despre FloLite 3.0 (Istoric & Diagnostic)">
+            <span class="btn-nav-icon">ℹ️</span>
+            <span class="btn-nav-text">Info</span>
+          </button>
+          <button id="btn-settings" class="btn-header-nav" tabindex="4" title="Setări Proxy & Redare">
+            <span class="btn-nav-icon">⚙️</span>
+            <span class="btn-nav-text">Setări</span>
+          </button>
+        </div>
       </div>
 
-      <div class="header-controls">
-        <div class="mode-switch">
-          <button id="btn-mode-tv" class="btn-toggle active" tabindex="1">📺 TV Live</button>
-          <button id="btn-mode-radio" class="btn-toggle" tabindex="2">📻 Radio</button>
+      <div class="header-search-row">
+        <div class="search-box full-width">
+          <span class="search-icon-symbol">🔍</span>
+          <input type="text" id="search-input" placeholder="Caută canal TV sau post radio... [ / ]" tabindex="5" autocomplete="off">
+          <button id="btn-clear-search" class="btn-clear-icon hidden" title="Șterge căutarea">&times;</button>
         </div>
-
-        <div class="search-box">
-          <input type="text" id="search-input" placeholder="Caută canal sau post radio... [ / ]" tabindex="3" autocomplete="off">
-          <button id="btn-clear-search" class="btn-icon hidden" title="Șterge căutarea">&times;</button>
-        </div>
-
-        <button id="btn-about" class="btn-icon" title="Despre FloLite 3.0 (Istoric & Diagnostic)" tabindex="4">ℹ️</button>
-        <button id="btn-settings" class="btn-icon" title="Setări Proxy & Redare" tabindex="5">⚙️</button>
       </div>
     </header>
 
