@@ -32,6 +32,7 @@ const state = {
 const dom = {
   video: document.getElementById('video-player'),
   playerWrapper: document.getElementById('player-wrapper'),
+  playerControlsBar: document.querySelector('.player-controls-bar'),
   radioBackdrop: document.getElementById('radio-backdrop'),
   visualizerCanvas: document.getElementById('visualizer-canvas'),
   radioLogo: document.getElementById('radio-logo'),
@@ -307,11 +308,14 @@ function playChannel(channel) {
     stopVisualizer();
   }
 
-  // Destroy previous HLS player
+  // Destroy previous HLS player & reset HTMLMediaElement
   if (state.hls) {
     state.hls.destroy();
     state.hls = null;
   }
+  dom.video.pause();
+  dom.video.removeAttribute('src');
+  dom.video.load();
 
   // Check HLS.js support vs Native HLS
   const isHls = streamUrl.includes('.m3u8') || streamUrl.includes('/proxy');
@@ -319,16 +323,27 @@ function playChannel(channel) {
   if (isHls && window.Hls && Hls.isSupported()) {
     const hls = new Hls({
       enableWorker: true,
-      lowLatencyMode: true,
-      backBufferLength: 30,
-      maxBufferLength: 8,
-      maxMaxBufferLength: 15,
+      startFragPrefetch: true,
+      maxBufferLength: 20,
+      maxMaxBufferLength: 45,
+      maxBufferSize: 60 * 1000 * 1000,
+      backBufferLength: 15,
       liveSyncDurationCount: 3,
-      liveMaxLatencyDurationCount: 6,
-      manifestLoadingTimeOut: 10000,
-      manifestLoadingMaxRetry: 4,
-      levelLoadingTimeOut: 10000,
-      fragLoadingTimeOut: 12000
+      liveMaxLatencyDurationCount: 8,
+      liveDurationInfinity: true,
+      lowLatencyMode: false,
+      manifestLoadingTimeOut: 12000,
+      manifestLoadingMaxRetry: 5,
+      manifestLoadingRetryDelay: 1000,
+      levelLoadingTimeOut: 12000,
+      levelLoadingMaxRetry: 4,
+      levelLoadingRetryDelay: 1000,
+      fragLoadingTimeOut: 15000,
+      fragLoadingMaxRetry: 6,
+      fragLoadingRetryDelay: 1000,
+      nudgeOffset: 0.1,
+      nudgeMaxRetry: 5,
+      autoStartLoad: true
     });
 
     state.hls = hls;
@@ -342,20 +357,25 @@ function playChannel(channel) {
 
     hls.on(Hls.Events.ERROR, (event, data) => {
       if (data.fatal) {
-        console.warn('[Hls.js Error]', data);
+        console.warn('[Hls.js Fatal Error]', data);
         switch (data.type) {
           case Hls.ErrorTypes.NETWORK_ERROR:
-            console.log('Eroare retea, reincercare...');
+            console.log('[Hls.js] Eroare retea, reincercare automata...');
             hls.startLoad();
             break;
           case Hls.ErrorTypes.MEDIA_ERROR:
-            console.log('Eroare media, recuperare decodor...');
+            console.log('[Hls.js] Eroare media, recuperare decodor...');
             hls.recoverMediaError();
             break;
           default:
+            console.error('[Hls.js] Eroare irecuperabila:', data);
             hls.destroy();
             dom.spinner.classList.add('hidden');
             break;
+        }
+      } else if (data.details === 'bufferStalledError') {
+        if (dom.video && !dom.video.paused && dom.video.currentTime > 0) {
+          dom.video.currentTime += 0.05;
         }
       }
     });
@@ -566,27 +586,97 @@ function setupEventListeners() {
     filterAndRenderChannels();
   });
 
+  // Controls Tap/Click Toggle & Auto-Hide on Mobile/Desktop
+  let controlsTimer = null;
+  let controlsVisible = false;
+
+  function showControls(autoHide = true) {
+    controlsVisible = true;
+    if (dom.playerControlsBar) dom.playerControlsBar.classList.add('visible');
+    if (dom.playerWrapper) dom.playerWrapper.classList.add('show-controls');
+    clearTimeout(controlsTimer);
+    if (autoHide && !dom.video.paused) {
+      controlsTimer = setTimeout(hideControls, 3500);
+    }
+  }
+
+  function hideControls() {
+    controlsVisible = false;
+    if (dom.playerControlsBar) dom.playerControlsBar.classList.remove('visible');
+    if (dom.playerWrapper) dom.playerWrapper.classList.remove('show-controls');
+    clearTimeout(controlsTimer);
+  }
+
+  function toggleControls() {
+    if (controlsVisible) {
+      hideControls();
+    } else {
+      showControls(true);
+    }
+  }
+
+  // Tap or click on player background to toggle controls
+  dom.playerWrapper.addEventListener('click', (e) => {
+    if (e.target.closest('.player-controls-bar') || e.target.closest('.modal')) {
+      return;
+    }
+    toggleControls();
+  });
+
+  dom.playerWrapper.addEventListener('mousemove', () => {
+    showControls(true);
+  });
+
+  dom.playerWrapper.addEventListener('mouseleave', () => {
+    if (!dom.video.paused) {
+      hideControls();
+    }
+  });
+
   dom.btnPlayPause.addEventListener('click', () => {
     if (dom.video.paused) {
       dom.video.play();
       dom.btnPlayPause.textContent = '⏸';
+      showControls(true);
     } else {
       dom.video.pause();
       dom.btnPlayPause.textContent = '▶';
+      showControls(false);
     }
   });
 
   dom.btnPrev.addEventListener('click', playPreviousChannel);
   dom.btnNext.addEventListener('click', playNextChannel);
 
+  // Volume & Mute Sync
+  let lastVolume = 1;
+
   dom.volumeSlider.addEventListener('input', (e) => {
-    dom.video.volume = parseFloat(e.target.value);
-    dom.btnMute.textContent = dom.video.volume === 0 ? '🔇' : '🔊';
+    const val = parseFloat(e.target.value);
+    dom.video.volume = val;
+    if (val === 0) {
+      dom.video.muted = true;
+      dom.btnMute.textContent = '🔇';
+    } else {
+      dom.video.muted = false;
+      lastVolume = val;
+      dom.btnMute.textContent = '🔊';
+    }
   });
 
   dom.btnMute.addEventListener('click', () => {
-    dom.video.muted = !dom.video.muted;
-    dom.btnMute.textContent = dom.video.muted ? '🔇' : '🔊';
+    if (dom.video.muted || dom.video.volume === 0) {
+      dom.video.muted = false;
+      const restore = (lastVolume > 0) ? lastVolume : 1;
+      dom.video.volume = restore;
+      dom.volumeSlider.value = restore;
+      dom.btnMute.textContent = '🔊';
+    } else {
+      lastVolume = dom.video.volume > 0 ? dom.video.volume : (lastVolume || 1);
+      dom.video.muted = true;
+      dom.volumeSlider.value = 0;
+      dom.btnMute.textContent = '🔇';
+    }
   });
 
   dom.btnFullscreen.addEventListener('click', () => {
@@ -603,27 +693,36 @@ function setupEventListeners() {
         await document.exitPictureInPicture();
       } else if (document.pictureInPictureEnabled) {
         await dom.video.requestPictureInPicture();
+      } else if (dom.video.webkitSupportsPresentationMode && typeof dom.video.webkitSetPresentationMode === 'function') {
+        dom.video.webkitSetPresentationMode(dom.video.webkitPresentationMode === 'picture-in-picture' ? 'inline' : 'picture-in-picture');
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('PiP error:', e);
+    }
   });
 
   dom.video.addEventListener('waiting', () => dom.spinner.classList.remove('hidden'));
+  dom.video.addEventListener('canplay', () => dom.spinner.classList.add('hidden'));
   dom.video.addEventListener('playing', () => {
     dom.spinner.classList.add('hidden');
     dom.btnPlayPause.textContent = '⏸';
+    showControls(true);
   });
   dom.video.addEventListener('play', () => {
     dom.btnPlayPause.textContent = '⏸';
+    showControls(true);
     if (state.currentChannel && !state.currentChannel.is_radio) {
       requestScreenWakeLock();
     }
   });
   dom.video.addEventListener('pause', () => {
     dom.btnPlayPause.textContent = '▶';
+    showControls(false);
     releaseScreenWakeLock();
   });
   dom.video.addEventListener('ended', () => {
     dom.btnPlayPause.textContent = '▶';
+    showControls(false);
     releaseScreenWakeLock();
   });
 }

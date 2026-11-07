@@ -1,6 +1,6 @@
 /**
  * Cloudflare Pages Function: /proxy
- * Automatically deployed by Cloudflare Pages to handle stream proxy & CORS rewriting.
+ * High-performance Stream Proxy with Edge Caching & CORS Rewriting for Live Streams
  */
 
 export async function onRequest(context) {
@@ -37,19 +37,34 @@ export async function onRequest(context) {
       upstreamHeaders.set('range', range);
     }
 
-    const upstreamRes = await fetch(targetUrl, {
+    const isPlaylistCandidate = targetUrl.includes('.m3u8') || targetUrl.includes('playlist');
+
+    const fetchOptions = {
       method: request.method,
       headers: upstreamHeaders,
       redirect: 'follow',
-    });
+    };
+
+    // Cache static immutable media segments at Cloudflare Edge PoP
+    if (!isPlaylistCandidate) {
+      fetchOptions.cf = {
+        cacheEverything: true,
+        cacheTtl: 60,
+      };
+    }
+
+    const upstreamRes = await fetch(targetUrl, fetchOptions);
 
     const contentType = upstreamRes.headers.get('content-type') || '';
     const isPlaylist = targetUrl.includes('.m3u8') || contentType.includes('mpegurl');
 
+    // Use resolved base URL after redirects
+    const baseTargetUrl = upstreamRes.url || targetUrl;
+    const origin = url.origin;
+
     if (isPlaylist && upstreamRes.status === 200) {
       const text = await upstreamRes.text();
       const lines = text.split('\n');
-      const origin = url.origin;
       const rewritten = [];
 
       for (let line of lines) {
@@ -61,18 +76,27 @@ export async function onRequest(context) {
 
         if (trimmed.startsWith('#')) {
           if (trimmed.startsWith('#EXT-X-KEY')) {
-            const match = trimmed.match(/URI="([^"]+)"/);
-            if (match) {
-              const keyUri = new URL(match[1], targetUrl).toString();
-              const proxiedKey = `${origin}/proxy?url=${encodeURIComponent(keyUri)}&ref=${encodeURIComponent(referer)}`;
-              line = trimmed.replace(/URI="[^"]+"/, `URI="${proxiedKey}"`);
-            }
+            line = line.replace(/URI="([^"]+)"/, (_, keyUri) => {
+              const absUri = new URL(keyUri, baseTargetUrl).toString();
+              return `URI="${origin}/proxy?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+            });
+          } else if (trimmed.startsWith('#EXT-X-MEDIA')) {
+            line = line.replace(/URI="([^"]+)"/, (_, mediaUri) => {
+              const absUri = new URL(mediaUri, baseTargetUrl).toString();
+              return `URI="${origin}/proxy?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+            });
+          } else if (trimmed.startsWith('#EXT-X-MAP')) {
+            line = line.replace(/URI="([^"]+)"/, (_, mapUri) => {
+              const absUri = new URL(mapUri, baseTargetUrl).toString();
+              return `URI="${origin}/proxy?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+            });
           } else if (trimmed.startsWith('#EXT-X-ENDLIST') || trimmed.startsWith('#EXT-X-PLAYLIST-TYPE')) {
             continue;
           }
           rewritten.push(line);
         } else {
-          const absUri = new URL(trimmed, targetUrl).toString();
+          // Playlist line or segment URI
+          const absUri = new URL(trimmed, baseTargetUrl).toString();
           const proxiedUri = `${origin}/proxy?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}`;
           rewritten.push(proxiedUri);
         }
@@ -84,16 +108,41 @@ export async function onRequest(context) {
         headers: {
           'Content-Type': 'application/vnd.apple.mpegurl',
           'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-cache',
+          'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+          'Access-Control-Allow-Headers': '*',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
         },
       });
     }
 
-    // Stream media segments directly
-    const responseHeaders = new Headers(upstreamRes.headers);
+    // Stream media segments directly with edge cache headers
+    const responseHeaders = new Headers();
     responseHeaders.set('Access-Control-Allow-Origin', '*');
     responseHeaders.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
     responseHeaders.set('Access-Control-Allow-Headers', '*');
+
+    const upstreamType = upstreamRes.headers.get('content-type');
+    if (upstreamType) {
+      responseHeaders.set('Content-Type', upstreamType);
+    } else if (targetUrl.includes('.ts')) {
+      responseHeaders.set('Content-Type', 'video/MP2T');
+    } else if (targetUrl.includes('.m4s') || targetUrl.includes('.mp4')) {
+      responseHeaders.set('Content-Type', 'video/mp4');
+    } else if (targetUrl.includes('.aac')) {
+      responseHeaders.set('Content-Type', 'audio/aac');
+    }
+
+    const cl = upstreamRes.headers.get('content-length');
+    if (cl) responseHeaders.set('Content-Length', cl);
+    const cr = upstreamRes.headers.get('content-range');
+    if (cr) responseHeaders.set('Content-Range', cr);
+    const ar = upstreamRes.headers.get('accept-ranges');
+    if (ar) responseHeaders.set('Accept-Ranges', ar);
+
+    // Cache immutable video segments at edge PoP
+    responseHeaders.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
 
     return new Response(upstreamRes.body, {
       status: upstreamRes.status,

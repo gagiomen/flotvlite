@@ -1,6 +1,6 @@
 /**
- * Cloudflare Worker: Stream Proxy & CORS Header Rewriter for Flo Lite TV
- * Deploy this on Cloudflare Workers (Free Tier - 100,000 requests/day).
+ * Cloudflare Worker: Stream Proxy & CORS Rewriting
+ * High-performance edge proxy with caching for FloLite Universal 3.0
  */
 
 export default {
@@ -19,15 +19,14 @@ export default {
       });
     }
 
-    if (url.pathname !== '/proxy') {
-      return new Response('Flo Lite TV Proxy Worker Active', { status: 200 });
-    }
-
     const targetUrl = url.searchParams.get('url');
     const referer = url.searchParams.get('ref') || 'https://canale-tv.net/';
 
     if (!targetUrl) {
-      return new Response('Missing target URL', { status: 400 });
+      return new Response('FloLite Universal 3.0 Proxy Ready. Usage: ?url=<stream_url>&ref=<referer>', {
+        status: 200,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
     }
 
     try {
@@ -41,19 +40,32 @@ export default {
         upstreamHeaders.set('range', range);
       }
 
-      const upstreamRes = await fetch(targetUrl, {
+      const isPlaylistCandidate = targetUrl.includes('.m3u8') || targetUrl.includes('playlist');
+
+      const fetchOptions = {
         method: request.method,
         headers: upstreamHeaders,
         redirect: 'follow',
-      });
+      };
+
+      if (!isPlaylistCandidate) {
+        fetchOptions.cf = {
+          cacheEverything: true,
+          cacheTtl: 60,
+        };
+      }
+
+      const upstreamRes = await fetch(targetUrl, fetchOptions);
 
       const contentType = upstreamRes.headers.get('content-type') || '';
       const isPlaylist = targetUrl.includes('.m3u8') || contentType.includes('mpegurl');
 
+      const baseTargetUrl = upstreamRes.url || targetUrl;
+      const origin = url.origin;
+
       if (isPlaylist && upstreamRes.status === 200) {
         const text = await upstreamRes.text();
         const lines = text.split('\n');
-        const workerOrigin = url.origin;
         const rewritten = [];
 
         for (let line of lines) {
@@ -65,19 +77,27 @@ export default {
 
           if (trimmed.startsWith('#')) {
             if (trimmed.startsWith('#EXT-X-KEY')) {
-              const match = trimmed.match(/URI="([^"]+)"/);
-              if (match) {
-                const keyUri = new URL(match[1], targetUrl).toString();
-                const proxiedKey = `${workerOrigin}/proxy?url=${encodeURIComponent(keyUri)}&ref=${encodeURIComponent(referer)}`;
-                line = trimmed.replace(/URI="[^"]+"/, `URI="${proxiedKey}"`);
-              }
+              line = line.replace(/URI="([^"]+)"/, (_, keyUri) => {
+                const absUri = new URL(keyUri, baseTargetUrl).toString();
+                return `URI="${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+              });
+            } else if (trimmed.startsWith('#EXT-X-MEDIA')) {
+              line = line.replace(/URI="([^"]+)"/, (_, mediaUri) => {
+                const absUri = new URL(mediaUri, baseTargetUrl).toString();
+                return `URI="${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+              });
+            } else if (trimmed.startsWith('#EXT-X-MAP')) {
+              line = line.replace(/URI="([^"]+)"/, (_, mapUri) => {
+                const absUri = new URL(mapUri, baseTargetUrl).toString();
+                return `URI="${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+              });
             } else if (trimmed.startsWith('#EXT-X-ENDLIST') || trimmed.startsWith('#EXT-X-PLAYLIST-TYPE')) {
               continue;
             }
             rewritten.push(line);
           } else {
-            const absUri = new URL(trimmed, targetUrl).toString();
-            const proxiedUri = `${workerOrigin}/proxy?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}`;
+            const absUri = new URL(trimmed, baseTargetUrl).toString();
+            const proxiedUri = `${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}`;
             rewritten.push(proxiedUri);
           }
         }
@@ -88,24 +108,50 @@ export default {
           headers: {
             'Content-Type': 'application/vnd.apple.mpegurl',
             'Access-Control-Allow-Origin': '*',
-            'Cache-Control': 'no-cache',
+            'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
           },
         });
       }
 
-      // Stream media segments directly
-      const responseHeaders = new Headers(upstreamRes.headers);
+      const responseHeaders = new Headers();
       responseHeaders.set('Access-Control-Allow-Origin', '*');
       responseHeaders.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
       responseHeaders.set('Access-Control-Allow-Headers', '*');
-      responseHeaders.set('Cache-Control', 'public, max-age=60');
+
+      const upstreamType = upstreamRes.headers.get('content-type');
+      if (upstreamType) {
+        responseHeaders.set('Content-Type', upstreamType);
+      } else if (targetUrl.includes('.ts')) {
+        responseHeaders.set('Content-Type', 'video/MP2T');
+      } else if (targetUrl.includes('.m4s') || targetUrl.includes('.mp4')) {
+        responseHeaders.set('Content-Type', 'video/mp4');
+      } else if (targetUrl.includes('.aac')) {
+        responseHeaders.set('Content-Type', 'audio/aac');
+      }
+
+      const cl = upstreamRes.headers.get('content-length');
+      if (cl) responseHeaders.set('Content-Length', cl);
+      const cr = upstreamRes.headers.get('content-range');
+      if (cr) responseHeaders.set('Content-Range', cr);
+      const ar = upstreamRes.headers.get('accept-ranges');
+      if (ar) responseHeaders.set('Accept-Ranges', ar);
+
+      responseHeaders.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
 
       return new Response(upstreamRes.body, {
         status: upstreamRes.status,
+        statusText: upstreamRes.statusText,
         headers: responseHeaders,
       });
-    } catch (e) {
-      return new Response('Proxy Error: ' + e.message, { status: 502 });
+    } catch (err) {
+      return new Response(`Proxy Error: ${err.message}`, {
+        status: 502,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+      });
     }
   },
 };

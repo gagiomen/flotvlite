@@ -81,6 +81,7 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
                 content_type = response.headers.get("Content-Type", "")
                 is_playlist = ".m3u8" in target_url or "mpegurl" in content_type.lower()
 
+                base_target = response.geturl() or target_url
                 if is_playlist:
                     content = response.read().decode("utf-8", errors="ignore")
                     lines = content.splitlines()
@@ -96,16 +97,23 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
                                 import re
                                 m = re.search(r'URI="([^"]+)"', trimmed)
                                 if m:
-                                    key_uri = urllib.parse.urljoin(target_url, m.group(1))
+                                    key_uri = urllib.parse.urljoin(base_target, m.group(1))
                                     proxied = f"/proxy?url={urllib.parse.quote(key_uri)}&ref={urllib.parse.quote(referer)}"
+                                    line = re.sub(r'URI="[^"]+"', f'URI="{proxied}"', trimmed)
+                            elif trimmed.startswith("#EXT-X-MEDIA"):
+                                import re
+                                m = re.search(r'URI="([^"]+)"', trimmed)
+                                if m:
+                                    media_uri = urllib.parse.urljoin(base_target, m.group(1))
+                                    proxied = f"/proxy?url={urllib.parse.quote(media_uri)}&ref={urllib.parse.quote(referer)}"
                                     line = re.sub(r'URI="[^"]+"', f'URI="{proxied}"', trimmed)
                             elif trimmed.startswith("#EXT-X-ENDLIST") or trimmed.startswith("#EXT-X-PLAYLIST-TYPE"):
                                 continue
                             rewritten.append(line)
                         else:
-                            abs_uri = urllib.parse.urljoin(target_url, trimmed)
+                            abs_uri = urllib.parse.urljoin(base_target, trimmed)
                             proxied = f"/proxy?url={urllib.parse.quote(abs_uri)}&ref={urllib.parse.quote(referer)}"
-                            rewritten.push(proxied) if hasattr(rewritten, "push") else rewritten.append(proxied)
+                            rewritten.append(proxied)
 
                     out_bytes = "\n".join(rewritten).encode("utf-8")
                     self.send_response(200)
