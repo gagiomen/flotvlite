@@ -19,12 +19,11 @@ const state = {
   focusedIndex: 0,
   proxyMode: localStorage.getItem('flolite_proxy_mode') || 'auto',
   customProxyUrl: localStorage.getItem('flolite_custom_proxy') || '',
-  visualizerTheme: localStorage.getItem('flolite_vis_theme') || 'classic',
+  aspectRatio: localStorage.getItem('flolite_aspect_ratio') || 'contain',
+  isStatsVisible: false,
+  statsInterval: null,
+  aspectToastTimeout: null,
   hls: null,
-  audioContext: null,
-  analyser: null,
-  audioSource: null,
-  isVisualizerRunning: false,
   osdTimeout: null,
   numBuffer: '',
   numBufferTimeout: null
@@ -36,11 +35,22 @@ const dom = {
   playerWrapper: document.getElementById('player-wrapper'),
   playerControlsBar: document.querySelector('.player-controls-bar'),
   radioBackdrop: document.getElementById('radio-backdrop'),
-  visualizerCanvas: document.getElementById('visualizer-canvas'),
   radioLogo: document.getElementById('radio-logo'),
   radioName: document.getElementById('radio-name'),
   radioGenre: document.getElementById('radio-genre'),
-  radioThemeName: document.getElementById('visualizer-theme-name'),
+  aspectToast: document.getElementById('aspect-toast'),
+  statsOverlay: document.getElementById('stats-overlay'),
+  btnCloseStats: document.getElementById('btn-close-stats'),
+  statChannel: document.getElementById('stat-channel'),
+  statEngine: document.getElementById('stat-engine'),
+  statResolution: document.getElementById('stat-resolution'),
+  statViewport: document.getElementById('stat-viewport'),
+  statAspect: document.getElementById('stat-aspect'),
+  statBuffer: document.getElementById('stat-buffer'),
+  statBitrate: document.getElementById('stat-bitrate'),
+  statFrames: document.getElementById('stat-frames'),
+  statNetwork: document.getElementById('stat-network'),
+  statAudio: document.getElementById('stat-audio'),
   osdBanner: document.getElementById('osd-banner'),
   osdLogo: document.getElementById('osd-logo'),
   osdNum: document.getElementById('osd-channel-num'),
@@ -77,7 +87,8 @@ const dom = {
   volumeSlider: document.getElementById('volume-slider'),
   btnFullscreen: document.getElementById('btn-fullscreen'),
   btnPip: document.getElementById('btn-pip'),
-  btnCast: document.getElementById('btn-cast'),
+  btnAspect: document.getElementById('btn-aspect'),
+  btnStats: document.getElementById('btn-stats'),
   btnAbout: document.getElementById('btn-about'),
   aboutModal: document.getElementById('about-modal'),
   btnCloseAbout: document.getElementById('btn-close-about'),
@@ -88,8 +99,7 @@ const dom = {
   btnSaveSettings: document.getElementById('btn-save-settings'),
   proxyModeSelect: document.getElementById('proxy-mode-select'),
   customProxyGroup: document.getElementById('custom-proxy-group'),
-  customProxyInput: document.getElementById('custom-proxy-url'),
-  visThemeSelect: document.getElementById('visualizer-theme-select')
+  customProxyInput: document.getElementById('custom-proxy-url')
 };
 
 // Initialize Application
@@ -97,7 +107,7 @@ async function init() {
   setupEventListeners();
   setupSettings();
   setupAboutModal();
-  setupCast();
+  applyAspectRatio(state.aspectRatio, false);
   setupKeyboardShortcuts();
 
   // Load Channels & EPG in parallel
@@ -474,11 +484,9 @@ function playChannel(channel) {
     dom.radioName.textContent = channel.name;
     dom.radioGenre.textContent = channel.group || 'Radio Live HD';
     dom.radioLogo.src = channel.logo || 'logos/discomix.png';
-    startVisualizer();
   } else {
     requestScreenWakeLock();
     dom.radioBackdrop.classList.add('hidden');
-    stopVisualizer();
   }
 
   // Destroy previous HLS player & reset HTMLMediaElement
@@ -661,78 +669,161 @@ function getProgressPercent(start, stop) {
   return Math.min(100, Math.max(0, Math.round(((now - start) / total) * 100)));
 }
 
-// Web Audio API Winamp Spectrum Visualizer
-function startVisualizer() {
-  if (state.isVisualizerRunning) return;
-  state.isVisualizerRunning = true;
-  drawVisualizerFrame();
-}
+// Aspect Ratio Modes (Contain, Cover, Fill, 4:3)
+const ASPECT_MODES = [
+  { id: 'contain', label: 'Adaptat (Original Fit)', class: '' },
+  { id: 'cover', label: 'Zoom Ecran Complet (Cover)', class: 'aspect-cover' },
+  { id: 'fill', label: 'Întins 16:9 (Fill)', class: 'aspect-fill' },
+  { id: '4:3', label: 'Format Clasic TV (4:3)', class: 'aspect-4-3' }
+];
 
-function stopVisualizer() {
-  state.isVisualizerRunning = false;
-}
+function applyAspectRatio(modeId, showToast = true) {
+  const mode = ASPECT_MODES.find(m => m.id === modeId) || ASPECT_MODES[0];
+  state.aspectRatio = mode.id;
+  localStorage.setItem('flolite_aspect_ratio', mode.id);
 
-function drawVisualizerFrame() {
-  if (!state.isVisualizerRunning) return;
-
-  const canvas = dom.visualizerCanvas;
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const width = canvas.parentElement.clientWidth;
-  const height = canvas.parentElement.clientHeight;
-
-  if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
+  ASPECT_MODES.forEach(m => {
+    if (m.class) dom.video.classList.remove(m.class);
+  });
+  if (mode.class) {
+    dom.video.classList.add(mode.class);
   }
 
-  ctx.clearRect(0, 0, width, height);
+  if (showToast && dom.aspectToast) {
+    dom.aspectToast.textContent = `Raport: ${mode.label}`;
+    dom.aspectToast.classList.remove('hidden');
+    clearTimeout(state.aspectToastTimeout);
+    state.aspectToastTimeout = setTimeout(() => {
+      dom.aspectToast.classList.add('hidden');
+    }, 2200);
+  }
 
-  const numBars = 48;
-  const bufferLength = state.analyser ? state.analyser.frequencyBinCount : numBars;
-  const dataArray = new Uint8Array(bufferLength);
+  if (state.isStatsVisible) {
+    updateStatsHUD();
+  }
+}
 
-  if (state.analyser) {
-    state.analyser.getByteFrequencyData(dataArray);
+function cycleAspectRatio() {
+  const currentIdx = ASPECT_MODES.findIndex(m => m.id === state.aspectRatio);
+  const nextIdx = (currentIdx + 1) % ASPECT_MODES.length;
+  applyAspectRatio(ASPECT_MODES[nextIdx].id, true);
+}
+
+// Stats for Nerds (Statistici pentru pasionați) HUD
+function toggleStatsHUD() {
+  state.isStatsVisible = !state.isStatsVisible;
+  if (dom.statsOverlay) {
+    dom.statsOverlay.classList.toggle('hidden', !state.isStatsVisible);
+  }
+  if (state.isStatsVisible) {
+    updateStatsHUD();
+    clearInterval(state.statsInterval);
+    state.statsInterval = setInterval(updateStatsHUD, 1000);
   } else {
-    // Simulated lively spectrum if AudioContext is blocked by cross-origin
-    const time = Date.now() / 150;
-    for (let i = 0; i < bufferLength; i++) {
-      dataArray[i] = Math.max(10, Math.sin(time + i * 0.3) * 100 + Math.cos(time * 0.5 + i * 0.1) * 80 + 70);
-    }
+    clearInterval(state.statsInterval);
+    state.statsInterval = null;
+  }
+}
+
+function updateStatsHUD() {
+  if (!state.isStatsVisible) return;
+
+  const c = state.currentChannel;
+  if (dom.statChannel) {
+    dom.statChannel.textContent = c ? `${c.name} [${c.group || 'Live'}]` : 'Niciun canal activ';
   }
 
-  const barWidth = (width / numBars) - 3;
-  const bottom = height - 10;
-
-  for (let i = 0; i < numBars; i++) {
-    const rawVal = dataArray[i] || 0;
-    const barHeight = (rawVal / 255) * (height * 0.7);
-    const x = i * (barWidth + 3);
-    const y = bottom - barHeight;
-
-    // Gradient styling
-    const grad = ctx.createLinearGradient(0, bottom, 0, y);
-    if (state.visualizerTheme === 'classic') {
-      grad.addColorStop(0, '#00ff66');
-      grad.addColorStop(0.6, '#ffff00');
-      grad.addColorStop(1, '#ff0033');
+  if (dom.statEngine) {
+    if (c && c.is_radio) {
+      dom.statEngine.textContent = 'HTML5 Audio (MP3/AAC Stream)';
+    } else if (state.hls) {
+      dom.statEngine.textContent = `HLS.js v${window.Hls && Hls.version ? Hls.version : '1.x'} (Worker Demuxer)`;
     } else {
-      grad.addColorStop(0, '#00e5ff');
-      grad.addColorStop(0.5, '#7928ca');
-      grad.addColorStop(1, '#ff007f');
+      dom.statEngine.textContent = 'Native HTML5 Video Engine';
     }
-
-    ctx.fillStyle = grad;
-    ctx.fillRect(x, y, barWidth, barHeight);
-
-    // Peak dot
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(x, Math.max(10, y - 4), barWidth, 2);
   }
 
-  requestAnimationFrame(drawVisualizerFrame);
+  const vw = dom.video.videoWidth;
+  const vh = dom.video.videoHeight;
+  if (dom.statResolution) {
+    if (vw && vh) {
+      dom.statResolution.textContent = `${vw} x ${vh}`;
+    } else {
+      dom.statResolution.textContent = c && c.is_radio ? 'Audio Only (Flux Radio)' : (c && c.resolution ? `${c.resolution.toUpperCase()} (Negociere)` : '--');
+    }
+  }
+
+  if (dom.statViewport) {
+    const rect = dom.video.getBoundingClientRect();
+    dom.statViewport.textContent = `${Math.round(rect.width)} x ${Math.round(rect.height)} px`;
+  }
+
+  if (dom.statAspect) {
+    const curMode = ASPECT_MODES.find(m => m.id === state.aspectRatio);
+    dom.statAspect.textContent = curMode ? curMode.label : 'Adaptat (Original Fit)';
+  }
+
+  // Buffer health ahead
+  if (dom.statBuffer) {
+    if (dom.video.buffered && dom.video.buffered.length > 0) {
+      const ct = dom.video.currentTime;
+      let bufferAhead = 0;
+      for (let i = 0; i < dom.video.buffered.length; i++) {
+        if (dom.video.buffered.start(i) <= ct && ct <= dom.video.buffered.end(i)) {
+          bufferAhead = dom.video.buffered.end(i) - ct;
+          break;
+        }
+      }
+      dom.statBuffer.textContent = `${bufferAhead.toFixed(1)} s`;
+    } else {
+      dom.statBuffer.textContent = '0.0 s';
+    }
+  }
+
+  // Bitrate & Quality
+  if (dom.statBitrate) {
+    if (state.hls && state.hls.levels && state.hls.currentLevel >= 0) {
+      const lvl = state.hls.levels[state.hls.currentLevel];
+      const kbps = lvl && lvl.bitrate ? Math.round(lvl.bitrate / 1000) : 0;
+      dom.statBitrate.textContent = `${lvl.height || ''}p @ ${kbps > 0 ? kbps + ' kbps' : 'Auto'}`;
+    } else if (c && c.is_radio) {
+      dom.statBitrate.textContent = '128 - 320 kbps (HQ Audio)';
+    } else {
+      dom.statBitrate.textContent = 'Auto / Direct Source';
+    }
+  }
+
+  // Dropped video frames
+  if (dom.statFrames) {
+    if (dom.video.getVideoPlaybackQuality) {
+      const q = dom.video.getVideoPlaybackQuality();
+      const dropped = q.droppedVideoFrames || 0;
+      const total = q.totalVideoFrames || 0;
+      const pct = total > 0 ? ((dropped / total) * 100).toFixed(1) : 0;
+      dom.statFrames.textContent = `${dropped} / ${total} (${pct}%)`;
+    } else if (dom.video.webkitDroppedFrameCount !== undefined) {
+      dom.statFrames.textContent = `${dom.video.webkitDroppedFrameCount} dropped`;
+    } else {
+      dom.statFrames.textContent = '0 / 0 (0%)';
+    }
+  }
+
+  // Network / Proxy
+  if (dom.statNetwork) {
+    if (state.proxyMode === 'direct') {
+      dom.statNetwork.textContent = 'Conexiune Directă (CORS permis)';
+    } else if (state.proxyMode === 'custom') {
+      dom.statNetwork.textContent = 'Custom Proxy Worker';
+    } else {
+      dom.statNetwork.textContent = 'Cloudflare Edge Function (/proxy)';
+    }
+  }
+
+  // Audio level
+  if (dom.statAudio) {
+    const pct = Math.round(dom.video.volume * 100);
+    dom.statAudio.textContent = dom.video.muted ? '0% (Muted)' : `${pct}%`;
+  }
 }
 
 // UI Event Listeners
@@ -789,7 +880,7 @@ function setupEventListeners() {
 
   // Tap or click on player background to toggle controls
   dom.playerWrapper.addEventListener('click', (e) => {
-    if (e.target.closest('.player-controls-bar') || e.target.closest('.modal')) {
+    if (e.target.closest('.player-controls-bar') || e.target.closest('.modal') || e.target.closest('.stats-overlay')) {
       return;
     }
     toggleControls();
@@ -876,6 +967,27 @@ function setupEventListeners() {
     }
   });
 
+  if (dom.btnAspect) {
+    dom.btnAspect.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cycleAspectRatio();
+    });
+  }
+
+  if (dom.btnStats) {
+    dom.btnStats.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleStatsHUD();
+    });
+  }
+
+  if (dom.btnCloseStats) {
+    dom.btnCloseStats.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleStatsHUD();
+    });
+  }
+
   dom.video.addEventListener('waiting', () => dom.spinner.classList.remove('hidden'));
   dom.video.addEventListener('canplay', () => dom.spinner.classList.add('hidden'));
   dom.video.addEventListener('playing', () => {
@@ -935,7 +1047,6 @@ function setupSettings() {
     dom.proxyModeSelect.value = state.proxyMode;
     dom.customProxyInput.value = state.customProxyUrl;
     dom.customProxyGroup.classList.toggle('hidden', state.proxyMode !== 'custom');
-    dom.visThemeSelect.value = state.visualizerTheme;
     dom.settingsModal.classList.remove('hidden');
   });
 
@@ -948,11 +1059,9 @@ function setupSettings() {
   dom.btnSaveSettings.addEventListener('click', () => {
     state.proxyMode = dom.proxyModeSelect.value;
     state.customProxyUrl = dom.customProxyInput.value.trim();
-    state.visualizerTheme = dom.visThemeSelect.value;
 
     localStorage.setItem('flolite_proxy_mode', state.proxyMode);
     localStorage.setItem('flolite_custom_proxy', state.customProxyUrl);
-    localStorage.setItem('flolite_vis_theme', state.visualizerTheme);
 
     dom.settingsModal.classList.add('hidden');
     if (state.currentChannel) {
@@ -1033,6 +1142,14 @@ function setupKeyboardShortcuts() {
       case 'I':
         if (state.currentChannel) showOsd(state.currentChannel);
         break;
+      case 'a':
+      case 'A':
+        cycleAspectRatio();
+        break;
+      case 's':
+      case 'S':
+        toggleStatsHUD();
+        break;
       case '/':
         e.preventDefault();
         dom.searchInput.focus();
@@ -1098,21 +1215,6 @@ function updateMediaSession(channel) {
     } catch (e) {
       console.warn('MediaSession error:', e);
     }
-  }
-}
-
-// Google Cast & Remote Playback
-function setupCast() {
-  if (dom.btnCast) {
-    dom.btnCast.addEventListener('click', () => {
-      if ('remote' in dom.video) {
-        dom.video.remote.prompt().catch(err => {
-          console.log('Remote playback prompt cancelled/failed:', err);
-        });
-      } else {
-        alert("Pentru a transmite pe ecranul unui Smart TV sau Chromecast:\n1. În Google Chrome: deschide meniul ⋮ -> 'Cast / Transmite...'\n2. În Safari (iOS/Mac): folosește butonul AirPlay nativ.");
-      }
-    });
   }
 }
 

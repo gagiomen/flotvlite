@@ -57,9 +57,31 @@
           <!-- Video Player -->
           <video id="video-player" playsinline preload="auto"></video>
 
-          <!-- Radio Visualizer Screen -->
+          <!-- Aspect Ratio Toast Notification -->
+          <div id="aspect-toast" class="aspect-toast hidden">Raport: Adaptat (Original)</div>
+
+          <!-- Stats for Nerds (Statistici Flux Live) Overlay -->
+          <div id="stats-overlay" class="stats-overlay hidden">
+            <div class="stats-header">
+              <span class="stats-title">📊 Statistici pentru pasionați</span>
+              <button id="btn-close-stats" class="stats-close-btn" title="Închide">&times;</button>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-item"><span class="stat-lbl">Canal / Categorie:</span><span class="stat-val" id="stat-channel">--</span></div>
+              <div class="stat-item"><span class="stat-lbl">Motor Redare:</span><span class="stat-val" id="stat-engine">--</span></div>
+              <div class="stat-item"><span class="stat-lbl">Rezoluție Sursă:</span><span class="stat-val" id="stat-resolution">--</span></div>
+              <div class="stat-item"><span class="stat-lbl">Dimensiune Ecran:</span><span class="stat-val" id="stat-viewport">--</span></div>
+              <div class="stat-item"><span class="stat-lbl">Raport Imagine:</span><span class="stat-val" id="stat-aspect">Adaptat (Fit)</span></div>
+              <div class="stat-item"><span class="stat-lbl">Buffer În Avans:</span><span class="stat-val" id="stat-buffer">0.0 s</span></div>
+              <div class="stat-item"><span class="stat-lbl">Bitrate / Calitate:</span><span class="stat-val" id="stat-bitrate">--</span></div>
+              <div class="stat-item"><span class="stat-lbl">Cadre Dropped:</span><span class="stat-val" id="stat-frames">0 / 0 (0%)</span></div>
+              <div class="stat-item"><span class="stat-lbl">Conexiune Proxy:</span><span class="stat-val" id="stat-network">Cloudflare Edge Function</span></div>
+              <div class="stat-item"><span class="stat-lbl">Nivel Volum:</span><span class="stat-val" id="stat-audio">100%</span></div>
+            </div>
+          </div>
+
+          <!-- Radio Player Screen (Clean Hi-Fi Card) -->
           <div id="radio-backdrop" class="radio-backdrop hidden">
-            <canvas id="visualizer-canvas"></canvas>
             <div class="radio-card" id="radio-card">
               <img id="radio-logo" src="logos/discomix.png" alt="Radio Logo" class="radio-card-logo">
               <div class="radio-card-info">
@@ -69,7 +91,7 @@
                 </div>
                 <h2 id="radio-name" class="radio-name">Selectează un post</h2>
                 <p id="radio-genre" class="radio-genre">Muzică & Divertisment</p>
-                <div class="visualizer-theme-tag" id="visualizer-theme-name">Stil: Neon Spectrum</div>
+                <div class="radio-stream-tag" id="radio-stream-info">Audio Live • HQ Stream</div>
               </div>
             </div>
           </div>
@@ -111,9 +133,14 @@
               <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1">
             </div>
             <div class="channel-info-pill" id="pill-current-channel">Niciun canal selectat</div>
-            <button id="btn-cast" class="ctrl-btn" title="Transmite pe ecran / Google Cast">
+            <button id="btn-aspect" class="ctrl-btn" title="Raport Imagine / Aspect Ratio (Fit, Fill, Zoom, 4:3)">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.92-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
+              </svg>
+            </button>
+            <button id="btn-stats" class="ctrl-btn" title="Statistici pentru pasionați (Stats for nerds)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
               </svg>
             </button>
             <button id="btn-pip" class="ctrl-btn" title="Picture in Picture">
@@ -185,15 +212,6 @@
             <label for="custom-proxy-url">URL Proxy Personalizat:</label>
             <input type="text" id="custom-proxy-url" placeholder="https://workerul-tau.workers.dev/proxy?url=">
             <small>Poți folosi un Cloudflare Worker gratuit sau serverul Node.js inclus.</small>
-          </div>
-
-          <div class="form-group">
-            <label for="visualizer-theme-select">Stil Vizualizator Radio:</label>
-            <select id="visualizer-theme-select">
-              <option value="classic">Winamp Classic Spectrum</option>
-              <option value="neon">Neon Cyberpunk</option>
-              <option value="oscilloscope">Osciloscop Undă</option>
-            </select>
           </div>
 
           <div class="form-group info-box">
