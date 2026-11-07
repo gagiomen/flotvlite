@@ -10,7 +10,7 @@
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/acasa4k.png",
-    "epg_id": null,
+    "epg_id": "Acasa.HD.ro",
     "streams": [
       {
         "name": "Server 1 (4K)",
@@ -30,7 +30,7 @@
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/digi4k.png",
-    "epg_id": null,
+    "epg_id": "Digi.4K.ro",
     "streams": [
       {
         "name": "Server 1 (4K)",
@@ -75,7 +75,7 @@
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/eurosport4k.png",
-    "epg_id": null,
+    "epg_id": "Eurosport.4K.ro",
     "streams": [
       {
         "name": "Server 1 (4K)",

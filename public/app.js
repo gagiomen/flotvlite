@@ -73,6 +73,9 @@ const dom = {
   epgLiveTitle: document.getElementById('epg-live-title'),
   epgLiveSynopsis: document.getElementById('epg-live-synopsis'),
   epgMeterFill: document.getElementById('epg-meter-fill'),
+  epgNextItem: document.getElementById('epg-next-item'),
+  epgNextTime: document.getElementById('epg-next-time'),
+  epgNextTitle: document.getElementById('epg-next-title'),
   categoriesBar: document.getElementById('categories-bar'),
   channelsContainer: document.getElementById('channels-container'),
   channelCounter: document.getElementById('channel-counter'),
@@ -110,24 +113,35 @@ async function init() {
   applyAspectRatio(state.aspectRatio, false);
   setupKeyboardShortcuts();
 
-  // Load Channels & EPG in parallel
+  // Load Channels & EPG
   try {
+    let cachedEpg = null;
+    try {
+      const localEpgStr = localStorage.getItem('flolite_epg_cache');
+      if (localEpgStr) {
+        cachedEpg = JSON.parse(localEpgStr);
+      }
+    } catch (e) {}
+
     const [channelsRes, epgRes] = await Promise.all([
       fetch('channels.json').then(r => r.json()),
-      fetch('epg_initial.json').then(r => r.json()).catch(() => ({}))
+      cachedEpg ? Promise.resolve(cachedEpg) : fetch('epg_initial.json').then(r => r.json()).catch(() => ({}))
     ]);
 
     state.channels = channelsRes;
     state.tvChannels = channelsRes.filter(c => !c.is_radio);
     state.radioChannels = channelsRes.filter(c => c.is_radio);
-    state.epg = epgRes || {};
+    state.epg = (cachedEpg && Object.keys(cachedEpg).length > 0) ? cachedEpg : (epgRes || {});
 
     // Restore last mode & last played channel
     const savedMode = localStorage.getItem('flolite_last_mode') || 'tv';
     switchMode(savedMode, true);
 
-    // Periodic EPG progress tick
+    // Periodic EPG progress tick (every 30 seconds)
     setInterval(updateLiveEpgUI, 30000);
+
+    // Background fresh EPG network sync
+    setTimeout(syncEpgFromNetwork, 4000);
   } catch (err) {
     console.error('Eroare la incarcarea datelor:', err);
     alert('Eroare la incarcarea canalelor. Verifica conexiunea la server.');
@@ -633,20 +647,31 @@ function updateLiveEpgUI() {
 
   if (!c.is_radio && c.epg_id && state.epg[c.epg_id]) {
     const p = getCurrentEpg(c.epg_id);
+    const nextP = getNextEpg(c.epg_id);
+
     if (p) {
       dom.epgLiveTime.textContent = `${formatTime(p.start)} - ${formatTime(p.stop)}`;
       dom.epgLiveTitle.textContent = p.title;
       dom.epgLiveSynopsis.textContent = p.desc || 'Emisiune în direct';
       const pct = getProgressPercent(p.start, p.stop);
       dom.epgMeterFill.style.width = `${pct}%`;
+
+      if (dom.epgNextItem && nextP) {
+        dom.epgNextItem.classList.remove('hidden');
+        dom.epgNextTime.textContent = `${formatTime(nextP.start)} - ${formatTime(nextP.stop)}`;
+        dom.epgNextTitle.textContent = nextP.title;
+      } else if (dom.epgNextItem) {
+        dom.epgNextItem.classList.add('hidden');
+      }
       return;
     }
   }
 
   dom.epgLiveTime.textContent = 'LIVE';
   dom.epgLiveTitle.textContent = c.is_radio ? 'Emisie Radio Live Hi-Fi' : 'Transmisiune TV Live HD';
-  dom.epgLiveSynopsis.textContent = 'Ghidul electronic este actualizat în timp real din stream.';
+  dom.epgLiveSynopsis.textContent = c.is_radio ? 'Stream audio de înaltă fidelitate' : 'Program TV în direct';
   dom.epgMeterFill.style.width = '100%';
+  if (dom.epgNextItem) dom.epgNextItem.classList.add('hidden');
 }
 
 // EPG Helpers
@@ -655,6 +680,21 @@ function getCurrentEpg(epgId) {
   if (!list || list.length === 0) return null;
   const now = Date.now();
   return list.find(p => p.start <= now && p.stop > now) || null;
+}
+
+function getNextEpg(epgId) {
+  const list = state.epg[epgId];
+  if (!list || list.length === 0) return null;
+  const now = Date.now();
+  let closest = null;
+  for (const p of list) {
+    if (p.start >= now) {
+      if (!closest || p.start < closest.start) {
+        closest = p;
+      }
+    }
+  }
+  return closest;
 }
 
 function formatTime(timestamp) {
@@ -669,12 +709,111 @@ function getProgressPercent(start, stop) {
   return Math.min(100, Math.max(0, Math.round(((now - start) / total) * 100)));
 }
 
-// Aspect Ratio Modes (Contain, Cover, Fill, 4:3)
+// Parse XMLTV date string e.g. "20261107221500 +0200" or "20261107201500 +0000"
+function parseXmltvTimestamp(str) {
+  if (!str || str.length < 14) return 0;
+  const cleaned = str.trim();
+  const y = cleaned.substring(0, 4);
+  const m = cleaned.substring(4, 6);
+  const d = cleaned.substring(6, 8);
+  const h = cleaned.substring(8, 10);
+  const min = cleaned.substring(10, 12);
+  const s = cleaned.substring(12, 14);
+
+  let tz = '+00:00';
+  if (cleaned.length >= 20) {
+    const rawTz = cleaned.substring(15, 20);
+    tz = rawTz.substring(0, 3) + ':' + rawTz.substring(3, 5);
+  }
+  const iso = `${y}-${m}-${d}T${h}:${min}:${s}${tz}`;
+  const parsed = Date.parse(iso);
+  return isNaN(parsed) ? 0 : parsed;
+}
+
+// Background Network EPG Sync (uses gzip DecompressionStream & /proxy)
+async function syncEpgFromNetwork() {
+  try {
+    const lastSync = parseInt(localStorage.getItem('flolite_epg_timestamp') || '0', 10);
+    const now = Date.now();
+    // Re-sync if older than 12 hours or empty
+    if (now - lastSync < 12 * 3600 * 1000 && Object.keys(state.epg).length > 20) {
+      return;
+    }
+
+    if (!window.DecompressionStream) {
+      return;
+    }
+
+    const rawEpgUrl = 'https://epgshare01.online/epgshare01/epg_ripper_RO1.xml.gz';
+    const proxyEpgUrl = resolveStreamUrl({ url: rawEpgUrl, headers: { Referer: 'https://epgshare01.online/' } });
+
+    console.log('[FloLite EPG] Sincronizare ghid electronic în fundal...');
+    const res = await fetch(proxyEpgUrl);
+    if (!res.ok || !res.body) return;
+
+    const ds = new DecompressionStream('gzip');
+    const decompressedStream = res.body.pipeThrough(ds);
+    const xmlText = await new Response(decompressedStream).text();
+
+    const targetIds = new Set(state.tvChannels.map(c => c.epg_id).filter(Boolean));
+    const newEpg = {};
+    const minTime = now - (6 * 3600 * 1000);
+    const maxTime = now + (48 * 3600 * 1000);
+
+    const progRegex = new RegExp('<programme\\s+start="([^"]+)"\\s+stop="([^"]+)"\\s+channel="([^"]+)"[^>]*>([\\s\\S]*?)<\\/programme>', 'g');
+    let match;
+    let count = 0;
+
+    while ((match = progRegex.exec(xmlText)) !== null) {
+      const chId = match[3];
+      if (!targetIds.has(chId)) continue;
+
+      const s = parseXmltvTimestamp(match[1]);
+      const e = parseXmltvTimestamp(match[2]);
+
+      if (e >= minTime && s <= maxTime) {
+        const inner = match[4];
+        const titleM = inner.match(new RegExp('<title[^>]*>([^<]+)<\\/title>'));
+        const descM = inner.match(new RegExp('<desc[^>]*>([^<]+)<\\/desc>'));
+        const title = titleM ? titleM[1].trim() : '';
+        const desc = descM ? descM[1].trim() : '';
+
+        if (!newEpg[chId]) newEpg[chId] = [];
+        newEpg[chId].push({ start: s, stop: e, title, desc });
+        count++;
+      }
+    }
+
+    if (Object.keys(newEpg).length > 20) {
+      for (const cid in newEpg) {
+        newEpg[cid].sort((a, b) => a.start - b.start);
+      }
+      state.epg = newEpg;
+      try {
+        localStorage.setItem('flolite_epg_cache', JSON.stringify(newEpg));
+        localStorage.setItem('flolite_epg_timestamp', now.toString());
+      } catch (storageErr) {
+        console.warn('LocalStorage limit reached for EPG cache');
+      }
+      console.log(`[FloLite EPG] Actualizat cu succes: ${Object.keys(newEpg).length} canale, ${count} emisiuni.`);
+
+      // Update UI
+      updateLiveEpgUI();
+      filterAndRenderChannels();
+      if (state.currentChannel) showOsd(state.currentChannel);
+    }
+  } catch (err) {
+    console.warn('[FloLite EPG] Eroare sync fundal (non-fatal):', err);
+  }
+}
+
+// Aspect Ratio Modes (Fit Original, Fill Screen, 16:9 Standard, 4:3 Retro, Zoom Crop)
 const ASPECT_MODES = [
   { id: 'contain', label: 'Adaptat (Original Fit)', class: '' },
-  { id: 'cover', label: 'Zoom Ecran Complet (Cover)', class: 'aspect-cover' },
-  { id: 'fill', label: 'Întins 16:9 (Fill)', class: 'aspect-fill' },
-  { id: '4:3', label: 'Format Clasic TV (4:3)', class: 'aspect-4-3' }
+  { id: 'fill', label: 'Umplere Ecran (Fără tăiere)', class: 'aspect-fill' },
+  { id: '16:9', label: 'Format TV 16:9', class: 'aspect-16-9' },
+  { id: '4:3', label: 'Format Clasic 4:3', class: 'aspect-4-3' },
+  { id: 'cover', label: 'Zoom Decupat (Crop sus/jos)', class: 'aspect-cover' }
 ];
 
 function applyAspectRatio(modeId, showToast = true) {
