@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Flo Lite TV Web</title>
+  <title>FloLite Universal 3.0</title>
   <link rel="icon" type="image/png" href="logos/acasa4k.png">
   <link rel="stylesheet" href="style.css">
   <!-- HLS.js for cross-browser live stream support -->
@@ -15,7 +15,7 @@
     <header class="app-header">
       <div class="brand">
         <span class="brand-logo">📺</span>
-        <span class="brand-title">Flo Lite <span class="highlight">TV</span></span>
+        <span class="brand-title">FloLite <span class="highlight">3.0</span></span>
         <span class="brand-badge" id="channel-counter">0 Canale</span>
       </div>
 
@@ -30,7 +30,8 @@
           <button id="btn-clear-search" class="btn-icon hidden" title="Șterge căutarea">&times;</button>
         </div>
 
-        <button id="btn-settings" class="btn-icon" title="Setări Proxy & Redare" tabindex="4">⚙️</button>
+        <button id="btn-about" class="btn-icon" title="Despre FloLite 3.0 (Istoric & Diagnostic)" tabindex="4">ℹ️</button>
+        <button id="btn-settings" class="btn-icon" title="Setări Proxy & Redare" tabindex="5">⚙️</button>
       </div>
     </header>
 
@@ -96,6 +97,7 @@
               <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1">
             </div>
             <div class="channel-info-pill" id="pill-current-channel">Niciun canal selectat</div>
+            <button id="btn-cast" class="ctrl-btn" title="Transmite pe ecran / Google Cast">📺</button>
             <button id="btn-pip" class="ctrl-btn" title="Picture in Picture">🗖</button>
             <button id="btn-fullscreen" class="ctrl-btn" title="Ecran Complet (F)">⛶</button>
           </div>
@@ -186,6 +188,66 @@
         </div>
         <div class="modal-footer">
           <button id="btn-save-settings" class="btn-primary">Salvează și Închide</button>
+        </div>
+      </div>
+    </div>
+    <!-- About Modal (Despre FloLite 3.0) -->
+    <div id="about-modal" class="modal hidden">
+      <div class="modal-content about-modal-content">
+        <div class="modal-header">
+          <h3>ℹ️ Despre FloLite Universal</h3>
+          <button id="btn-close-about" class="btn-icon">&times;</button>
+        </div>
+        <div class="modal-body about-scroll-body">
+          <div class="about-hero">
+            <span class="about-badge-version">v3.0.0-PRO (Build 300 - Apex Titanium)</span>
+            <h4>Ecosistem Multi-Platform: Smartphone • Android TV • Android Auto • Web PWA</h4>
+          </div>
+
+          <div class="about-section info-box">
+            <h4>📊 Diagnostic Web & Sistem Live:</h4>
+            <ul id="about-diagnostics-list">
+              <li><strong>Mod Redare:</strong> <span id="diag-hls-mode">HLS.js Hardware Accelerated</span></li>
+              <li><strong>Screen Wake Lock:</strong> <span id="diag-wakelock">Suportat (Ecran aprins automat la video)</span></li>
+              <li><strong>Media Session API:</strong> <span id="diag-mediasession">Activ (Integrare notificări & Bluetooth/Auto)</span></li>
+              <li><strong>Canale Catalog:</strong> <span id="diag-channels-count">286 posturi TV & Radio</span></li>
+              <li><strong>Proxy Activ:</strong> <span id="diag-proxy-status">Cloudflare Functions / Native CORS proxy</span></li>
+            </ul>
+          </div>
+
+          <div class="about-section">
+            <h4 class="about-section-title">📖 Povestea Proiectului (De unde am plecat și unde am ajuns):</h4>
+            <div class="timeline-item">
+              <span class="timeline-tag">Etapa 1: Origini & Provocări (v1.0)</span>
+              <p>Player hibrid clasic VideoView + ExoPlayer cu consum ridicat de memorie (250-400 MB), blocaje de Garbage Collector și instabilitate pe televizoare cu hardware limitat.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-tag">Etapa 2: Optimizarea Motorului TV (v2.0)</span>
+              <p>Arhitectură Zero-Allocation cu pool de buffere ThreadLocal de 32 KB, cache de sesiune 10 min, decodare hardware 4K HEVC, încărcare asincronă cu LruCache pentru 199 de logo-uri și debloating Philips Android TV (reducere RAM la 10-13 MB, latență GC &lt; 1 ms).</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-tag">Etapa 3: Expansiunea Web & Public Cloud (v2.5)</span>
+              <p>Portare PWA responsive pe Cloudflare Pages & Functions și Render.com cu zero costuri, player Hls.js universal și vizualizator audio animat tip Winamp.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-tag">Etapa 4: Unificarea Mobilă & Ecosistemul Auto (v3.0 - Prezent)</span>
+              <p>Screen Wake Lock automat la video, rezolvare 199 logo-uri HD oficiale, Google Cast / Chromecast nativ pe Wi-Fi și modul dedicat Android Auto (Developer Mode) cu comenzi de pe volan și consolă.</p>
+            </div>
+          </div>
+
+          <div class="about-section">
+            <h4 class="about-section-title">📝 Jurnal de Versiuni (Changelog Complet):</h4>
+            <ul class="changelog-list">
+              <li><strong>v3.0.0-PRO:</strong> Screen Wake Lock API, Web Cast Integration, MediaSession API (Android Auto/Bluetooth), Paritate completă TV/Mobile/Web, 199 Sigle HD.</li>
+              <li><strong>v2.5.0:</strong> PWA responsive, Cloudflare Functions Serverless Proxy, Winamp Audio Equalizer.</li>
+              <li><strong>v2.0.0:</strong> Zero-Allocation Stream Proxy, Pipeline 4K HEVC, Philips TV Safe Debloat.</li>
+              <li><strong>v1.5.0:</strong> Proxy local multi-thread, suport EPG, Favorite.</li>
+              <li><strong>v1.0.0:</strong> Prototip inițial Flo TV.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-about-close" class="btn-primary">Închide</button>
         </div>
       </div>
     </div>

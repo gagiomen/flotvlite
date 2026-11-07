@@ -1,7 +1,7 @@
 {
   "name": "flolite-web",
-  "version": "1.0.0",
-  "description": "Flo Lite TV - Responsive Web Client & Stream Proxy",
+  "version": "3.0.0",
+  "description": "FloLite Universal 3.0 (Apex Titanium) - Responsive Web Client & Stream Proxy",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

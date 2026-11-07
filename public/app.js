@@ -74,6 +74,11 @@ const dom = {
   volumeSlider: document.getElementById('volume-slider'),
   btnFullscreen: document.getElementById('btn-fullscreen'),
   btnPip: document.getElementById('btn-pip'),
+  btnCast: document.getElementById('btn-cast'),
+  btnAbout: document.getElementById('btn-about'),
+  aboutModal: document.getElementById('about-modal'),
+  btnCloseAbout: document.getElementById('btn-close-about'),
+  btnAboutClose: document.getElementById('btn-about-close'),
   btnSettings: document.getElementById('btn-settings'),
   settingsModal: document.getElementById('settings-modal'),
   btnCloseSettings: document.getElementById('btn-close-settings'),
@@ -88,6 +93,8 @@ const dom = {
 async function init() {
   setupEventListeners();
   setupSettings();
+  setupAboutModal();
+  setupCast();
   setupKeyboardShortcuts();
 
   // Load Channels & EPG in parallel
@@ -285,13 +292,17 @@ function playChannel(channel) {
   const streamUrl = resolveStreamUrl(channel);
   console.log(`[FloLiteTV] Redare ${channel.name} -> ${streamUrl}`);
 
+  updateMediaSession(channel);
+
   if (channel.is_radio) {
+    releaseScreenWakeLock();
     dom.radioBackdrop.classList.remove('hidden');
     dom.radioName.textContent = channel.name;
     dom.radioGenre.textContent = channel.group || 'Radio Live HD';
     dom.radioLogo.src = channel.logo || 'logos/discomix.png';
     startVisualizer();
   } else {
+    requestScreenWakeLock();
     dom.radioBackdrop.classList.add('hidden');
     stopVisualizer();
   }
@@ -597,7 +608,24 @@ function setupEventListeners() {
   });
 
   dom.video.addEventListener('waiting', () => dom.spinner.classList.remove('hidden'));
-  dom.video.addEventListener('playing', () => dom.spinner.classList.add('hidden'));
+  dom.video.addEventListener('playing', () => {
+    dom.spinner.classList.add('hidden');
+    dom.btnPlayPause.textContent = '⏸';
+  });
+  dom.video.addEventListener('play', () => {
+    dom.btnPlayPause.textContent = '⏸';
+    if (state.currentChannel && !state.currentChannel.is_radio) {
+      requestScreenWakeLock();
+    }
+  });
+  dom.video.addEventListener('pause', () => {
+    dom.btnPlayPause.textContent = '▶';
+    releaseScreenWakeLock();
+  });
+  dom.video.addEventListener('ended', () => {
+    dom.btnPlayPause.textContent = '▶';
+    releaseScreenWakeLock();
+  });
 }
 
 // Channel Hopping
@@ -737,6 +765,118 @@ function setupKeyboardShortcuts() {
         break;
     }
   });
+}
+
+// Screen Wake Lock API (prevents display sleep during video playback)
+let wakeLockSentinel = null;
+
+async function requestScreenWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLockSentinel = await navigator.wakeLock.request('screen');
+      wakeLockSentinel.addEventListener('release', () => {
+        wakeLockSentinel = null;
+      });
+    }
+  } catch (err) {
+    console.log('Screen Wake Lock error or denied:', err);
+  }
+}
+
+function releaseScreenWakeLock() {
+  if (wakeLockSentinel !== null) {
+    wakeLockSentinel.release().catch(() => {});
+    wakeLockSentinel = null;
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && state.currentChannel && !state.currentChannel.is_radio && !dom.video.paused) {
+    requestScreenWakeLock();
+  }
+});
+
+// MediaSession API (Lockscreen, Bluetooth & Android Auto integration)
+function updateMediaSession(channel) {
+  if ('mediaSession' in navigator && channel) {
+    try {
+      const logoUrl = channel.logo ? (window.location.origin + '/' + channel.logo) : (window.location.origin + '/logos/acasa4k.png');
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: channel.name,
+        artist: channel.is_radio ? 'Radio Live • FloLite 3.0' : 'TV Live • FloLite 3.0',
+        album: channel.group || 'FloLite Universal',
+        artwork: [
+          { src: logoUrl, sizes: '128x128', type: 'image/png' },
+          { src: logoUrl, sizes: '512x512', type: 'image/png' }
+        ]
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => {
+        dom.video.play().catch(() => {});
+        dom.btnPlayPause.textContent = '⏸';
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        dom.video.pause();
+        dom.btnPlayPause.textContent = '▶';
+      });
+      navigator.mediaSession.setActionHandler('previoustrack', () => playPreviousChannel());
+      navigator.mediaSession.setActionHandler('nexttrack', () => playNextChannel());
+    } catch (e) {
+      console.warn('MediaSession error:', e);
+    }
+  }
+}
+
+// Google Cast & Remote Playback
+function setupCast() {
+  if (dom.btnCast) {
+    dom.btnCast.addEventListener('click', () => {
+      if ('remote' in dom.video) {
+        dom.video.remote.prompt().catch(err => {
+          console.log('Remote playback prompt cancelled/failed:', err);
+        });
+      } else {
+        alert("Pentru a transmite pe ecranul unui Smart TV sau Chromecast:\n1. În Google Chrome: deschide meniul ⋮ -> 'Cast / Transmite...'\n2. În Safari (iOS/Mac): folosește butonul AirPlay nativ.");
+      }
+    });
+  }
+}
+
+// About Modal & Live Diagnostics
+function setupAboutModal() {
+  if (dom.btnAbout && dom.aboutModal) {
+    dom.btnAbout.addEventListener('click', () => {
+      const diagChannels = document.getElementById('diag-channels-count');
+      if (diagChannels) diagChannels.textContent = `${state.channels.length} posturi TV & Radio`;
+
+      const diagHls = document.getElementById('diag-hls-mode');
+      if (diagHls) diagHls.textContent = window.Hls && Hls.isSupported() ? 'HLS.js Hardware Accelerated' : 'Native Browser HLS';
+
+      const diagWake = document.getElementById('diag-wakelock');
+      if (diagWake) diagWake.textContent = 'wakeLock' in navigator ? (wakeLockSentinel ? 'Activ (Ecran blocat aprins)' : 'Suportat (Standby)') : 'Nesuportat pe acest browser';
+
+      const diagMedia = document.getElementById('diag-mediasession');
+      if (diagMedia) diagMedia.textContent = 'mediaSession' in navigator ? 'Activ (Integrare mașină & lockscreen)' : 'Nesuportat';
+
+      const diagProxy = document.getElementById('diag-proxy-status');
+      if (diagProxy) {
+        diagProxy.textContent = state.proxyMode === 'auto' ? 'Automat (Cloudflare Functions / Native)' : `Mod ${state.proxyMode.toUpperCase()}`;
+      }
+
+      dom.aboutModal.classList.remove('hidden');
+    });
+
+    if (dom.btnCloseAbout) {
+      dom.btnCloseAbout.addEventListener('click', () => dom.aboutModal.classList.add('hidden'));
+    }
+    if (dom.btnAboutClose) {
+      dom.btnAboutClose.addEventListener('click', () => dom.aboutModal.classList.add('hidden'));
+    }
+
+    dom.aboutModal.addEventListener('click', (e) => {
+      if (e.target === dom.aboutModal) dom.aboutModal.classList.add('hidden');
+    });
+  }
 }
 
 // Start

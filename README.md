@@ -1,70 +1,68 @@
-# 📺 Flo Lite TV - Versiunea Web & Proxy Server
+# 📺 FloLite Universal 3.0 (Apex Titanium) - Versiunea Web & Proxy Server
 
-Versiune web complet responsive a aplicației **Flo Lite TV**, concepută pentru a rula în orice browser (pe PC, laptop, telefon mobil, tabletă sau browserul unui Smart TV / Android TV / Tizen / webOS).
+Versiune web complet responsive și optimizată a aplicației **FloLite Universal 3.0**, concepută pentru a rula în orice browser modern (pe PC, laptop, telefon mobil Android/iOS, tabletă, Android Auto browser sau Smart TV / Android TV / Tizen / webOS).
 
 ---
 
-## ✨ Funcționalități
-- **Player HLS.js Integrat**: Suport nativ pentru stream-uri live Full HD și 4K UHD.
-- **286 Canale & Posturi Radio**:
-  - 181 Canale TV organizate pe categorii (Generaliste, Știri, Sport, Filme, Documentare, Muzică, Copii, Moldova, etc.)
-  - 105 Posturi Radio Live
-- **Ghid TV Electronic (EPG)**: Încărcare automată a emisiunii curente, timpului de difuzare și barei de progres în timp real.
-- **Vizualizator Audio Radio (Stil Winamp)**: Animație pe Canvas HTML5 cu spectrometru de frecvențe și efecte neon în modul Radio.
-- **Navigare completă din Telecomandă / Tastatură**:
+## ✨ Noutăți & Funcționalități v3.0.0-PRO
+
+- **⚡ Screen Wake Lock API**: Ecranul rămâne deschis automat pe telefon și tabletă pe toată durata redării unui flux video. La redarea posturilor Radio, Wake Lock este eliberat inteligent pentru economisirea bateriei.
+- **📡 Suport Web Cast (Chromecast)**: Buton dedicat Cast pe player pentru proiectarea rapidă a fluxurilor pe televizoare și ecrane inteligente compatibile.
+- **🚗 Integrare MediaSession API**:
+  - Afișare metadate canal, categorie și siglă HD pe ecranul de blocare (Lock Screen) și în bara de notificări.
+  - Suport pentru comenzi media Bluetooth în mașină și compatibilitate cu browserele auto (Android Auto / CarPlay).
+- **🎨 199 Sigle HD Integrate**: Toate posturile TV și Radio beneficiază de sigle oficiale HD sincronizate la zi.
+- **ℹ️ Dialog Interactiv „Despre FloLite”**:
+  - Istoric complet de dezvoltare al proiectului (v1.0 Prototip ➔ v2.0 TV Zero-Allocation ➔ v2.5 Web Cloudflare ➔ v3.0 Ecosistem Universal & Auto).
+  - Diagnostic live în timp real (Player Engine, Rezoluție, Buffer, Wake Lock, MediaSession, Număr Canale, Stare Proxy).
+- **📻 Mod Radio cu Spectrometru Winamp**: Animație audio pe Canvas HTML5 cu efecte neon și culori dinamice.
+- **📺 Ghid TV Electronic (EPG)**: Încărcare automată a emisiunii curente, timpului de difuzare și barei de progres în timp real.
+- **⌨️ Navigare completă din Telecomandă / Tastatură**:
   - `Săgeți Sus / Jos`: Navigare canale
   - `Enter / OK`: Selectare canal
   - `F`: Ecran complet
   - `M`: Mute / Unmute
   - `0 - 9`: Salt direct la numărul canalului
   - `/`: Căutare rapidă canal
-- **Proxy CORS & Header Injection**: Permite redarea fluxurilor protejate care solicită header-e de `Referer` sau care nu au CORS nativ.
+- **🛡️ Proxy CORS & Header Injection**: Cloudflare Pages Functions `/proxy` preconfigurat nativ + suport pentru Cloudflare Workers și server Python/Node local.
 
 ---
 
 ## 🚀 Opțiuni de Găzduire Gratuită
 
-### 🟢 Opțiunea 1: Render.com (Cea mai simplă – All-in-One Gratuit)
-Găzduiește gratuit atât interfața web, cât și proxy-ul de stream într-un singur container Python.
+### 🌐 Opțiunea 1: Cloudflare Pages (Recomandat – 100% Gratuit & Serverless)
+Cea mai rapidă soluție CDN la nivel global, cu suport integrat de Functions:
 
-1. Creează un cont gratuit pe [Render.com](https://render.com).
-2. Creează un nou repository pe GitHub și urcă folderul `flolite_web`.
-3. În Render Dashboard apasă pe **New +** ➔ **Web Service** și conectează repo-ul tău.
+1. Fă cont pe [Cloudflare Dashboard](https://dash.cloudflare.com).
+2. Mergi la **Workers & Pages** ➔ **Create application** ➔ **Pages** ➔ **Connect to Git**.
+3. Selectează repository-ul tău GitHub: `gagiomen/flotvlite`.
+4. La **Build Settings**:
+   - **Framework preset**: `None`
+   - **Build command**: `echo "Build Ready"` (sau lasă gol dacă permite)
+   - **Build output directory**: `public`
+5. Apasă pe **Save and Deploy**. Cloudflare va prelua automat atât interfața web din `public/`, cât și funcția proxy serverless din `functions/proxy.js`.
+6. Site-ul tău va rula instant pe un domeniu securizat gratuit: `https://flotvlite.pages.dev`.
+
+---
+
+### 🟢 Opțiunea 2: Render.com (Container Gratuit Python)
+1. Creează cont pe [Render.com](https://render.com).
+2. Creează un nou repository sau conectează repo-ul `flotvlite`.
+3. În Render Dashboard apasă pe **New +** ➔ **Web Service** și conectează repo-ul.
 4. Configurează setările:
    - **Environment**: `Python 3`
    - **Build Command**: `echo Ready`
    - **Start Command**: `python3 server.py`
    - **Instance Type**: `Free`
 5. Apasă pe **Deploy Web Service**.
-6. Vei primi un URL securizat HTTPS (de exemplu `https://flolite-tv.onrender.com`) care funcționează instant pe orice dispozitiv!
 
 ---
 
-### 🌐 Opțiunea 2: Cloudflare Pages + Cloudflare Worker (Ultra-rapid, 100% Serverless)
-Cea mai rapidă soluție CDN din lume, gratuită pe viață.
-
-#### Pasul A: Proxy-ul (Cloudflare Worker)
-1. Fă cont pe [Cloudflare](https://dash.cloudflare.com).
-2. Mergi la **Workers & Pages** ➔ **Create application** ➔ **Create Worker**.
-3. Denumește-l `flolite-proxy` și apasă **Deploy**.
-4. Apasă pe **Quick Edit**, șterge codul existent și lipește conținutul fișierului [`cloudflare_worker.js`](cloudflare_worker.js).
-5. Salvează și apasă **Deploy**. Vei avea un URL de forma `https://flolite-proxy.<contul-tau>.workers.dev`.
-
-#### Pasul B: Interfața Web (Cloudflare Pages)
-1. În Cloudflare Dashboard mergi la **Workers & Pages** ➔ **Pages** ➔ **Upload assets**.
-2. Trage direct conținutul folderului `public/` (fișierele `index.html`, `style.css`, `app.js`, `channels.json`, folderul `logos/`, etc.).
-3. Denumește proiectul `flolite-tv` și finalizează.
-4. Deschide site-ul generat (ex: `https://flolite-tv.pages.dev`), apasă pe rotița de **Setări ⚙️** și alege **Server Proxy Personalizat**, introducând URL-ul worker-ului tău creat la Pasul A.
-
----
-
-### 💻 Opțiunea 3: Rulare Locală în Rețeaua de Acasă (Fără server extern)
-Poți porni serverul direct pe acest laptop, iar oricine este conectat la Wi-Fi-ul casei (inclusiv televizoarele din casă) îl poate deschide:
-
+### 💻 Opțiunea 3: Rulare Locală în Rețeaua de Acasă
 ```bash
 cd /home/florin/flolite_web
 python3 server.py
+# sau cu Node.js:
+# node server.js
 ```
-
-Apoi deschizi în browserul televizorului, telefonului sau tabletei adresa IP a laptopului:
-`http://192.168.1.161:3000`
+Accesează în browser pe orice dispozitiv din casă: `http://192.168.1.161:3000`.
