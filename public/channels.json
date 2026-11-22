@@ -1617,6 +1617,32 @@
     ]
   },
   {
+    "id": "VoyoSport1",
+    "name": "Voyo Sport 1",
+    "group": "Sport",
+    "is_radio": false,
+    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16677.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/",
+      "User-Agent": "IPTVSmartersPlayer"
+    },
+    "logo": "logos/VoyoSport1.png",
+    "epg_id": "Voyo.Sport.1.ro",
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Server 1 (1080p FHD - Principal)",
+        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16677.m3u8",
+        "resolution": "FHD"
+      },
+      {
+        "name": "Server 2 (HD - Backup)",
+        "url": "https://vip-acasatv.online:25463/lrZuGxAuP3/6782859900/16677",
+        "resolution": "HD"
+      }
+    ]
+  },
+  {
     "id": "ProX100",
     "name": "Pro Arena",
     "group": "Generaliste",
