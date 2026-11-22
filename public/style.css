@@ -1343,3 +1343,352 @@ body {
     font-size: 11px;
   }
 }
+
+/* ============================================================
+   VOD Library (Biblioteca Video: Cartoonix & Cinepub) Styles
+   ============================================================ */
+
+.youtube-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #000000;
+  z-index: 5;
+}
+
+.vod-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  background: rgba(10, 14, 23, 0.75);
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
+  gap: 16px;
+}
+
+.vod-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.vod-platform-tabs {
+  display: flex;
+  gap: 12px;
+}
+
+.vod-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  color: #FFFFFF;
+  transition: all 0.25s ease;
+}
+
+.vod-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.4);
+}
+
+.vod-tab.active {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(99, 102, 241, 0.25));
+  border-color: #00E5FF;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.25);
+}
+
+.vod-tab-logo {
+  width: 38dp;
+  height: 38px;
+  object-fit: contain;
+}
+
+.vod-tab-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.vod-tab-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.vod-tab-desc {
+  font-size: 11px;
+  color: #94A3B8;
+}
+
+.vod-search-container {
+  min-width: 260px;
+}
+
+.vod-categories-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.vod-categories-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.vod-chip {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: #E2E8F0;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.vod-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.vod-chip.active {
+  background: #00E5FF;
+  color: #000000;
+  font-weight: 700;
+  border-color: #00E5FF;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+.vod-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.vod-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(21, 27, 43, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.vod-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: #00E5FF;
+  box-shadow: 0 10px 24px rgba(0, 229, 255, 0.2);
+}
+
+.vod-card-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: #0D121F;
+  overflow: hidden;
+}
+
+.vod-card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.vod-card:hover .vod-card-thumb {
+  transform: scale(1.06);
+}
+
+.vod-card-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #00E5FF;
+  backdrop-filter: blur(6px);
+}
+
+.vod-card-info {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vod-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vod-card-sub {
+  font-size: 11px;
+  color: #94A3B8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Modal Details VOD */
+.vod-modal-dialog {
+  max-width: 800px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.vod-modal-scroll {
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vod-detail-hero {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.vod-detail-poster {
+  width: 140px;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+}
+
+.vod-detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vod-detail-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.vod-detail-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vod-meta-badge {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: #00E5FF;
+}
+
+.vod-detail-synopsis {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #CBD5E1;
+}
+
+.vod-episodes-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-top: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 6px;
+}
+
+.vod-episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.vod-ep-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #FFFFFF;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.vod-ep-btn:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00E5FF;
+  transform: translateX(2px);
+}
+
+.vod-ep-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: #00E5FF;
+}
+
+.vod-ep-title {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vod-btn-play-movie {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00E5FF 0%, #0077FF 100%);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: fit-content;
+}
+
+.vod-btn-play-movie:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(0, 229, 255, 0.45);
+}
+
+

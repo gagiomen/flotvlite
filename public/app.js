@@ -9,7 +9,7 @@ const state = {
   tvChannels: [],
   radioChannels: [],
   epg: {},
-  currentMode: 'tv', // 'tv' or 'radio'
+  currentMode: 'tv', // 'tv', 'radio', or 'vod'
   currentCategory: 'TOATE',
   searchQuery: '',
   filteredChannels: [],
@@ -26,12 +26,22 @@ const state = {
   hls: null,
   osdTimeout: null,
   numBuffer: '',
-  numBufferTimeout: null
+  numBufferTimeout: null,
+  // VOD State
+  cartoonixCatalog: [],
+  cinepubCatalog: [],
+  vodLoaded: false,
+  activeVodPlatform: 'cartoonix', // 'cartoonix' or 'cinepub'
+  currentVodCategory: 'Toate',
+  vodSearchQuery: ''
 };
+
+const CARTOONIX_BEARER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlOTk4M2UxNS0yZWIwLTQxNWQtODFlMS1jZGFmYTQxZGVjNmQiLCJlbWFpbCI6ImN4dXNlcl8xNzk0ODcwNzEyQGZsZHViYWkuY29tIiwiZXhwIjoxNzk1NDc1NTE4LCJ0eXBlIjoiYWNjZXNzIn0.mh07RK75jF2zb1l9KdVvsBHSusfoGfD0hgEgFvzMMbo";
 
 // DOM References
 const dom = {
   video: document.getElementById('video-player'),
+  youtubePlayer: document.getElementById('youtube-player'),
   playerWrapper: document.getElementById('player-wrapper'),
   playerControlsBar: document.querySelector('.player-controls-bar'),
   radioBackdrop: document.getElementById('radio-backdrop'),
@@ -78,9 +88,22 @@ const dom = {
   epgNextTitle: document.getElementById('epg-next-title'),
   categoriesBar: document.getElementById('categories-bar'),
   channelsContainer: document.getElementById('channels-container'),
+  channelsSection: document.getElementById('channels-section'),
   channelCounter: document.getElementById('channel-counter'),
   btnModeTv: document.getElementById('btn-mode-tv'),
   btnModeRadio: document.getElementById('btn-mode-radio'),
+  btnModeVod: document.getElementById('btn-mode-vod'),
+  vodSection: document.getElementById('vod-section'),
+  tabVodCartoonix: document.getElementById('tab-vod-cartoonix'),
+  tabVodCinepub: document.getElementById('tab-vod-cinepub'),
+  vodSearchInput: document.getElementById('vod-search-input'),
+  btnClearVodSearch: document.getElementById('btn-clear-vod-search'),
+  vodCategoriesBar: document.getElementById('vod-categories-bar'),
+  vodGridContainer: document.getElementById('vod-grid-container'),
+  vodModal: document.getElementById('vod-modal'),
+  vodModalTitle: document.getElementById('vod-modal-title'),
+  vodModalBody: document.getElementById('vod-modal-body'),
+  btnCloseVodModal: document.getElementById('btn-close-vod-modal'),
   searchInput: document.getElementById('search-input'),
   btnClearSearch: document.getElementById('btn-clear-search'),
   btnPlayPause: document.getElementById('btn-play-pause'),
@@ -148,18 +171,34 @@ async function init() {
   }
 }
 
-// Switch Mode (TV / Radio)
+// Switch Mode (TV / Radio / VOD)
 function switchMode(mode, playTarget = true) {
   state.currentMode = mode;
-  state.currentCategory = 'TOATE';
   localStorage.setItem('flolite_last_mode', mode);
+
+  if (mode === 'vod') {
+    dom.btnModeVod.classList.add('active');
+    dom.btnModeTv.classList.remove('active');
+    dom.btnModeRadio.classList.remove('active');
+    dom.channelsSection.classList.add('hidden');
+    dom.vodSection.classList.remove('hidden');
+    loadAndRenderVod();
+    return;
+  }
+
+  // TV or Radio mode
+  dom.vodSection.classList.add('hidden');
+  dom.channelsSection.classList.remove('hidden');
+  state.currentCategory = 'TOATE';
 
   if (mode === 'tv') {
     dom.btnModeTv.classList.add('active');
     dom.btnModeRadio.classList.remove('active');
+    dom.btnModeVod.classList.remove('active');
   } else {
     dom.btnModeRadio.classList.add('active');
     dom.btnModeTv.classList.remove('active');
+    dom.btnModeVod.classList.remove('active');
   }
 
   buildCategories();
@@ -223,6 +262,7 @@ function getCategoryIcon(cat, mode) {
   if (norm.includes('doc')) return '🦁';
   if (norm.includes('folclor')) return '🎻';
   if (norm.includes('muzic') || norm.includes('music')) return '🎵';
+  if (norm.includes('cartoonix')) return '👶';
   if (norm.includes('desene') || norm.includes('copii') || norm.includes('kids') || norm.includes('animat')) return '🧸';
   if (norm.includes('4k') || norm.includes('uhd')) return '💎';
   if (norm.includes('adult')) return '🔞';
@@ -246,7 +286,7 @@ function getCategoryIcon(cat, mode) {
 function buildCategories() {
   let categories = [];
   if (state.currentMode === 'tv') {
-    // Exact requested order: Favorite, Toate, 4K, Generaliste, Stiri, Sport, Filme, Documentare, Desene animate, Muzica, Muzica folclorica, Moldova, Adult
+    // Exact requested order: Favorite, Toate, 4K, Generaliste, Stiri, Sport, Filme, Documentare, Desene animate, Cartoonix Live, Muzica, Muzica folclorica, Moldova, Adult
     categories = [
       'Favorite',
       'Toate',
@@ -257,6 +297,7 @@ function buildCategories() {
       'Filme',
       'Documentare',
       'Desene animate',
+      'Cartoonix Live',
       'Muzică',
       'Muzica Folclorica',
       'Moldova',
@@ -321,6 +362,18 @@ function filterAndRenderChannels() {
     // 3. Adult Category Filter
     else if (currentCatNorm === 'adult') {
       if (!channelGroupNorm.includes('adult')) {
+        return false;
+      }
+    }
+    // 3b. Cartoonix Live Category Filter
+    else if (currentCatNorm.includes('cartoonix')) {
+      if (!channelGroupNorm.includes('cartoonix') && !(c.url && c.url.startsWith('cartoonix://'))) {
+        return false;
+      }
+    }
+    // 3c. Desene Animate (includes standard Desene + Cartoonix)
+    else if (currentCatNorm.includes('desene') || currentCatNorm.includes('copii')) {
+      if (!channelGroupNorm.includes('desene') && !channelGroupNorm.includes('copii') && !channelGroupNorm.includes('cartoonix') && !(c.url && c.url.startsWith('cartoonix://'))) {
         return false;
       }
     }
@@ -478,6 +531,13 @@ function playChannel(channel) {
     localStorage.setItem('flolite_last_tv_channel_id', channel.id);
   }
 
+  // Reset YouTube iframe if active
+  if (dom.youtubePlayer) {
+    dom.youtubePlayer.src = '';
+    dom.youtubePlayer.classList.add('hidden');
+  }
+  dom.video.classList.remove('hidden');
+
   dom.spinner.classList.remove('hidden');
   updateDetailsPanel(channel);
   showOsd(channel);
@@ -486,9 +546,6 @@ function playChannel(channel) {
   document.querySelectorAll('.channel-card').forEach(el => el.classList.remove('active'));
   const card = dom.channelsContainer.querySelector(`.channel-card[data-index="${state.filteredChannels.indexOf(channel)}"]`);
   if (card) card.classList.add('active');
-
-  const streamUrl = resolveStreamUrl(channel);
-  console.log(`[FloLiteTV] Redare ${channel.name} -> ${streamUrl}`);
 
   updateMediaSession(channel);
 
@@ -511,6 +568,46 @@ function playChannel(channel) {
   dom.video.pause();
   dom.video.removeAttribute('src');
   dom.video.load();
+
+  const rawUrl = (channel.streams && channel.streams.length > 0) ? channel.streams[0].url : channel.url;
+
+  // Handle Cartoonix Live 24/7 Channels
+  if (rawUrl && (rawUrl.startsWith('cartoonix://') || (channel.group && channel.group.toLowerCase() === 'cartoonix'))) {
+    const channelKey = rawUrl.startsWith('cartoonix://') ? rawUrl.replace('cartoonix://', '') : '__all__';
+    fetch(`https://cartoonix.ro/api/live/now?channel=${encodeURIComponent(channelKey)}`, {
+      headers: {
+        'Authorization': `Bearer ${CARTOONIX_BEARER_TOKEN}`
+      }
+    })
+    .then(r => r.json())
+    .then(json => {
+      const cur = json.data && json.data.current ? json.data.current : (json.current || null);
+      const offset = json.data && json.data.offset !== undefined ? json.data.offset : (json.offset || 0);
+      if (cur && cur.video_url) {
+        const streamUrl = 'https://cartoonix.ro/api' + encodeUriPath(cur.video_url);
+        dom.video.src = streamUrl;
+        dom.video.onloadedmetadata = () => {
+          if (offset > 0 && offset < dom.video.duration) {
+            dom.video.currentTime = offset;
+          }
+        };
+        dom.video.play().catch(e => console.warn('Cartoonix play error:', e));
+        dom.spinner.classList.add('hidden');
+        dom.btnPlayPause.textContent = '⏸';
+        if (cur.show_title) {
+          dom.osdEpgTitle.textContent = `${cur.show_title} - ${cur.episode_title || ''}`;
+          dom.osdEpgNow.classList.remove('hidden');
+        }
+      }
+    })
+    .catch(err => {
+      console.warn('Cartoonix live fetch error:', err);
+    });
+    return;
+  }
+
+  const streamUrl = resolveStreamUrl(channel);
+  console.log(`[FloLiteTV] Redare ${channel.name} -> ${streamUrl}`);
 
   // Check HLS.js support vs Native HTML5 Audio/Video
   // Note: Only use Hls.js for actual .m3u8 playlists. Direct MP3/AAC radio streams MUST play via native HTML5!
@@ -969,6 +1066,54 @@ function updateStatsHUD() {
 function setupEventListeners() {
   dom.btnModeTv.addEventListener('click', () => switchMode('tv'));
   dom.btnModeRadio.addEventListener('click', () => switchMode('radio'));
+  if (dom.btnModeVod) {
+    dom.btnModeVod.addEventListener('click', () => switchMode('vod'));
+  }
+
+  if (dom.tabVodCartoonix) {
+    dom.tabVodCartoonix.addEventListener('click', () => {
+      state.activeVodPlatform = 'cartoonix';
+      state.currentVodCategory = 'Toate';
+      renderVodUI();
+    });
+  }
+
+  if (dom.tabVodCinepub) {
+    dom.tabVodCinepub.addEventListener('click', () => {
+      state.activeVodPlatform = 'cinepub';
+      state.currentVodCategory = 'Toate';
+      renderVodUI();
+    });
+  }
+
+  if (dom.vodSearchInput) {
+    dom.vodSearchInput.addEventListener('input', (e) => {
+      state.vodSearchQuery = e.target.value;
+      if (dom.btnClearVodSearch) {
+        dom.btnClearVodSearch.classList.toggle('hidden', !state.vodSearchQuery);
+      }
+      renderVodGrid();
+    });
+  }
+
+  if (dom.btnClearVodSearch) {
+    dom.btnClearVodSearch.addEventListener('click', () => {
+      state.vodSearchQuery = '';
+      dom.vodSearchInput.value = '';
+      dom.btnClearVodSearch.classList.add('hidden');
+      renderVodGrid();
+    });
+  }
+
+  if (dom.btnCloseVodModal) {
+    dom.btnCloseVodModal.addEventListener('click', closeVodModal);
+  }
+
+  if (dom.vodModal) {
+    dom.vodModal.addEventListener('click', (e) => {
+      if (e.target === dom.vodModal) closeVodModal();
+    });
+  }
 
   dom.searchInput.addEventListener('input', (e) => {
     state.searchQuery = e.target.value;
@@ -1392,6 +1537,285 @@ function setupAboutModal() {
       if (e.target === dom.aboutModal) dom.aboutModal.classList.add('hidden');
     });
   }
+}
+
+// Encode URI Path for Cartoonix streaming assets
+function encodeUriPath(path) {
+  if (!path) return '';
+  return path.split('/').map(part => encodeURIComponent(part)).join('/');
+}
+
+// VOD Library: Cartoonix & Cinepub
+async function loadAndRenderVod() {
+  if (!state.vodLoaded) {
+    dom.spinner.classList.remove('hidden');
+    try {
+      const [cartoonixRes, cinepubRes] = await Promise.all([
+        fetch('cartoonix_catalog.json').then(r => r.json()).catch(() => []),
+        fetch('cinepub_catalog.json').then(r => r.json()).catch(() => ({ movies: [] }))
+      ]);
+      state.cartoonixCatalog = Array.isArray(cartoonixRes) ? cartoonixRes : [];
+      state.cinepubCatalog = Array.isArray(cinepubRes.movies) ? cinepubRes.movies : (Array.isArray(cinepubRes) ? cinepubRes : []);
+      state.vodLoaded = true;
+    } catch (e) {
+      console.error('Error loading VOD catalogs:', e);
+    } finally {
+      dom.spinner.classList.add('hidden');
+    }
+  }
+
+  renderVodUI();
+}
+
+function renderVodUI() {
+  if (state.activeVodPlatform === 'cartoonix') {
+    dom.tabVodCartoonix.classList.add('active');
+    dom.tabVodCinepub.classList.remove('active');
+  } else {
+    dom.tabVodCinepub.classList.add('active');
+    dom.tabVodCartoonix.classList.remove('active');
+  }
+
+  buildVodCategories();
+  renderVodGrid();
+}
+
+function buildVodCategories() {
+  let categories = ['Toate'];
+  if (state.activeVodPlatform === 'cartoonix') {
+    categories = ['Toate', 'Cartoon Network', 'Jetix', 'Minimax', 'Boomerang'];
+  } else {
+    categories = ['Toate', 'Lungmetraje', 'Scurtmetraje', 'Documentare', 'Animație', 'UNATC', 'UBB', 'Experimentale'];
+  }
+
+  dom.vodCategoriesBar.innerHTML = '';
+  categories.forEach(cat => {
+    const chip = document.createElement('button');
+    const isActive = cat.toLowerCase() === state.currentVodCategory.toLowerCase();
+    chip.className = `vod-chip ${isActive ? 'active' : ''}`;
+    chip.textContent = cat;
+    chip.addEventListener('click', () => {
+      state.currentVodCategory = cat;
+      document.querySelectorAll('.vod-chip').forEach(el => el.classList.remove('active'));
+      chip.classList.add('active');
+      renderVodGrid();
+    });
+    dom.vodCategoriesBar.appendChild(chip);
+  });
+}
+
+function renderVodGrid() {
+  dom.vodGridContainer.innerHTML = '';
+  const query = (state.vodSearchQuery || '').toLowerCase().trim();
+  const cat = (state.currentVodCategory || 'Toate').toLowerCase();
+
+  if (state.activeVodPlatform === 'cartoonix') {
+    let list = state.cartoonixCatalog;
+    if (cat !== 'toate') {
+      list = list.filter(s => (s.channel && s.channel.toLowerCase() === cat) || (s.category && s.category.toLowerCase().includes(cat)));
+    }
+    if (query) {
+      list = list.filter(s => (s.title && s.title.toLowerCase().includes(query)) || (s.description && s.description.toLowerCase().includes(query)));
+    }
+
+    if (list.length === 0) {
+      dom.vodGridContainer.innerHTML = `<div class="vod-empty" style="padding: 40px; text-align: center; color: #94a3b8; font-size: 15px;">🔍 Niciun desen animat găsit</div>`;
+      return;
+    }
+
+    list.forEach(show => {
+      const card = document.createElement('div');
+      card.className = 'vod-card';
+      const thumb = show.thumbnail || show.banner || 'logos/cartoonix.png';
+      const epCount = show.episodes ? show.episodes.length : 0;
+      card.innerHTML = `
+        <div class="vod-card-thumb-wrap">
+          <img class="vod-card-thumb" src="${thumb}" alt="${show.title}" loading="lazy" onerror="this.src='logos/cartoonix.png'">
+          <span class="vod-card-badge">${show.channel || 'Cartoonix'}</span>
+        </div>
+        <div class="vod-card-info">
+          <div class="vod-card-title">${show.title}</div>
+          <div class="vod-card-sub">${epCount} Episoade • ${show.year || 'Dublat'}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => openCartoonixDetails(show));
+      dom.vodGridContainer.appendChild(card);
+    });
+  } else {
+    // Cinepub
+    let list = state.cinepubCatalog;
+    if (cat !== 'toate') {
+      list = list.filter(m => m.categories && m.categories.some(c => c.toLowerCase().includes(cat)));
+    }
+    if (query) {
+      list = list.filter(m => (m.title && m.title.toLowerCase().includes(query)) || (m.synopsis && m.synopsis.toLowerCase().includes(query)) || (m.year && m.year.includes(query)));
+    }
+
+    if (list.length === 0) {
+      dom.vodGridContainer.innerHTML = `<div class="vod-empty" style="padding: 40px; text-align: center; color: #94a3b8; font-size: 15px;">🔍 Niciun film Cinepub găsit</div>`;
+      return;
+    }
+
+    list.forEach(movie => {
+      const card = document.createElement('div');
+      card.className = 'vod-card';
+      const poster = movie.poster || 'logos/cinepub.png';
+      card.innerHTML = `
+        <div class="vod-card-thumb-wrap">
+          <img class="vod-card-thumb" src="${poster}" alt="${movie.title}" loading="lazy" onerror="this.src='logos/cinepub.png'">
+          <span class="vod-card-badge" style="color: #F59E0B;">Cinepub</span>
+        </div>
+        <div class="vod-card-info">
+          <div class="vod-card-title">${movie.title}</div>
+          <div class="vod-card-sub">${movie.year || ''} • ${movie.duration || 'Online'}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => openCinepubDetails(movie));
+      dom.vodGridContainer.appendChild(card);
+    });
+  }
+}
+
+function openCartoonixDetails(show) {
+  dom.vodModalTitle.textContent = show.title;
+  const thumb = show.thumbnail || show.banner || 'logos/cartoonix.png';
+  const episodes = show.episodes || [];
+
+  let epsHtml = '';
+  episodes.forEach((ep, idx) => {
+    epsHtml += `
+      <button class="vod-ep-btn" data-idx="${idx}">
+        <span class="vod-ep-num">#${idx + 1}</span>
+        <span class="vod-ep-title">${ep.title}</span>
+      </button>
+    `;
+  });
+
+  dom.vodModalBody.innerHTML = `
+    <div class="vod-detail-hero">
+      <img src="${thumb}" class="vod-detail-poster" alt="${show.title}" onerror="this.src='logos/cartoonix.png'">
+      <div class="vod-detail-meta">
+        <h4 class="vod-detail-title">${show.title}</h4>
+        <div class="vod-detail-badges">
+          <span class="vod-meta-badge">${show.channel || 'Desene'}</span>
+          <span class="vod-meta-badge">${episodes.length} Episoade</span>
+          ${show.year ? `<span class="vod-meta-badge">${show.year}</span>` : ''}
+        </div>
+        <p class="vod-detail-synopsis">${show.description || 'Desene animate clasice dublate în limba română din colecția Cartoonix.'}</p>
+      </div>
+    </div>
+    <div class="vod-episodes-heading">Episoade Disponibile (${episodes.length}):</div>
+    <div class="vod-episodes-grid">
+      ${epsHtml}
+    </div>
+  `;
+
+  dom.vodModalBody.querySelectorAll('.vod-ep-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx, 10);
+      const ep = episodes[idx];
+      if (ep) {
+        playCartoonixEpisode(show, ep);
+      }
+    });
+  });
+
+  dom.vodModal.classList.remove('hidden');
+}
+
+function openCinepubDetails(movie) {
+  dom.vodModalTitle.textContent = movie.title;
+  const poster = movie.poster || 'logos/cinepub.png';
+
+  dom.vodModalBody.innerHTML = `
+    <div class="vod-detail-hero">
+      <img src="${poster}" class="vod-detail-poster" alt="${movie.title}" onerror="this.src='logos/cinepub.png'">
+      <div class="vod-detail-meta">
+        <h4 class="vod-detail-title">${movie.title}</h4>
+        <div class="vod-detail-badges">
+          <span class="vod-meta-badge" style="color: #F59E0B;">Cinepub Oficial</span>
+          ${movie.year ? `<span class="vod-meta-badge">${movie.year}</span>` : ''}
+          ${movie.duration ? `<span class="vod-meta-badge">${movie.duration}</span>` : ''}
+        </div>
+        <p class="vod-detail-synopsis">${movie.synopsis || 'Film din arhiva de patrimoniu a cinematografiei românești oferit prin Cinepub.'}</p>
+        ${movie.director ? `<p class="vod-detail-synopsis" style="margin-top: 4px;"><strong>Regie:</strong> ${movie.director}</p>` : ''}
+        <button id="btn-watch-cinepub-now" class="vod-btn-play-movie">▶ Vizionează Filmul Acum</button>
+      </div>
+    </div>
+  `;
+
+  const watchBtn = dom.vodModalBody.querySelector('#btn-watch-cinepub-now');
+  if (watchBtn) {
+    watchBtn.addEventListener('click', () => {
+      playCinepubMovie(movie);
+    });
+  }
+
+  dom.vodModal.classList.remove('hidden');
+}
+
+function closeVodModal() {
+  if (dom.vodModal) {
+    dom.vodModal.classList.add('hidden');
+  }
+}
+
+function playCartoonixEpisode(show, episode) {
+  if (dom.youtubePlayer) {
+    dom.youtubePlayer.src = '';
+    dom.youtubePlayer.classList.add('hidden');
+  }
+  dom.video.classList.remove('hidden');
+
+  if (state.hls) {
+    state.hls.destroy();
+    state.hls = null;
+  }
+
+  const fullUrl = 'https://cartoonix.ro/api' + encodeUriPath(episode.video_url);
+  dom.video.src = fullUrl;
+  dom.video.play().catch(e => console.warn('Episode play error:', e));
+
+  dom.osdName.textContent = show.title;
+  dom.osdGroup.textContent = show.channel || 'Cartoonix';
+  dom.osdEpgTitle.textContent = episode.title;
+  showOsd({
+    name: show.title,
+    group: show.channel || 'Cartoonix',
+    resolution: 'FHD',
+    logo: 'logos/cartoonix.png'
+  });
+
+  closeVodModal();
+  dom.playerWrapper.scrollIntoView({ behavior: 'smooth' });
+}
+
+function playCinepubMovie(movie) {
+  if (state.hls) {
+    state.hls.destroy();
+    state.hls = null;
+  }
+  dom.video.pause();
+  dom.video.removeAttribute('src');
+  dom.video.classList.add('hidden');
+
+  if (dom.youtubePlayer) {
+    dom.youtubePlayer.classList.remove('hidden');
+    // cc_load_policy=1&cc_lang_pref=ro&hl=ro for default Romanian subtitles
+    dom.youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${movie.yt_id}?autoplay=1&cc_load_policy=1&cc_lang_pref=ro&hl=ro&rel=0`;
+  }
+
+  dom.osdName.textContent = movie.title;
+  dom.osdGroup.textContent = `Cinepub • ${movie.year || ''}`;
+  showOsd({
+    name: movie.title,
+    group: `Cinepub • ${movie.year || ''}`,
+    resolution: 'HD',
+    logo: 'logos/cinepub.png'
+  });
+
+  closeVodModal();
+  dom.playerWrapper.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Start

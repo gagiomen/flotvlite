@@ -1,12 +1,12 @@
 {
   "name": "flolite-web",
-  "version": "3.0.0",
-  "description": "FloLite Universal 3.0 (Apex Titanium) - Responsive Web Client & Stream Proxy",
+  "version": "4.0.0",
+  "description": "FloLite Universal 4.0 - Responsive Web Client, VOD Hub (Cartoonix & Cinepub) & Stream Proxy",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": ["iptv", "web", "player", "hls", "radio", "tv"],
+  "keywords": ["iptv", "web", "player", "hls", "radio", "tv", "vod", "cartoonix", "cinepub"],
   "author": "",
   "license": "MIT"
 }

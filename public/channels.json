@@ -5805,5 +5805,90 @@
     },
     "logo": null,
     "epg_id": "Stingray.Classica.ro"
+  },
+  {
+    "id": "Cartoonix:General",
+    "name": "Cartoonix General",
+    "group": "Cartoonix",
+    "resolution": "FHD",
+    "is_radio": false,
+    "url": "cartoonix://__all__",
+    "logo": "logos/cartoonix.png",
+    "epg_id": "cartoonix.general",
+    "streams": [
+      {
+        "name": "Cartoonix Live (Mix Copilărie)",
+        "url": "cartoonix://__all__",
+        "resolution": "FHD"
+      }
+    ]
+  },
+  {
+    "id": "Cartoonix:Boomerang",
+    "name": "Cartoonix Boomerang",
+    "group": "Cartoonix",
+    "resolution": "FHD",
+    "is_radio": false,
+    "url": "cartoonix://Boomerang",
+    "logo": "logos/Boomerang383.png",
+    "epg_id": "cartoonix.boomerang",
+    "streams": [
+      {
+        "name": "Cartoonix Live (Boomerang)",
+        "url": "cartoonix://Boomerang",
+        "resolution": "FHD"
+      }
+    ]
+  },
+  {
+    "id": "Cartoonix:CartoonNetwork",
+    "name": "Cartoonix Cartoon Network",
+    "group": "Cartoonix",
+    "resolution": "FHD",
+    "is_radio": false,
+    "url": "cartoonix://Cartoon Network",
+    "logo": "logos/CartoonNetwork100.png",
+    "epg_id": "cartoonix.cartoonnetwork",
+    "streams": [
+      {
+        "name": "Cartoonix Live (Cartoon Network)",
+        "url": "cartoonix://Cartoon Network",
+        "resolution": "FHD"
+      }
+    ]
+  },
+  {
+    "id": "Cartoonix:Minimax",
+    "name": "Cartoonix Minimax",
+    "group": "Cartoonix",
+    "resolution": "FHD",
+    "is_radio": false,
+    "url": "cartoonix://Minimax",
+    "logo": "logos/Minimax027.png",
+    "epg_id": "cartoonix.minimax",
+    "streams": [
+      {
+        "name": "Cartoonix Live (Minimax)",
+        "url": "cartoonix://Minimax",
+        "resolution": "FHD"
+      }
+    ]
+  },
+  {
+    "id": "Cartoonix:Jetix",
+    "name": "Cartoonix Jetix",
+    "group": "Cartoonix",
+    "resolution": "FHD",
+    "is_radio": false,
+    "url": "cartoonix://Jetix",
+    "logo": "logos/jetix.png",
+    "epg_id": "cartoonix.jetix",
+    "streams": [
+      {
+        "name": "Cartoonix Live (Jetix)",
+        "url": "cartoonix://Jetix",
+        "resolution": "FHD"
+      }
+    ]
   }
 ]
