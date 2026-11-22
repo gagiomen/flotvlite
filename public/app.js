@@ -33,16 +33,29 @@ const state = {
   vodLoaded: false,
   activeVodPlatform: 'cartoonix', // 'cartoonix' or 'cinepub'
   currentVodCategory: 'Toate',
-  vodSearchQuery: ''
+  vodSearchQuery: '',
+  currentVodShow: null,
+  currentVodEpisode: null,
+  currentVodMovie: null,
+  isVodPlaying: false
 };
 
 const CARTOONIX_BEARER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlOTk4M2UxNS0yZWIwLTQxNWQtODFlMS1jZGFmYTQxZGVjNmQiLCJlbWFpbCI6ImN4dXNlcl8xNzk0ODcwNzEyQGZsZHViYWkuY29tIiwiZXhwIjoxNzk1NDc1NTE4LCJ0eXBlIjoiYWNjZXNzIn0.mh07RK75jF2zb1l9KdVvsBHSusfoGfD0hgEgFvzMMbo";
 
 // DOM References
 const dom = {
+  mainContent: document.getElementById('main-content'),
+  playerSection: document.getElementById('player-section'),
   video: document.getElementById('video-player'),
   youtubePlayer: document.getElementById('youtube-player'),
   playerWrapper: document.getElementById('player-wrapper'),
+  vodTheatreBar: document.getElementById('vod-theatre-bar'),
+  btnVodBackCatalog: document.getElementById('btn-vod-back-catalog'),
+  vodTheatreBadge: document.getElementById('vod-theatre-badge'),
+  vodTheatreTitle: document.getElementById('vod-theatre-title'),
+  btnVodPrevEp: document.getElementById('btn-vod-prev-ep'),
+  btnVodNextEp: document.getElementById('btn-vod-next-ep'),
+  btnVodClosePlayer: document.getElementById('btn-vod-close-player'),
   playerControlsBar: document.querySelector('.player-controls-bar'),
   radioBackdrop: document.getElementById('radio-backdrop'),
   radioLogo: document.getElementById('radio-logo'),
@@ -94,6 +107,9 @@ const dom = {
   btnModeRadio: document.getElementById('btn-mode-radio'),
   btnModeVod: document.getElementById('btn-mode-vod'),
   vodSection: document.getElementById('vod-section'),
+  vodNowWatchingBar: document.getElementById('vod-now-watching-bar'),
+  nowWatchingTitle: document.getElementById('now-watching-title'),
+  btnScrollToPlayer: document.getElementById('btn-scroll-to-player'),
   tabVodCartoonix: document.getElementById('tab-vod-cartoonix'),
   tabVodCinepub: document.getElementById('tab-vod-cinepub'),
   vodSearchInput: document.getElementById('vod-search-input'),
@@ -177,18 +193,62 @@ function switchMode(mode, playTarget = true) {
   localStorage.setItem('flolite_last_mode', mode);
 
   if (mode === 'vod') {
+    if (dom.mainContent) {
+      dom.mainContent.classList.add('mode-vod');
+      dom.mainContent.classList.remove('mode-tv', 'mode-radio');
+    }
+
     dom.btnModeVod.classList.add('active');
     dom.btnModeTv.classList.remove('active');
     dom.btnModeRadio.classList.remove('active');
+
     dom.channelsSection.classList.add('hidden');
     dom.vodSection.classList.remove('hidden');
+
+    // Pause any live TV or Radio stream
+    if (state.hls) {
+      state.hls.destroy();
+      state.hls = null;
+    }
+    dom.video.pause();
+    dom.radioBackdrop.classList.add('hidden');
+
+    // If not actively playing a VOD title, hide player section so catalog is 100% full width
+    if (!state.isVodPlaying) {
+      if (dom.playerSection) dom.playerSection.classList.add('hidden');
+      if (dom.mainContent) dom.mainContent.classList.remove('vod-playing');
+      if (dom.vodTheatreBar) dom.vodTheatreBar.classList.add('hidden');
+      if (dom.vodNowWatchingBar) dom.vodNowWatchingBar.classList.add('hidden');
+    } else {
+      if (dom.playerSection) dom.playerSection.classList.remove('hidden');
+      if (dom.mainContent) dom.mainContent.classList.add('vod-playing');
+      if (dom.vodTheatreBar) dom.vodTheatreBar.classList.remove('hidden');
+      if (dom.vodNowWatchingBar) dom.vodNowWatchingBar.classList.remove('hidden');
+    }
+
     loadAndRenderVod();
     return;
   }
 
   // TV or Radio mode
+  if (dom.mainContent) {
+    dom.mainContent.classList.remove('mode-vod', 'vod-playing');
+    dom.mainContent.classList.add(mode === 'tv' ? 'mode-tv' : 'mode-radio');
+  }
+
+  if (dom.vodTheatreBar) dom.vodTheatreBar.classList.add('hidden');
+  if (dom.vodNowWatchingBar) dom.vodNowWatchingBar.classList.add('hidden');
   dom.vodSection.classList.add('hidden');
+  if (dom.playerSection) dom.playerSection.classList.remove('hidden');
   dom.channelsSection.classList.remove('hidden');
+
+  // Stop any active VOD YouTube iframe
+  if (dom.youtubePlayer) {
+    dom.youtubePlayer.src = '';
+    dom.youtubePlayer.classList.add('hidden');
+  }
+  state.isVodPlaying = false;
+
   state.currentCategory = 'TOATE';
 
   if (mode === 'tv') {
@@ -1085,12 +1145,38 @@ function setupEventListeners() {
     });
   }
 
+  if (dom.btnVodBackCatalog) {
+    dom.btnVodBackCatalog.addEventListener('click', closeVodPlayer);
+  }
+
+  if (dom.btnVodClosePlayer) {
+    dom.btnVodClosePlayer.addEventListener('click', closeVodPlayer);
+  }
+
+  if (dom.btnVodPrevEp) {
+    dom.btnVodPrevEp.addEventListener('click', playPreviousVodEpisode);
+  }
+
+  if (dom.btnVodNextEp) {
+    dom.btnVodNextEp.addEventListener('click', playNextVodEpisode);
+  }
+
+  if (dom.btnScrollToPlayer) {
+    dom.btnScrollToPlayer.addEventListener('click', () => {
+      if (dom.playerSection) {
+        dom.playerSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
   if (dom.vodSearchInput) {
     dom.vodSearchInput.addEventListener('input', (e) => {
       state.vodSearchQuery = e.target.value;
+      if (dom.searchInput) dom.searchInput.value = e.target.value;
       if (dom.btnClearVodSearch) {
         dom.btnClearVodSearch.classList.toggle('hidden', !state.vodSearchQuery);
       }
+      dom.btnClearSearch.classList.toggle('hidden', !state.vodSearchQuery);
       renderVodGrid();
     });
   }
@@ -1099,7 +1185,9 @@ function setupEventListeners() {
     dom.btnClearVodSearch.addEventListener('click', () => {
       state.vodSearchQuery = '';
       dom.vodSearchInput.value = '';
+      if (dom.searchInput) dom.searchInput.value = '';
       dom.btnClearVodSearch.classList.add('hidden');
+      dom.btnClearSearch.classList.add('hidden');
       renderVodGrid();
     });
   }
@@ -1115,12 +1203,29 @@ function setupEventListeners() {
   }
 
   dom.searchInput.addEventListener('input', (e) => {
+    if (state.currentMode === 'vod') {
+      state.vodSearchQuery = e.target.value;
+      if (dom.vodSearchInput) dom.vodSearchInput.value = e.target.value;
+      if (dom.btnClearVodSearch) dom.btnClearVodSearch.classList.toggle('hidden', !state.vodSearchQuery);
+      dom.btnClearSearch.classList.toggle('hidden', !state.vodSearchQuery);
+      renderVodGrid();
+      return;
+    }
     state.searchQuery = e.target.value;
     dom.btnClearSearch.classList.toggle('hidden', !state.searchQuery);
     filterAndRenderChannels();
   });
 
   dom.btnClearSearch.addEventListener('click', () => {
+    if (state.currentMode === 'vod') {
+      state.vodSearchQuery = '';
+      dom.searchInput.value = '';
+      if (dom.vodSearchInput) dom.vodSearchInput.value = '';
+      dom.btnClearSearch.classList.add('hidden');
+      if (dom.btnClearVodSearch) dom.btnClearVodSearch.classList.add('hidden');
+      renderVodGrid();
+      return;
+    }
     state.searchQuery = '';
     dom.searchInput.value = '';
     dom.btnClearSearch.classList.add('hidden');
@@ -1760,6 +1865,11 @@ function closeVodModal() {
 }
 
 function playCartoonixEpisode(show, episode) {
+  state.currentVodShow = show;
+  state.currentVodEpisode = episode;
+  state.currentVodMovie = null;
+  state.isVodPlaying = true;
+
   if (dom.youtubePlayer) {
     dom.youtubePlayer.src = '';
     dom.youtubePlayer.classList.add('hidden');
@@ -1775,6 +1885,26 @@ function playCartoonixEpisode(show, episode) {
   dom.video.src = fullUrl;
   dom.video.play().catch(e => console.warn('Episode play error:', e));
 
+  // Enable Theatre Mode & show VOD Theatre Controls
+  if (dom.mainContent) dom.mainContent.classList.add('vod-playing');
+  if (dom.playerSection) dom.playerSection.classList.remove('hidden');
+  if (dom.vodTheatreBar) {
+    dom.vodTheatreBar.classList.remove('hidden');
+    dom.vodTheatreBadge.textContent = 'CARTOONIX';
+    dom.vodTheatreBadge.className = 'vod-theatre-badge badge-cartoonix';
+    dom.vodTheatreTitle.textContent = `${show.title} • ${episode.title}`;
+
+    const eps = show.episodes || [];
+    const idx = eps.indexOf(episode);
+    dom.btnVodPrevEp.classList.toggle('hidden', idx <= 0);
+    dom.btnVodNextEp.classList.toggle('hidden', idx < 0 || idx >= eps.length - 1);
+  }
+
+  if (dom.vodNowWatchingBar) {
+    dom.vodNowWatchingBar.classList.remove('hidden');
+    dom.nowWatchingTitle.textContent = `${show.title} • ${episode.title}`;
+  }
+
   dom.osdName.textContent = show.title;
   dom.osdGroup.textContent = show.channel || 'Cartoonix';
   dom.osdEpgTitle.textContent = episode.title;
@@ -1786,10 +1916,17 @@ function playCartoonixEpisode(show, episode) {
   });
 
   closeVodModal();
-  dom.playerWrapper.scrollIntoView({ behavior: 'smooth' });
+  if (dom.playerSection) {
+    dom.playerSection.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 function playCinepubMovie(movie) {
+  state.currentVodShow = null;
+  state.currentVodEpisode = null;
+  state.currentVodMovie = movie;
+  state.isVodPlaying = true;
+
   if (state.hls) {
     state.hls.destroy();
     state.hls = null;
@@ -1804,6 +1941,23 @@ function playCinepubMovie(movie) {
     dom.youtubePlayer.src = `https://www.youtube-nocookie.com/embed/${movie.yt_id}?autoplay=1&cc_load_policy=1&cc_lang_pref=ro&hl=ro&rel=0`;
   }
 
+  // Enable Theatre Mode & show VOD Theatre Controls
+  if (dom.mainContent) dom.mainContent.classList.add('vod-playing');
+  if (dom.playerSection) dom.playerSection.classList.remove('hidden');
+  if (dom.vodTheatreBar) {
+    dom.vodTheatreBar.classList.remove('hidden');
+    dom.vodTheatreBadge.textContent = 'CINEPUB';
+    dom.vodTheatreBadge.className = 'vod-theatre-badge badge-cinepub';
+    dom.vodTheatreTitle.textContent = `${movie.title} (${movie.year || 'Film Online'})`;
+    dom.btnVodPrevEp.classList.add('hidden');
+    dom.btnVodNextEp.classList.add('hidden');
+  }
+
+  if (dom.vodNowWatchingBar) {
+    dom.vodNowWatchingBar.classList.remove('hidden');
+    dom.nowWatchingTitle.textContent = `${movie.title} (${movie.year || 'Film Online'})`;
+  }
+
   dom.osdName.textContent = movie.title;
   dom.osdGroup.textContent = `Cinepub • ${movie.year || ''}`;
   showOsd({
@@ -1814,7 +1968,52 @@ function playCinepubMovie(movie) {
   });
 
   closeVodModal();
-  dom.playerWrapper.scrollIntoView({ behavior: 'smooth' });
+  if (dom.playerSection) {
+    dom.playerSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function closeVodPlayer() {
+  state.isVodPlaying = false;
+  state.currentVodShow = null;
+  state.currentVodEpisode = null;
+  state.currentVodMovie = null;
+
+  dom.video.pause();
+  dom.video.removeAttribute('src');
+  dom.video.load();
+
+  if (dom.youtubePlayer) {
+    dom.youtubePlayer.src = '';
+    dom.youtubePlayer.classList.add('hidden');
+  }
+
+  if (dom.mainContent) dom.mainContent.classList.remove('vod-playing');
+  if (dom.playerSection) dom.playerSection.classList.add('hidden');
+  if (dom.vodTheatreBar) dom.vodTheatreBar.classList.add('hidden');
+  if (dom.vodNowWatchingBar) dom.vodNowWatchingBar.classList.add('hidden');
+
+  if (dom.mainContent) {
+    dom.mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function playNextVodEpisode() {
+  if (!state.currentVodShow || !state.currentVodEpisode) return;
+  const eps = state.currentVodShow.episodes || [];
+  const curIdx = eps.indexOf(state.currentVodEpisode);
+  if (curIdx >= 0 && curIdx + 1 < eps.length) {
+    playCartoonixEpisode(state.currentVodShow, eps[curIdx + 1]);
+  }
+}
+
+function playPreviousVodEpisode() {
+  if (!state.currentVodShow || !state.currentVodEpisode) return;
+  const eps = state.currentVodShow.episodes || [];
+  const curIdx = eps.indexOf(state.currentVodEpisode);
+  if (curIdx > 0) {
+    playCartoonixEpisode(state.currentVodShow, eps[curIdx - 1]);
+  }
 }
 
 // Start

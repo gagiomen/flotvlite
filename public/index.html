@@ -54,9 +54,26 @@
     </header>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content mode-tv" id="main-content">
       <!-- Player Section -->
-      <section class="player-section">
+      <section class="player-section" id="player-section">
+        <!-- VOD Theatre Header Bar (Visible ONLY in VOD Mode when video is playing) -->
+        <div id="vod-theatre-bar" class="vod-theatre-bar hidden">
+          <button id="btn-vod-back-catalog" class="btn-theatre-back" title="Înapoi la Catalogul VOD">
+            <span class="theatre-back-icon">←</span>
+            <span class="theatre-back-text">Catalog VOD</span>
+          </button>
+          <div class="vod-theatre-meta" id="vod-theatre-meta">
+            <span class="vod-theatre-badge" id="vod-theatre-badge">CARTOONIX</span>
+            <span class="vod-theatre-title" id="vod-theatre-title">Titlu Video</span>
+          </div>
+          <div class="vod-theatre-actions">
+            <button id="btn-vod-prev-ep" class="btn-theatre-action hidden" title="Episodul Anterior">⏮ Ep. Anterior</button>
+            <button id="btn-vod-next-ep" class="btn-theatre-action hidden" title="Episodul Următor">Ep. Următor ⏭</button>
+            <button id="btn-vod-close-player" class="btn-theatre-close" title="Închide Player">&times;</button>
+          </div>
+        </div>
+
         <div class="player-wrapper" id="player-wrapper">
           <!-- Video Player -->
           <video id="video-player" playsinline preload="auto"></video>
@@ -231,6 +248,16 @@
               <button id="btn-clear-vod-search" class="btn-clear-icon hidden">&times;</button>
             </div>
           </div>
+        </div>
+
+        <!-- VOD Now Watching Floating Strip (when video is playing) -->
+        <div id="vod-now-watching-bar" class="vod-now-watching-bar hidden">
+          <div class="now-watching-left">
+            <span class="now-watching-pulse"></span>
+            <span class="now-watching-label">Vizionezi acum:</span>
+            <strong class="now-watching-title" id="now-watching-title">--</strong>
+          </div>
+          <button id="btn-scroll-to-player" class="btn-scroll-player">▲ Mergi la Player</button>
         </div>
 
         <!-- VOD Category Chips -->
