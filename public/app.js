@@ -611,7 +611,6 @@ function playChannel(channel) {
 
   // Check HLS.js support vs Native HTML5 Audio/Video
   // Note: Only use Hls.js for actual .m3u8 playlists. Direct MP3/AAC radio streams MUST play via native HTML5!
-  const rawUrl = (channel.streams && channel.streams.length > 0) ? channel.streams[0].url : channel.url;
   const isHls = Boolean(rawUrl && (rawUrl.includes('.m3u8') || rawUrl.includes('playlist') || (!channel.is_radio && !rawUrl.includes('.mp4') && !rawUrl.includes('.mp3'))));
 
   if (isHls && window.Hls && Hls.isSupported()) {
