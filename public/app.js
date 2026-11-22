@@ -1478,7 +1478,7 @@ function updateMediaSession(channel) {
       const logoUrl = channel.logo ? (window.location.origin + '/' + channel.logo) : (window.location.origin + '/logos/acasa4k.png');
       navigator.mediaSession.metadata = new MediaMetadata({
         title: channel.name,
-        artist: channel.is_radio ? 'Radio Live • FloLite 3.0' : 'TV Live • FloLite 3.0',
+        artist: channel.is_radio ? 'Radio Live • FloLite 4.0' : 'TV Live • FloLite 4.0',
         album: channel.group || 'FloLite Universal',
         artwork: [
           { src: logoUrl, sizes: '128x128', type: 'image/png' },
