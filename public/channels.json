@@ -1929,6 +1929,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "AntenaPlay CDN (HD)",
+        "url": "https://stream1.antenaplay.ro/zurtv/zurtv/chunklist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1937,12 +1943,18 @@
     "name": "Rapsodia Tv",
     "group": "Muzica Folclorica",
     "is_radio": false,
-    "url": "http://92.86.248.141:8080/ram/playlist.m3u8",
+    "url": "https://hls02ns.antenaplay.ro/hls/rapsoida-tv-sd/index.m3u8",
     "headers": {},
     "logo": "logos/Rapsodia259.png",
     "epg_id": "Rapsodia.TV.ro",
     "resolution": "SD",
     "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/rapsoida-tv-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      },
       {
         "name": "Server 1 (SD)",
         "url": "http://92.86.248.141:8080/ram/playlist.m3u8",
@@ -3324,6 +3336,367 @@
         "name": "Impact TV Official (FHD)",
         "url": "https://online.tvimpact.live/hls/dancetv.m3u8",
         "resolution": "FHD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:AccesDirect",
+    "name": "Acces Direct",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch6/stream.m3u8",
+    "headers": {},
+    "logo": "logos/accesdirect.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch6/stream.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:AntenaInternational",
+    "name": "Antena Internațional",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_sdi06/live2_sdi06.m3u8",
+    "headers": {},
+    "logo": "logos/antenainternational.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_sdi06/live2_sdi06.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:AntenaMonden",
+    "name": "Antena Monden",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/antenamonden.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:AntenaSport",
+    "name": "AntenaSport",
+    "group": "Sport",
+    "is_radio": false,
+    "url": "https://stream1.antenaplay.ro/as/AS.ro/chunklist.m3u8",
+    "headers": {},
+    "logo": "logos/antenasport.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://stream1.antenaplay.ro/as/AS.ro/chunklist.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:DeParinti",
+    "name": "DeParinti.ro",
+    "group": "Desene animate",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch4/stream.m3u8",
+    "headers": {},
+    "logo": "logos/deparinti.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch4/stream.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:EMITV",
+    "name": "EMI TV",
+    "group": "Muzică",
+    "is_radio": false,
+    "url": "https://hls01ns.antenaplay.ro/hls/emi-tv-sd/index.m3u8",
+    "headers": {},
+    "logo": "logos/emitv.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/emi-tv-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:InPuiiMei",
+    "name": "In Puii Mei",
+    "group": "Filme",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch7/stream.m3u8",
+    "headers": {},
+    "logo": "logos/inpuiimei.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch7/stream.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:IneditTV",
+    "name": "Inedit TV",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://hls02ns.antenaplay.ro/hls/inedit-tv-hd/index.m3u8",
+    "headers": {},
+    "logo": "logos/inedittv.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/inedit-tv-hd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:InsulaNonStop",
+    "name": "Insula non stop",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_sdi05/live2_sdi05.m3u8",
+    "headers": {},
+    "logo": "logos/insulanonstop.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_sdi05/live2_sdi05.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:iRoast",
+    "name": "iRoast",
+    "group": "Filme",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch3/stream.m3u8",
+    "headers": {},
+    "logo": "logos/iroast.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch3/stream.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:iUmor",
+    "name": "iUmor",
+    "group": "Filme",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch2/stream.m3u8",
+    "headers": {},
+    "logo": "logos/iumor.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch2/stream.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:KapitalTV",
+    "name": "Kapital TV",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://hls02ns.antenaplay.ro/hls/kapital-tv-sd/index.m3u8",
+    "headers": {},
+    "logo": "logos/kapitaltv.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/kapital-tv-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:MediCOOLTV",
+    "name": "MediCOOL TV",
+    "group": "Documentare",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch1/stream.m3u8",
+    "headers": {},
+    "logo": "logos/medicooltv.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_fast/ch1/stream.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:Mireasa",
+    "name": "Mireasa",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://stream1.antenaplay.ro/live/MireasaExtra/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/mireasa.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://stream1.antenaplay.ro/live/MireasaExtra/playlist.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:MireasaPlus",
+    "name": "Mireasa+",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live2_mireasadoi/live2_mireasadoi.m3u8",
+    "headers": {},
+    "logo": "logos/mireasaplus.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_mireasadoi/live2_mireasadoi.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:NCN",
+    "name": "NCN",
+    "group": "Știri",
+    "is_radio": false,
+    "url": "https://hls01ns.antenaplay.ro/hls/ncn-sd/index.m3u8",
+    "headers": {},
+    "logo": "logos/ncn.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/ncn-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:ObservatorNews",
+    "name": "Observator News",
+    "group": "Știri",
+    "is_radio": false,
+    "url": "https://live77cdn2.antenaplay.ro/live_ObservatorNews/live_ObservatorNews.m3u8",
+    "headers": {},
+    "logo": "logos/observatornews.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live_ObservatorNews/live_ObservatorNews.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:RomanticFMTV",
+    "name": "Romantic FM TV",
+    "group": "Muzică",
+    "is_radio": false,
+    "url": "https://stream1.antenaplay.ro/zurtv/rfmprem/chunklist.m3u8",
+    "headers": {},
+    "logo": "logos/romanticfm.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://stream1.antenaplay.ro/zurtv/rfmprem/chunklist.m3u8",
+        "resolution": "SD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:TVAS",
+    "name": "TV AS",
+    "group": "Muzica Folclorica",
+    "is_radio": false,
+    "url": "https://hls01ns.antenaplay.ro/hls/tv-as-sd/index.m3u8",
+    "headers": {},
+    "logo": "logos/tvas.png",
+    "epg_id": null,
+    "resolution": "SD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (SD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/tv-as-sd/index.m3u8",
+        "resolution": "SD",
         "headers": {}
       }
     ]

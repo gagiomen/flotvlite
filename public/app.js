@@ -553,7 +553,7 @@ function filterAndRenderChannels() {
 // Direct CORS-capable official CDNs (when no custom Referer is required)
 function isCorsDirectCdn(rawUrl) {
   if (!rawUrl || !rawUrl.startsWith('https://')) return false;
-  return /\/\/([^/]+\.)?(antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|cloudfront\.net|wurl\.com|cinerama\.uz|privesc\.eu|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro|rundle\.tv|3qsdn\.com|tvimpact\.live)\b/i.test(rawUrl);
+  return /\/\/([^/]+\.)?((?:live77cdn2|live3vox)\.antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|cloudfront\.net|wurl\.com|cinerama\.uz|privesc\.eu|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro|rundle\.tv|3qsdn\.com|tvimpact\.live)\b/i.test(rawUrl);
 }
 
 function isCanaleTvBlockedOnCf(rawUrl) {
