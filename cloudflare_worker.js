@@ -20,7 +20,7 @@ export default {
     }
 
     const targetUrl = url.searchParams.get('url');
-    const referer = url.searchParams.get('ref') || 'https://canale-tv.net/';
+    const referer = url.searchParams.get('ref') || '';
 
     if (!targetUrl) {
       return new Response('FloLite Universal 3.0 Proxy Ready. Usage: ?url=<stream_url>&ref=<referer>', {
@@ -30,9 +30,14 @@ export default {
     }
 
     try {
+      const isAudioLike = !targetUrl.includes('.m3u8') && (targetUrl.includes('.mp3') || targetUrl.includes('.aac') || targetUrl.includes('listen') || /:\d{4}/.test(targetUrl));
       const upstreamHeaders = new Headers();
-      upstreamHeaders.set('User-Agent', 'IPTVSmartersPlayer');
-      upstreamHeaders.set('Referer', referer);
+      upstreamHeaders.set('User-Agent', isAudioLike
+        ? 'VLC/3.0.18 LibVLC/3.0.18'
+        : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
+      if (referer) {
+        upstreamHeaders.set('Referer', referer);
+      }
       upstreamHeaders.set('Accept', '*/*');
 
       const range = request.headers.get('range');
@@ -64,6 +69,8 @@ export default {
       const baseTargetUrl = upstreamRes.url || targetUrl;
       const origin = url.origin;
 
+      const refSuffix = referer ? `&ref=${encodeURIComponent(referer)}` : '';
+
       if (isPlaylist && upstreamRes.status === 200) {
         const text = await upstreamRes.text();
         const lines = text.split('\n');
@@ -80,17 +87,17 @@ export default {
             if (trimmed.startsWith('#EXT-X-KEY')) {
               line = line.replace(/URI="([^"]+)"/, (_, keyUri) => {
                 const absUri = new URL(keyUri, baseTargetUrl).toString();
-                return `URI="${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+                return `URI="${origin}/?url=${encodeURIComponent(absUri)}${refSuffix}"`;
               });
             } else if (trimmed.startsWith('#EXT-X-MEDIA')) {
               line = line.replace(/URI="([^"]+)"/, (_, mediaUri) => {
                 const absUri = new URL(mediaUri, baseTargetUrl).toString();
-                return `URI="${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+                return `URI="${origin}/?url=${encodeURIComponent(absUri)}${refSuffix}"`;
               });
             } else if (trimmed.startsWith('#EXT-X-MAP')) {
               line = line.replace(/URI="([^"]+)"/, (_, mapUri) => {
                 const absUri = new URL(mapUri, baseTargetUrl).toString();
-                return `URI="${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}"`;
+                return `URI="${origin}/?url=${encodeURIComponent(absUri)}${refSuffix}"`;
               });
             } else if (trimmed.startsWith('#EXT-X-ENDLIST') || trimmed.startsWith('#EXT-X-PLAYLIST-TYPE')) {
               continue;
@@ -98,7 +105,7 @@ export default {
             rewritten.push(line);
           } else {
             const absUri = new URL(trimmed, baseTargetUrl).toString();
-            const proxiedUri = `${origin}/?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}`;
+            const proxiedUri = `${origin}/?url=${encodeURIComponent(absUri)}${refSuffix}`;
             rewritten.push(proxiedUri);
           }
         }

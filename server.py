@@ -54,7 +54,7 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
     def handle_proxy(self, parsed, is_head=False):
         qs = urllib.parse.parse_qs(parsed.query)
         target_url = qs.get("url", [None])[0]
-        referer = qs.get("ref", ["https://canale-tv.net/"])[0]
+        referer = qs.get("ref", [""])[0]
 
         if not target_url:
             self.send_response(400)
@@ -63,11 +63,15 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
             self.wfile.write(b"Missing target url")
             return
 
+        is_audio = (".m3u8" not in target_url) and (
+            ".mp3" in target_url or ".aac" in target_url or "listen" in target_url or ":8" in target_url
+        )
         headers = {
-            "User-Agent": "IPTVSmartersPlayer",
-            "Referer": referer,
+            "User-Agent": "VLC/3.0.18 LibVLC/3.0.18" if is_audio else "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
             "Accept": "*/*",
         }
+        if referer:
+            headers["Referer"] = referer
 
         range_header = self.headers.get("Range")
         if range_header:
@@ -87,32 +91,26 @@ class FloLiteHandler(SimpleHTTPRequestHandler):
                     lines = content.splitlines()
                     rewritten = []
 
+                    ref_suffix = f"&ref={urllib.parse.quote(referer)}" if referer else ""
                     for line in lines:
                         trimmed = line.strip()
                         if not trimmed:
                             rewritten.append("")
                             continue
                         if trimmed.startswith("#"):
-                            if trimmed.startswith("#EXT-X-KEY"):
+                            if trimmed.startswith("#EXT-X-KEY") or trimmed.startswith("#EXT-X-MEDIA") or trimmed.startswith("#EXT-X-MAP"):
                                 import re
                                 m = re.search(r'URI="([^"]+)"', trimmed)
                                 if m:
                                     key_uri = urllib.parse.urljoin(base_target, m.group(1))
-                                    proxied = f"/proxy?url={urllib.parse.quote(key_uri)}&ref={urllib.parse.quote(referer)}"
-                                    line = re.sub(r'URI="[^"]+"', f'URI="{proxied}"', trimmed)
-                            elif trimmed.startswith("#EXT-X-MEDIA"):
-                                import re
-                                m = re.search(r'URI="([^"]+)"', trimmed)
-                                if m:
-                                    media_uri = urllib.parse.urljoin(base_target, m.group(1))
-                                    proxied = f"/proxy?url={urllib.parse.quote(media_uri)}&ref={urllib.parse.quote(referer)}"
+                                    proxied = f"/proxy?url={urllib.parse.quote(key_uri)}{ref_suffix}"
                                     line = re.sub(r'URI="[^"]+"', f'URI="{proxied}"', trimmed)
                             elif trimmed.startswith("#EXT-X-ENDLIST") or trimmed.startswith("#EXT-X-PLAYLIST-TYPE"):
                                 continue
                             rewritten.append(line)
                         else:
                             abs_uri = urllib.parse.urljoin(base_target, trimmed)
-                            proxied = f"/proxy?url={urllib.parse.quote(abs_uri)}&ref={urllib.parse.quote(referer)}"
+                            proxied = f"/proxy?url={urllib.parse.quote(abs_uri)}{ref_suffix}"
                             rewritten.append(proxied)
 
                     out_bytes = "\n".join(rewritten).encode("utf-8")

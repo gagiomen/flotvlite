@@ -86,7 +86,7 @@ function serveStaticFile(req, res, pathname) {
 
 function handleStreamProxy(clientReq, clientRes, query) {
   const targetUrl = query.url;
-  const referer = query.ref || 'https://canale-tv.net/';
+  const referer = query.ref || '';
 
   if (!targetUrl) {
     clientRes.writeHead(400, { 'Content-Type': 'text/plain' });
@@ -105,12 +105,17 @@ function handleStreamProxy(clientReq, clientRes, query) {
 
   const isHttps = parsedTarget.protocol === 'https:';
   const client = isHttps ? https : http;
+  const isAudioLike = !targetUrl.includes('.m3u8') && (targetUrl.includes('.mp3') || targetUrl.includes('.aac') || targetUrl.includes('listen') || /:\d{4}/.test(targetUrl));
 
   const headers = {
-    'User-Agent': 'IPTVSmartersPlayer',
-    'Referer': referer,
+    'User-Agent': isAudioLike
+      ? 'VLC/3.0.18 LibVLC/3.0.18'
+      : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
     'Accept': '*/*'
   };
+  if (referer) {
+    headers['Referer'] = referer;
+  }
 
   if (clientReq.headers['range']) {
     headers['Range'] = clientReq.headers['range'];
@@ -149,6 +154,8 @@ function handleStreamProxy(clientReq, clientRes, query) {
         const lines = body.split('\n');
         const rewritten = [];
 
+        const refSuffix = referer ? `&ref=${encodeURIComponent(referer)}` : '';
+
         for (let line of lines) {
           const trimmed = line.trim();
           if (!trimmed) {
@@ -157,11 +164,11 @@ function handleStreamProxy(clientReq, clientRes, query) {
           }
 
           if (trimmed.startsWith('#')) {
-            if (trimmed.startsWith('#EXT-X-KEY')) {
+            if (trimmed.startsWith('#EXT-X-KEY') || trimmed.startsWith('#EXT-X-MEDIA') || trimmed.startsWith('#EXT-X-MAP')) {
               const match = trimmed.match(/URI="([^"]+)"/);
               if (match) {
                 const keyUri = new URL(match[1], targetUrl).toString();
-                const proxiedKey = `/proxy?url=${encodeURIComponent(keyUri)}&ref=${encodeURIComponent(referer)}`;
+                const proxiedKey = `/proxy?url=${encodeURIComponent(keyUri)}${refSuffix}`;
                 line = trimmed.replace(/URI="[^"]+"/, `URI="${proxiedKey}"`);
               }
             } else if (trimmed.startsWith('#EXT-X-ENDLIST') || trimmed.startsWith('#EXT-X-PLAYLIST-TYPE')) {
@@ -172,7 +179,7 @@ function handleStreamProxy(clientReq, clientRes, query) {
           } else {
             // Segment or sub-playlist URI
             const absUri = new URL(trimmed, targetUrl).toString();
-            const proxiedUri = `/proxy?url=${encodeURIComponent(absUri)}&ref=${encodeURIComponent(referer)}`;
+            const proxiedUri = `/proxy?url=${encodeURIComponent(absUri)}${refSuffix}`;
             rewritten.push(proxiedUri);
           }
         }

@@ -1,90 +1,5 @@
 [
   {
-    "id": "Ro:Acasa4K",
-    "name": "Acasă TV 4K",
-    "group": "4K",
-    "resolution": "4K",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6699.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/acasa4k.png",
-    "epg_id": "Acasa.HD.ro",
-    "streams": [
-      {
-        "name": "Server 1 (4K)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6699.m3u8",
-        "resolution": "4K"
-      }
-    ]
-  },
-  {
-    "id": "Ro:Digi4K",
-    "name": "DIGI 4K",
-    "group": "4K",
-    "resolution": "4K",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5928.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/digi4k.png",
-    "epg_id": "Digi.4K.ro",
-    "streams": [
-      {
-        "name": "Server 1 (4K)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5928.m3u8",
-        "resolution": "4K"
-      }
-    ]
-  },
-  {
-    "id": "Ro:Prima4K",
-    "name": "Prima 4K",
-    "group": "4K",
-    "resolution": "4K",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9508.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/prima4k.png",
-    "epg_id": "Prima.4K.ro",
-    "streams": [
-      {
-        "name": "Server 1 (4K UHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9508.m3u8",
-        "resolution": "4K"
-      },
-      {
-        "name": "Server 2 (Prima Sport 1 FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/77.m3u8",
-        "resolution": "FHD"
-      }
-    ]
-  },
-  {
-    "id": "Ro:Eurosport4K",
-    "name": "Eurosport 4K",
-    "group": "4K",
-    "resolution": "4K",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5449.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/eurosport4k.png",
-    "epg_id": "Eurosport.4K.ro",
-    "streams": [
-      {
-        "name": "Server 1 (4K)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5449.m3u8",
-        "resolution": "4K"
-      }
-    ]
-  },
-  {
     "id": "Ro:369",
     "name": "1 RO Music Channel",
     "group": "Muzică",
@@ -100,7 +15,10 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://arwen1.panaka001.cfd/mch/usergenz7h0qdt.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -118,7 +36,8 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://a7tvlive.ro/A7TV/A7TV/playlist.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -126,9 +45,9 @@
     "id": "Ro:SkyShowtime1",
     "name": "SkyShowtime 1 HD",
     "group": "Filme",
-    "resolution": "FHD",
+    "resolution": "HD",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13424.m3u8",
+    "url": "https://thor1.syndula001.cfd/schi1/usergendxn430rnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -136,9 +55,12 @@
     "epg_id": "SkyShowtime.1.ro",
     "streams": [
       {
-        "name": "Server 1 (FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13424.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/schi1/usergendxn430rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -146,9 +68,9 @@
     "id": "Ro:SkyShowtime2",
     "name": "SkyShowtime 2 HD",
     "group": "Filme",
-    "resolution": "FHD",
+    "resolution": "HD",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13425.m3u8",
+    "url": "https://thor1.syndula001.cfd/schi2/usergendxj85trnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -156,9 +78,12 @@
     "epg_id": "SkyShowtime.2.ro",
     "streams": [
       {
-        "name": "Server 1 (FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13425.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/schi2/usergendxj85trnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -167,29 +92,29 @@
     "name": "AMC",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5353.m3u8",
+    "url": "https://saruman1.tharen001.cfd/amece/usergenrx3oq1kr.m3u8",
     "headers": {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-      "Referer": "https://saruman1.tharen001.cfd/000/amece.html"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/AMC010.png",
     "epg_id": "AMC.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5353.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/amece/usergenrx3oq1kr.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/1.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/amc/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -198,29 +123,21 @@
     "name": "AXN",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/683.m3u8",
+    "url": "https://cronos.mangora1.cfd/axy/usergend3h5jkc9rnd.m3u8",
     "headers": {
-      "Referer": "https://canale-tv.com/",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/AXN733.png",
     "epg_id": "AXN.HD.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/683.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://cronos.mangora1.cfd/axy/usergend3h5jkc9rnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/2.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -229,29 +146,21 @@
     "name": "AXN Black",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7824.m3u8",
+    "url": "https://saruman1.tharen001.cfd/axyblack/usergenrxi6s93hs2.m3u8",
     "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/axblack.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/AXN444.png",
     "epg_id": "AXN.Black.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7824.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/axyblack/usergenrxi6s93hs2.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/3.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -260,29 +169,21 @@
     "name": "AXN White",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7826.m3u8",
+    "url": "https://onyx1.mofta001.cfd/axwhite/usergenx23rnd.m3u8",
     "headers": {
-      "Referer": "https://onyx1.mofta001.cfd/000/axalb.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/AXN730.png",
     "epg_id": "AXN.White.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7826.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://onyx1.mofta001.cfd/axwhite/usergenx23rnd.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -291,29 +192,37 @@
     "name": "Acasă TV",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/709.m3u8",
+    "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
     "headers": {
-      "Referer": "https://alpha1.cool-itv.com/000/xena-acasa.html",
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Acasa987.png",
     "epg_id": "Acasa.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/709.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://alpha1.cool-itv.com/acasa/usergenx3e7g4rnd.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6699.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/2pro/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -331,7 +240,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://agrotv.streamnet.ro/mobile_tv/agrotv.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -348,7 +258,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream-aleph.m.ro/Aleph/ngrp:Alephnewsmain.stream_all/chunklist_b1398304.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -357,28 +268,49 @@
     "name": "Antena 1",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/680.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi01/live2_aws4_sdi01_5000k.m3u8",
+    "headers": {},
     "logo": "logos/Antena1490.png",
     "epg_id": "Antena.1.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/680.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Oficial (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi01/live2_aws4_sdi01_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
+        "url": "https://alpha1.yozefina.cfd/ah1/usergenx304Jtlrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "CoolTV Stream (HD)",
         "url": "https://ceres1.vizionman.cfd/ah1/usergenx304Jtlrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/10.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://hulky.lozixy.cfd/ah1/usergenx304Jtlrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/antena12/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -387,29 +319,31 @@
     "name": "Antena 3",
     "group": "Știri",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/681.m3u8",
-    "headers": {
-      "Referer": "https://alpha1.cool-itv.com/000/xena-ant3.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
-    },
+    "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi02/live2_aws4_sdi02_5000k.m3u8",
+    "headers": {},
     "logo": "logos/Antena3298.png",
     "epg_id": "Antena.3.CNN.HD.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/681.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Oficial (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi02/live2_aws4_sdi02_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://alpha1.cool-itv.com/an3/high/usergen801l41hcrnd.m3u8",
-        "resolution": "HD"
+        "name": "AntenaPlay Backup",
+        "url": "https://live3vox.antenaplay.ro/a3free/a3free.m3u8",
+        "resolution": "SD",
+        "headers": {}
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/11.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/antena3/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -418,29 +352,25 @@
     "name": "Antena Stars",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/682.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.com/",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
-    },
+    "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi10/live2_aws4_sdi10_5000k.m3u8",
+    "headers": {},
     "logo": "logos/Antena203.png",
     "epg_id": "Antena.Stars.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/682.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Oficial (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi10/live2_aws4_sdi10_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/antstar/usergenrxl7m94sq.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/183.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -458,7 +388,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://atomic.streamnet.ro/academia.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -476,7 +407,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://atomic.streamnet.ro/atomictv.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -485,29 +417,25 @@
     "name": "B1 TV ",
     "group": "Știri",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8405.m3u8",
-    "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/b1.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-    },
+    "url": "https://hls02ns.antenaplay.ro/hls/b1-tv-hd/index.m3u8",
+    "headers": {},
     "logo": "logos/B1TV615.png",
     "epg_id": "B1.TV.HD.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8405.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay B1 (HD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/b1-tv-hd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/b1/usergenrnd840zwl3m.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -516,24 +444,21 @@
     "name": "BBC Earth",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8577.m3u8",
+    "url": "https://saruman1.tharen001.cfd/ert/usergenrx8ofzq1kr.m3u8",
     "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/ert.html",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.61 Chrome/126.0.6478.61 Not/A)Brand/8  Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/BBC206.png",
     "epg_id": "BBC.Earth.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8577.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/ert/usergenrx8ofzq1kr.m3u8",
-        "resolution": "SD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -550,7 +475,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "http://www.bucovinatv.ro/proxy/video/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -559,24 +485,21 @@
     "name": "Cartoonito (Boomerang)",
     "group": "Desene animate",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/21.m3u8",
+    "url": "https://flash1.bogulus1.cfd/bomer/usergenrx2c86jey.m3u8",
     "headers": {
-      "Referer": "https://canale-tv.com/",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Boomerang383.png",
     "epg_id": "Cartoonito.ro",
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/21.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://flash1.bogulus1.cfd/bomer/usergenrx2c86jey.m3u8",
-        "resolution": "SD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -585,53 +508,27 @@
     "name": "Cinemaraton",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5927.m3u8",
+    "url": "https://hls02ns.antenaplay.ro/hls/cinemaraton-plus-hd/index.m3u8",
     "logo": "logos/Cinemaraton642.png",
     "epg_id": "Cinemaraton.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5927.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "AntenaPlay Cinemaraton+ (HD)",
         "url": "https://hls02ns.antenaplay.ro/hls/cinemaraton-plus-hd/index.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "UTV781",
-    "name": "Cinemax",
-    "group": "Filme",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/684.m3u8",
-    "headers": {
-      "Referer": "https://cronos.mangora1.cfd/000/1cx1.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
-    },
-    "logo": "logos/UTV781.png",
-    "epg_id": "Cinemax.ro",
-    "resolution": "FHD",
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/684.m3u8",
-        "resolution": "FHD"
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://cronos.mangora1.cfd/xmas1/usergendx27y41s0rnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/26.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/cinemaraton/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
-    ]
+    ],
+    "headers": {}
   },
   {
     "id": "Cinemax2232",
@@ -647,14 +544,12 @@
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (Subtitrare RO)",
+        "name": "Server 1 (FHD)",
         "url": "https://cronos.mangora1.cfd/xmas2/usergendxt1v8klq6rnd.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD Audio RO)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8251.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://canale-tv.com/"
+        }
       }
     ]
   },
@@ -663,19 +558,21 @@
     "name": "Comedy Central",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/28.m3u8",
+    "url": "https://saruman1.tharen001.cfd/comedi/usergenrx7zo1kr.m3u8",
     "headers": {
-      "Referer": "https://canale-tv.com/",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Comedy345.png",
     "epg_id": "Comedy.Central.ro",
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/28.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://saruman1.tharen001.cfd/comedi/usergenrx7zo1kr.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -693,7 +590,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://stream1.antenaplay.ro/live/ComedyPlay/chunklist.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -702,29 +600,29 @@
     "name": "Digi 24",
     "group": "Știri",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/685.m3u8",
-    "headers": {
-      "Referer": "https://filme24.club/",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
-    },
+    "url": "https://edge-ar.rcs-rds.ro/digi24ar/index.m3u8",
+    "headers": {},
     "logo": "logos/Digi24383.png",
     "epg_id": "Digi.24.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/685.m3u8",
-        "resolution": "FHD"
+        "name": "Digi 24 Oficial (HD)",
+        "url": "https://edge-ar.rcs-rds.ro/digi24ar/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (SD - Backup)",
-        "url": "https://edge-ar.rcs-rds.ro/digi24ar/hq.m3u8",
-        "resolution": "SD"
+        "name": "Digi 24 Backup (HD)",
+        "url": "https://edge-ar.rcs-rds.ro/digi24ar/hd.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/41.m3u8",
-        "resolution": "HD"
+        "name": "Digi 24 Google DAI (HD)",
+        "url": "https://dai.google.com/linear/hls/event/OQfdjUhHSDSlb1fJVzehsQ/master.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -733,29 +631,29 @@
     "name": "Digi Sport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/688.m3u8",
+    "url": "https://kuruk1.xn--okq6e.shop/kuk1/usergendx419snx12kdgwqrnd.m3u8",
     "headers": {
-      "Referer": "https://kuruk1.xn--okq6e.shop/000/1kuk1.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/DigiSport1532.png",
     "epg_id": "Digi.Sport.1.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/688.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (720p HD Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://kuruk1.xn--okq6e.shop/kuk1/usergendx419snx12kdgwqrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (SD Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/36.m3u8",
-        "resolution": "SD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/digisport1/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -764,29 +662,29 @@
     "name": "Digi Sport 2",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/689.m3u8",
+    "url": "https://kuruk1.xn--okq6e.shop/kuk2/usergendx0ul1ltsDx9lgcdwqrnd.m3u8",
     "headers": {
-      "Referer": "https://kuruk1.xn--okq6e.shop/000/1kuk2.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/DigiSport2950.png",
     "epg_id": "Digi.Sport.2.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/689.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (720p HD Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://kuruk1.xn--okq6e.shop/kuk2/usergendx0ul1ltsDx9lgcdwqrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (SD Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/37.m3u8",
-        "resolution": "SD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/digisport2/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -795,23 +693,29 @@
     "name": "Digi Sport 3",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/690.m3u8",
+    "url": "https://pulse1.sanseny001.shop/kuk3/usergendxt1v7slq2rnd.m3u8",
     "logo": "logos/Digi799.png",
     "epg_id": "Digi.Sport.3.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
     "streams": [
       {
-        "name": "Server 1 (1080p FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/690.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://pulse1.sanseny001.shop/kuk3/usergendxt1v7slq2rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 2 (SD Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/38.m3u8",
-        "resolution": "SD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/digisport3/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -820,51 +724,52 @@
     "name": "Digi Sport 4",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/691.m3u8",
+    "url": "https://pulse1.sanseny001.shop/kuk4/usergendk9g3ks42t3n.m3u8",
     "logo": "logos/Digi306.png",
     "epg_id": "Digi.Sport.4.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/691.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://pulse1.sanseny001.shop/kuk4/usergendk9g3ks42t3n.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 2 (SD Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/39.m3u8",
-        "resolution": "SD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/digisport4/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
-    ]
+    ],
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    }
   },
   {
     "id": "Discovery067",
     "name": "Discovery Channel ",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7357.m3u8",
+    "url": "https://saruman1.tharen001.cfd/disco/usergenrxljmx9su.m3u8",
     "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/disc.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Discovery067.png",
     "epg_id": "Discovery.Channel.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7357.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/disco/usergenrxljmx9su.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/42.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -873,24 +778,21 @@
     "name": "Duck TV ",
     "group": "Desene animate",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/48.m3u8",
+    "url": "https://arwen1.panaka001.cfd/duk/usergenz9ak7fxt.m3u8",
     "headers": {
-      "Referer": "https://arwen1.panaka001.cfd/000/duk.html",
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/DuckTV502.png",
     "epg_id": "ducktv.ro",
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/48.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://arwen1.panaka001.cfd/duk/usergenz9ak7fxt.m3u8",
-        "resolution": "SD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -899,23 +801,21 @@
     "name": "Epic Drama",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/666.m3u8",
+    "url": "https://atlantida1.aquax001.shop/epi/usergendxt1v8klq6rnd.m3u8",
     "logo": "logos/Epic370.png",
     "epg_id": "Epic.Drama.ro",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/666.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://atlantida1.aquax001.shop/epi/usergendxt1v8klq6rnd.m3u8",
-        "resolution": "SD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -933,7 +833,16 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://hls02ns.antenaplay.ro/hls/euronews-ro-sd/index.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/ernews/usergenx6vkj8aqrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -942,29 +851,21 @@
     "name": "Eurosport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/695.m3u8",
+    "url": "https://kuruk1.xn--okq6e.shop/er01/usergendx07slkgx24dqrnd.m3u8",
     "headers": {
-      "Referer": "https://kuruk1.xn--okq6e.shop/000/1er1.html",
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Eurosport035.png",
     "epg_id": "Eurosport.1.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/695.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://kuruk1.xn--okq6e.shop/er01/usergendx07slkgx24dqrnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/51.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -973,29 +874,21 @@
     "name": "Eurosport 2",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/696.m3u8",
+    "url": "https://kuruk1.xn--okq6e.shop/er02/usergenje03xj2dqrnd.m3u8",
     "headers": {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.61 Chrome/126.0.6478.61 Not/A)Brand/8  Safari/537.36",
-      "Referer": "\thttps://kuruk1.xn--okq6e.shop/000/1er2.html"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Eurosport939.png",
     "epg_id": "Eurosport.2.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/696.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://kuruk1.xn--okq6e.shop/er02/usergenje03xj2dqrnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/52.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1004,39 +897,23 @@
     "name": "Film Cafe",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18662.m3u8",
+    "url": "https://atlantida1.aquax001.shop/cofyfilm/usergendxn8lzrnd.m3u8",
     "logo": "logos/Film427.png",
     "epg_id": "Filmcafe.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18662.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
-        "url": "http://sewv654wfcsdwfi87fwvgbngh.siauliairsavlt.pw/iptv/T6S375Z339BMDL/6953/index.m3u8",
-        "resolution": "SD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://atlantida1.aquax001.shop/cofyfilm/usergendxn8lzrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
-    ]
-  },
-  {
-    "id": "Film563",
-    "name": "Film Now",
-    "group": "Filme",
-    "is_radio": false,
-    "url": "http://sewv654wfcsdwfi87fwvgbngh.siauliairsavlt.pw/iptv/T6S375Z339BMDL/6999/index.m3u8",
-    "logo": "logos/Film563.png",
-    "epg_id": "Film.Now.ro",
-    "resolution": "FHD",
-    "streams": [
-      {
-        "name": "Server 1 (FHD)",
-        "url": "http://sewv654wfcsdwfi87fwvgbngh.siauliairsavlt.pw/iptv/T6S375Z339BMDL/6999/index.m3u8",
-        "resolution": "FHD"
-      }
-    ]
+    ],
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    }
   },
   {
     "id": "Filmbox463",
@@ -1044,10 +921,7 @@
     "group": "Filme",
     "is_radio": false,
     "url": "https://nosignal1.antenaplay.ro/hls/fb-one-sd/index.m3u8",
-    "headers": {
-      "Referer": "https://onyx1.mofta001.cfd/000/fboyp.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
-    },
+    "headers": {},
     "logo": "logos/Filmbox463.png",
     "epg_id": "Filmbox.ro",
     "resolution": "SD",
@@ -1055,12 +929,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-one-sd/index.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/61.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -1069,24 +939,25 @@
     "name": "Fishing and Hunting",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/63.m3u8",
-    "headers": {
-      "Referer": "https://arwen1.panaka001.cfd/000/fishy.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    },
+    "url": "http://88.212.7.14/live/fishing_hun/index.m3u8",
+    "headers": {},
     "logo": "logos/Fishing479.png",
     "epg_id": "The.Fishing.&.Hunting.Channel.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/63.m3u8",
-        "resolution": "HD"
+        "name": "Direct FHD 1080p",
+        "url": "http://88.212.7.14/live/fishing_hun/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://arwen1.panaka001.cfd/fishy/usergenrpz6q.m3u8",
-        "resolution": "SD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1095,24 +966,29 @@
     "name": "HBO",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/703.m3u8",
+    "url": "https://thor1.syndula001.cfd/h1/usergendx172s9rnd.m3u8",
     "headers": {
-      "Referer": "https://thor1.syndula001.cfd/000/h1.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/HBO754.png",
     "epg_id": "HBO.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/703.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/h1/usergendx172s9rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://thor1.syndula001.cfd/h1/usergendx172s9rnd.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/hbo/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1121,29 +997,21 @@
     "name": "HBO 2",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/701.m3u8",
+    "url": "https://onyx1.mofta001.cfd/h2/usergendxn430rnd.m3u8",
     "headers": {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-      "Referer": "\thttps://onyx1.mofta001.cfd/000/h2.html"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/HBO2440.png",
     "epg_id": "HBO.2.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/701.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://onyx1.mofta001.cfd/h2/usergendxn430rnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/67.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1152,29 +1020,29 @@
     "name": "HBO 3",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/702.m3u8",
+    "url": "https://galandriel1.thobias001.cfd/h3/usergendx3kdg4rnd.m3u8",
     "headers": {
-      "Referer": "https://galandriel1.thobias001.cfd/000/1h3.html",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.3"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/HBO183.png",
     "epg_id": "HBO.3.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/702.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://galandriel1.thobias001.cfd/h3/usergendx3kdg4rnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/68.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/hbo3/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1183,29 +1051,25 @@
     "name": "Happy Channel",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/700.m3u8",
-    "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/hap.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
-    },
+    "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi12/live2_aws4_sdi12_5000k.m3u8",
+    "headers": {},
     "logo": "logos/Happy056.png",
     "epg_id": "Happy.Channel.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/700.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Oficial (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi12/live2_aws4_sdi12_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/hap/usergenrnd2gd3ogS7bkd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/69.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1214,29 +1078,29 @@
     "name": "History",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/704.m3u8",
+    "url": "https://galandriel1.thobias001.cfd/hystor/usergendxc9g8rnd.m3u8",
     "headers": {
-      "Referer": "https://galandriel1.thobias001.cfd/000/1hyst.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.115 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/History526.png",
     "epg_id": "History.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/704.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (FHD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://galandriel1.thobias001.cfd/hystor/usergendxc9g8rnd.m3u8",
-        "resolution": "FHD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16341.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/history/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1257,7 +1121,11 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://cronos.mangora1.cfd/hitivi/usergendhh62jfcs5rnd.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {
+          "Referer": "https://cronos.mangora1.cfd/000/1hitivi.html",
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+        }
       }
     ]
   },
@@ -1275,7 +1143,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "http://83.103.150.208:8080/stream/ram/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -1284,21 +1153,41 @@
     "name": "Kanal D",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/705.m3u8",
+    "url": "https://stream1.kanald.ro/iphone/knd-live.m3u8",
     "headers": {},
     "logo": "logos/KanalD263.png",
     "epg_id": "Kanal.D.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/705.m3u8",
-        "resolution": "FHD"
+        "name": "Kanal D Oficial (HD)",
+        "url": "https://stream1.kanald.ro/iphone/knd-live.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (SD - Backup)",
-        "url": "https://stream1.kanald.ro/iphone/knd-live.m3u8",
-        "resolution": "SD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://arwen1.panaka001.cfd/canald/usergenxq0jl72l0rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://cronos.mangora1.cfd/canad2/usergendx92c4rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/kanald/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1307,18 +1196,25 @@
     "name": "Kiss TV",
     "group": "Muzică",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12499.m3u8",
+    "url": "https://tv.broadcasting.ro/kisstv/a629c031-2170-4ee9-a36d-87a891aa3131.m3u8",
     "logo": "logos/KissTV535.png",
     "epg_id": "Kiss.TV.ro",
     "resolution": "FHD",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "streams": [
       {
-        "name": "Server 1 (FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12499.m3u8",
-        "resolution": "FHD"
+        "name": "Broadcasting Oficial (FHD)",
+        "url": "https://tv.broadcasting.ro/kisstv/a629c031-2170-4ee9-a36d-87a891aa3131.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://arwen1.panaka001.cfd/kys/usergenrndgs6h1vys2n4l.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1339,7 +1235,11 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://atlantida1.aquax001.shop/minimaxy/usergendxny9zrnd.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {
+          "Referer": "https://atlantida1.aquax001.shop/000/minmax.html",
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+        }
       }
     ]
   },
@@ -1349,10 +1249,7 @@
     "group": "Moldova",
     "is_radio": false,
     "url": "https://v.trm.md/static/streaming-playlists/hls/6b3b523a-6a02-444c-8129-8354bbeffbc9/master.m3u8",
-    "headers": {
-      "Referer": "https://v.trm.md/videos/embed/6b3b523a-6a02-444c-8129-8354bbeffbc9?warningTitle=0&peertubeLink=0",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
-    },
+    "headers": {},
     "logo": "logos/Moldova348.png",
     "epg_id": "Moldova.TV.ro",
     "resolution": "FHD",
@@ -1360,7 +1257,14 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://v.trm.md/static/streaming-playlists/hls/6b3b523a-6a02-444c-8129-8354bbeffbc9/master.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "TRM Official CDN (HD)",
+        "url": "https://v0.trm.md/static/streaming-playlists/hls/9b79338b-1870-4cd7-91d4-0f6ce5cac7ca/master.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1378,7 +1282,14 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://v.trm.md/static/streaming-playlists/hls/937e4e0e-7174-4fb2-a299-480e68b49ecb/master.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "TRM Official CDN (HD)",
+        "url": "https://v0.trm.md/static/streaming-playlists/hls/d5fafab0-9c37-4746-9e7a-b2d6c0427015/master.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1396,7 +1307,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.nasul.tv/live/stream.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1405,29 +1317,21 @@
     "name": "NatGeo Wild  ",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/707.m3u8",
+    "url": "https://flash1.bogulus1.cfd/wild/usergenr9qsi5gt.m3u8",
     "headers": {
-      "Referer": "https://flash1.bogulus1.cfd/000/1uild.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/NatGeo047.png",
     "epg_id": "National.Geographic.Wild.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/707.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://flash1.bogulus1.cfd/wild/usergenr9qsi5gt.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/90.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1436,29 +1340,21 @@
     "name": "National Geographic ",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/708.m3u8",
+    "url": "https://onyx1.mofta001.cfd/ngeo/usergenrnd84oeigt.m3u8",
     "headers": {
-      "Referer": "https://onyx1.mofta001.cfd/000/ngeo.html",
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/National640.png",
     "epg_id": "National.Geographic.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/708.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://onyx1.mofta001.cfd/ngeo/usergenrnd84oeigt.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/91.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1467,29 +1363,33 @@
     "name": "Prima TV",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5283.m3u8",
-    "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/prima.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-    },
+    "url": "https://live77cdn2.antenaplay.ro/live2_sdi01/live2_sdi01_3000k.m3u8",
+    "headers": {},
     "logo": "logos/PrimaTV397.png",
     "epg_id": "Prima.TV.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5283.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Prima (HD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_sdi01/live2_sdi01_3000k.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/prima/usergenrnd8qxl92r.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/97.m3u8",
-        "resolution": "HD"
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/primatv/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1498,24 +1398,33 @@
     "name": "Prima sport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/77.m3u8",
-    "headers": {
-      "Referer": "https://iron1.xn--x2rw19a.space/000/puk1.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-    },
+    "url": "http://91.235.165.117:8001/play/a07x/index.m3u8",
+    "headers": {},
     "logo": "logos/Prima981.png",
     "epg_id": "Prima.Sport.1.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/77.m3u8",
-        "resolution": "FHD"
+        "name": "Direct FHD 10Mbps",
+        "url": "http://91.235.165.117:8001/play/a07x/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://iron1.xn--x2rw19a.space/puk1/usergenrx0cir27aq.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/pr1/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1524,24 +1433,33 @@
     "name": "Prima sport 2",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6206.m3u8",
-    "headers": {
-      "Referer": "https://iron1.xn--x2rw19a.space/000/puk2.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
-    },
+    "url": "http://91.235.165.117:8001/play/a07y/index.m3u8",
+    "headers": {},
     "logo": "logos/Prima396.png",
     "epg_id": "Prima.Sport.2.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6206.m3u8",
-        "resolution": "FHD"
+        "name": "Direct FHD 9.6Mbps",
+        "url": "http://91.235.165.117:8001/play/a07y/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://iron1.xn--x2rw19a.space/puk2/usergenrnd0clv03fyt.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/pr2/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1550,24 +1468,25 @@
     "name": "Prima sport 3",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6207.m3u8",
-    "headers": {
-      "Referer": "https://iron1.xn--x2rw19a.space/000/puk3.html",
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"
-    },
+    "url": "http://91.235.165.117:8001/play/a07z/index.m3u8",
+    "headers": {},
     "logo": "logos/Prima882.png",
     "epg_id": "Prima.Sport.3.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6207.m3u8",
-        "resolution": "FHD"
+        "name": "Direct FHD 10Mbps",
+        "url": "http://91.235.165.117:8001/play/a07z/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://iron1.xn--x2rw19a.space/puk3/usergenrx4t0l8sybkr.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1576,18 +1495,25 @@
     "name": "Prima Sport 4",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6208.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://91.235.165.117:8001/play/a080/index.m3u8",
+    "headers": {},
     "logo": "logos/Prima383.png",
     "epg_id": "Prima.Sport.4.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6208.m3u8",
-        "resolution": "HD"
+        "name": "Direct FHD 10Mbps",
+        "url": "http://91.235.165.117:8001/play/a080/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://pulse1.sanseny001.shop/puk4/usergendx3j2x4tqrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1596,23 +1522,21 @@
     "name": "Prima Sport 5",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9532.m3u8",
+    "url": "https://pulse1.sanseny001.shop/puk5/usergen0grnd8l2y6gw.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Prima761.png",
     "epg_id": "Prima.Sport.5.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9532.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://pulse1.sanseny001.shop/puk5/usergen0grnd8l2y6gw.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1621,24 +1545,33 @@
     "name": "Voyo Sport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16677.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/",
-      "User-Agent": "IPTVSmartersPlayer"
-    },
+    "url": "http://89.45.22.101:8011/play/1/index.m3u8",
+    "headers": {},
     "logo": "logos/VoyoSport1.png",
     "epg_id": "Voyo.Sport.1.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16677.m3u8",
-        "resolution": "FHD"
+        "name": "Direct FHD 8.2Mbps",
+        "url": "http://89.45.22.101:8011/play/1/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://vip-acasatv.online:25463/lrZuGxAuP3/6782859900/16677",
-        "resolution": "HD"
+        "name": "CoolTV PPV Backup (HD)",
+        "url": "https://pulse1.sanseny001.shop/puki1/usergendx6kal0r2bsm.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "CoolTV PPV Backup (HD)",
+        "url": "https://pulse1.sanseny001.shop/puki2/usergendxpk2s6utg0l.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1647,51 +1580,44 @@
     "name": "Pro Arena",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/711.m3u8",
+    "url": "https://arwen1.panaka001.cfd/Prx/usergenrnvdfki42man4l.m3u8",
     "logo": "logos/ProX100.png",
     "epg_id": "Pro.Arena.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/711.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (FHD - Backup)",
-        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-prox/live_fullhd?offsetSeconds=0",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://arwen1.panaka001.cfd/Prx/usergenrnvdfki42man4l.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
-    ]
+    ],
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    }
   },
   {
     "id": "Pro728",
     "name": "Pro Cinema",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9491.m3u8",
+    "url": "https://saruman1.tharen001.cfd/porkynema/usergenrnd0ek16an4l.m3u8",
     "headers": {
-      "Referer": "https://saruman1.tharen001.cfd/000/procinema.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Pro728.png",
     "epg_id": "Pro.Cinema.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9491.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/porkynema/usergenrnd0ek16an4l.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/99.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1700,29 +1626,45 @@
     "name": "Pro TV",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/710.m3u8",
+    "url": "https://ultra3.ronanx001.shop/porky/high/usergenx7240lrnd.m3u8",
     "headers": {
-      "Referer": "https://ultra3.ronanx1.cfd/",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.115 Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/ProTV266.png",
     "epg_id": "PRO.TV.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/710.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://ultra3.ronanx001.shop/porky/high/usergenx7240lrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://epsilon1.visionxman1.cfd/porky/high/usergenx7240lrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       },
       {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/15212.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://omega1.visionxmans1.cfd/porky/high/usergenx7240lrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "TVRon Mirror (HD)",
+        "url": "https://dokagents.site/live/protv/mono.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://tvron.me/"
+        }
       }
     ]
   },
@@ -1735,12 +1677,21 @@
     "headers": {},
     "logo": "logos/Radio939.png",
     "epg_id": "Zu.TV.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (HD)",
+        "name": "Radio ZU Oficial",
         "url": "https://radiozu.ro/live",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "CoolTV ZU TV (HD)",
+        "url": "https://saruman1.tharen001.cfd/zzz/usergenrx8c0k3lkr.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1758,7 +1709,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "http://92.86.248.141:8080/ram/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -1767,18 +1719,17 @@
     "name": "Rock TV",
     "group": "Muzică",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12523.m3u8",
+    "url": "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8",
     "logo": "logos/Rock777.png",
     "epg_id": "Rock.TV.ro",
     "resolution": "HD",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12523.m3u8",
-        "resolution": "HD"
+        "name": "Broadcasting Oficial (HD)",
+        "url": "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1799,7 +1750,23 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cronos.mangora1.cfd/rtv/usergendx473dx9qrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://cronos.mangora1.cfd/000/1rteve.html",
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+        }
+      },
+      {
+        "name": "CDN (livestream.romaniatv.net) (HD)",
+        "url": "https://livestream.romaniatv.net/clients/romaniatv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      },
+      {
+        "name": "AntenaPlay CDN (HD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/romania-tv-sd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1817,14 +1784,12 @@
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (Subtitrare RO)",
+        "name": "Server 1 (FHD)",
         "url": "https://atlantida1.aquax001.shop/telece/usergendc8sxt317rnd.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/107.m3u8",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://atlantida1.aquax001.shop/000/1telece.html"
+        }
       }
     ]
   },
@@ -1842,7 +1807,8 @@
       {
         "name": "Server 1 (SD)",
         "url": "http://85.186.146.34:8080",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -1851,29 +1817,25 @@
     "name": "TVR 1",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/717.m3u8",
-    "headers": {
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
-      "Referer": "https://thor1.syndula001.cfd/000/tivi1.html"
-    },
+    "url": "https://tvr-1.lg.mncdn.com/tvr1/smil:tvr1.smil/playlist.m3u8",
+    "headers": {},
     "logo": "logos/TVR1835.png",
     "epg_id": "TVR.1.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/717.m3u8",
-        "resolution": "FHD"
+        "name": "TVR Oficial (FHD)",
+        "url": "https://tvr-1.lg.mncdn.com/tvr1/smil:tvr1.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/tevere1/usergendxl4cjlrnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/113.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1882,29 +1844,25 @@
     "name": "TVR 2",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5375.m3u8",
-    "headers": {
-      "Referer": "https://thor1.syndula001.cfd/000/tivi2.html",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-    },
+    "url": "https://tvr-2.lg.mncdn.com/tvr2/smil:tvr2.smil/playlist.m3u8",
+    "headers": {},
     "logo": "logos/TVR2204.png",
     "epg_id": "TVR.2.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5375.m3u8",
-        "resolution": "FHD"
+        "name": "TVR Oficial (FHD)",
+        "url": "https://tvr-2.lg.mncdn.com/tvr2/smil:tvr2.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/tevere2/usergendxl6d4vnd.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/114.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1913,29 +1871,25 @@
     "name": "TVR 3 ",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5376.m3u8",
-    "headers": {
-      "Referer": "https://thor1.syndula001.cfd/000/tivi3.html",
-      "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0"
-    },
+    "url": "https://tvr-3.lg.mncdn.com/tvr3/smil:tvr3.smil/playlist.m3u8",
+    "headers": {},
     "logo": "logos/TVR3259.png",
     "epg_id": "TVR.3.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5376.m3u8",
-        "resolution": "FHD"
+        "name": "TVR Oficial (FHD)",
+        "url": "https://tvr-3.lg.mncdn.com/tvr3/smil:tvr3.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/tevere3/usergenx4klq9qrnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/115.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -1944,21 +1898,17 @@
     "name": "TVR Moldova",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://tvr-moldova.lg.mncdn.com/tvrmoldova/smil:tvrmoldova.smil/chunklist_b1396000.m3u8",
+    "url": "https://tvr-moldova.lg.mncdn.com/tvrmoldova/smil:tvrmoldova.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/tvr_moldova.png",
     "epg_id": "TVR.Moldova.ro",
-    "resolution": "SD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (SD - Nativ)",
-        "url": "https://tvr-moldova.lg.mncdn.com/tvrmoldova/smil:tvrmoldova.smil/chunklist_b1396000.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (Auto)",
+        "name": "TVR Oficial (FHD)",
         "url": "https://tvr-moldova.lg.mncdn.com/tvrmoldova/smil:tvrmoldova.smil/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -1979,7 +1929,11 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://cronos.mangora1.cfd/travil/usergenjc20r4rnd.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {
+          "Referer": "https://cronos.mangora1.cfd/000/1travil.html",
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
       }
     ]
   },
@@ -2000,7 +1954,11 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://cronos.mangora1.cfd/utivi/usergenck9astrnd.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://cronos.mangora1.cfd/000/1utivi.html",
+          "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"
+        }
       }
     ]
   },
@@ -2009,55 +1967,44 @@
     "name": "Viasat Nature",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5354.m3u8",
+    "url": "https://arwen1.panaka001.cfd/vnature/usergenrnd2g9eqk.m3u8",
     "logo": "logos/Viasat953.png",
     "epg_id": "Viasat.Nature.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5354.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (FHD - Backup)",
-        "url": "http://sewv654wfcsdwfi87fwvgbngh.siauliairsavlt.pw/iptv/T6S375Z339BMDL/7037/index.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/132.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://arwen1.panaka001.cfd/vnature/usergenrnd2g9eqk.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
-    ]
+    ],
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    }
   },
   {
     "id": "Viasat037",
     "name": "Viasat Explorer",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8259.m3u8",
+    "url": "https://arwen1.panaka001.cfd/vexplr/usergenrnd7ke5lgt.m3u8",
     "logo": "logos/Viasat037.png",
     "epg_id": "Viasat.Explore.ro",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8259.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://arwen1.panaka001.cfd/vexplr/usergenrnd7ke5lgt.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/130.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2066,29 +2013,21 @@
     "name": "Viasat History",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8201.m3u8",
+    "url": "https://arwen1.panaka001.cfd/vhis/usergenrnd4v6g8eigt.m3u8",
     "headers": {
-      "Referer": "https://arwen1.panaka001.cfd/000/vhis.html",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.61 Chrome/126.0.6478.61 Not/A)Brand/8  Safari/537.36"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/Viasat951.png",
     "epg_id": "Viasat.Nature.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8201.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (SD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://arwen1.panaka001.cfd/vhis/usergenrnd4v6g8eigt.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/131.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2106,7 +2045,8 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://hitfm.nfthost.net/hls/hitfm/live_all/playlist.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2115,24 +2055,25 @@
     "name": "Prima News",
     "group": "Știri",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9554.m3u8",
-    "headers": {
-      "Referer": "https://thor1.syndula001.cfd/000/prnews.html",
-      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.3G"
-    },
+    "url": "https://hls02ns.antenaplay.ro/hls/prima-news-hd/index.m3u8",
+    "headers": {},
     "logo": "logos/Prima219.png",
     "epg_id": "Prima.News.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9554.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Prima News (HD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/prima-news-hd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/prnews/usergenx2klq7rnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2150,7 +2091,8 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://live.senstv.ro/live/senstv_1080p/playlist.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2159,7 +2101,7 @@
     "name": "Cartoon Network",
     "group": "Desene animate",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/25.m3u8",
+    "url": "https://saruman1.tharen001.cfd/cartun/usergenrx2xfzol0q.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -2168,14 +2110,12 @@
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/25.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/cartun/usergenrx2xfzol0q.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2195,7 +2135,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://galandriel1.thobias001.cfd/dysnee/usergendx0k2rnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2215,7 +2158,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://atlantida1.aquax001.shop/disjr/usergendxvoq4rnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2235,7 +2181,16 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://onyx1.mofta001.cfd/nike/usergenm24qrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "HD Direct (91) (HD)",
+        "url": "http://91.235.165.117:8001/play/a05z/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2255,7 +2210,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://galandriel1.thobias001.cfd/nicjr/usergendxl2c8nd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2275,7 +2233,16 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://atlantida1.aquax001.shop/niktuun/usergendxt7r9CxGrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "HD Direct (91) (HD)",
+        "url": "http://91.235.165.117:8001/play/a061/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2295,7 +2262,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://saruman1.tharen001.cfd/jimy/usergenq3n0lz7kr.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2304,26 +2274,17 @@
     "name": "TraLaLa TV",
     "group": "Desene animate",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8506.m3u8",
+    "url": "https://hls01ns.antenaplay.ro/hls/tralala-hd/index.m3u8",
     "headers": {},
     "logo": "logos/TraLaLaTV107.png",
     "epg_id": "TraLaLa.HD.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8506.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "AntenaPlay TraLaLa (HD)",
         "url": "https://hls01ns.antenaplay.ro/hls/tralala-hd/index.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7923.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2341,7 +2302,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://hls01ns.antenaplay.ro/hls/tralala-desene-animate-hd/index.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2350,23 +2312,21 @@
     "name": "Warner TV",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16679.m3u8",
+    "url": "https://atlantida1.aquax001.shop/tnnt/usergendxq726jrnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/WarnerTV109.png",
     "epg_id": "Warner.TV.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16679.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://atlantida1.aquax001.shop/tnnt/usergendxq726jrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2375,7 +2335,7 @@
     "name": "TV 1000",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/111.m3u8",
+    "url": "https://flash1.bogulus1.cfd/tivi10/usergenrxs4f7zc.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -2384,9 +2344,12 @@
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/111.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://flash1.bogulus1.cfd/tivi10/usergenrxs4f7zc.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2396,22 +2359,16 @@
     "group": "Filme",
     "is_radio": false,
     "url": "https://nosignal1.antenaplay.ro/hls/fb-comedy-hd/index.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "logo": "logos/filmbox_comedy.png",
     "epg_id": "FilmBox.Extra.HD.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (FHD Sub RO)",
+        "name": "Server 1 (FHD)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-comedy-hd/index.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/58.m3u8",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2421,22 +2378,16 @@
     "group": "Filme",
     "is_radio": false,
     "url": "https://nosignal1.antenaplay.ro/hls/fb-festival-hd/index.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "logo": "logos/FilmboxPremium112.png",
     "epg_id": "Filmbox.Premium.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (FHD Sub RO)",
+        "name": "Server 1 (FHD)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-festival-hd/index.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/19137.m3u8",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2445,7 +2396,7 @@
     "name": "Diva",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18663.m3u8",
+    "url": "https://thor1.syndula001.cfd/diva/usergenm48Qhxrnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -2454,14 +2405,12 @@
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18663.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (SD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/46.m3u8",
-        "resolution": "SD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://thor1.syndula001.cfd/diva/usergenm48Qhxrnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2470,28 +2419,21 @@
     "name": "AXN Spin",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7825.m3u8",
+    "url": "https://cronos.mangora1.cfd/spyn/usergencs85ja0j1rrnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/AXNSpin114.png",
     "epg_id": "AXN.Spin.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7825.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://cronos.mangora1.cfd/spyn/usergencs85ja0j1rrnd.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/4.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2500,48 +2442,25 @@
     "name": "Dizi",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7878.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://nosignal1.antenaplay.ro/hls/dzi-int-hd/index.m3u8",
+    "headers": {},
     "logo": "logos/Dizi115.png",
     "epg_id": "Dizi.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/7878.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Dizi (HD)",
+        "url": "https://nosignal1.antenaplay.ro/hls/dzi-int-hd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://atlantida1.aquax001.shop/dizy/usergendlk0tas9c.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "BBCFirst116",
-    "name": "BBC First",
-    "group": "Filme",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/11021.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/BBCFirst116.png",
-    "epg_id": "BBC.First.ro",
-    "resolution": "FHD",
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/11021.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://onyx1.mofta001.cfd/bibi1/usergendxn09l2s6cek.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2561,7 +2480,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://onyx1.mofta001.cfd/crymeinv2/usergen9o4n2srnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2570,7 +2492,7 @@
     "name": "TV Paprika",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/109.m3u8",
+    "url": "https://galandriel1.thobias001.cfd/papi/usergendxs3jk0s9nd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -2579,14 +2501,12 @@
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/109.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://galandriel1.thobias001.cfd/papi/usergendxs3jk0s9nd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2602,9 +2522,10 @@
     "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (HD - Principal)",
+        "name": "Server 1 (HD)",
         "url": "https://hls02ns.antenaplay.ro/hls/travel-mix-hd/index.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2613,21 +2534,25 @@
     "name": "TVR Sport",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13174.m3u8",
+    "url": "https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/TVRSport121.png",
     "epg_id": "TVR.Sport.HD.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13174.m3u8",
-        "resolution": "FHD"
+        "name": "TVR Oficial (FHD)",
+        "url": "https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (FHD - Backup)",
-        "url": "https://tvr-sport.lg.mncdn.com/tvrsport/smil:tvrsport.smil/playlist.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://atlantida1.aquax001.shop/tivisp/usergendl3f9xgfm1s.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2636,23 +2561,17 @@
     "name": "Sport Extra",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6048.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://91.235.165.117:8001/play/a087/index.m3u8",
+    "headers": {},
     "logo": "logos/SportExtra122.png",
     "epg_id": "Sport.Extra.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6048.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://saruman1.tharen001.cfd/sextra/usergenq8eo0q.m3u8",
-        "resolution": "HD"
+        "name": "Direct HD",
+        "url": "http://91.235.165.117:8001/play/a087/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2661,26 +2580,17 @@
     "name": "TVR Cultural",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12316.m3u8",
+    "url": "https://tvr-cultural.lg.mncdn.com/tvrcultural/smil:tvrcultural.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/TVRCultural123.png",
     "epg_id": "TVR.Cultural.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12316.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (FHD - Backup)",
+        "name": "TVR Oficial (FHD)",
         "url": "https://tvr-cultural.lg.mncdn.com/tvrcultural/smil:tvrcultural.smil/playlist.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12545.m3u8",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2698,7 +2608,8 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://tvr-info.lg.mncdn.com/tvrinfo/smil:tvrinfo.smil/playlist.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2707,26 +2618,17 @@
     "name": "TVR Craiova",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/chunklist_b1396000.m3u8",
+    "url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/TVRCraiova125.png",
     "epg_id": "TVR.Craiova.ro",
-    "resolution": "SD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (SD - Nativ)",
-        "url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/chunklist_b1396000.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (HD - Upscale)",
-        "url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/chunklist_b3096000.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Auto)",
+        "name": "TVR Oficial (FHD)",
         "url": "https://tvr-craiova.lg.mncdn.com/tvrcraiova/smil:tvrcraiova.smil/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2735,26 +2637,17 @@
     "name": "TVR Iași",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/chunklist_b1396000.m3u8",
+    "url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/TVRIai126.png",
     "epg_id": "TVR.Iași.ro",
-    "resolution": "SD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (SD - Nativ)",
-        "url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/chunklist_b1396000.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (HD - Upscale)",
-        "url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/chunklist_b3096000.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Auto)",
+        "name": "TVR Oficial (FHD)",
         "url": "https://tvr-iasi.lg.mncdn.com/tvriasi/smil:tvriasi.smil/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2763,26 +2656,17 @@
     "name": "TVR Cluj",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/chunklist_b1396000.m3u8",
+    "url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/TVRCluj127.png",
     "epg_id": "TVR.Cluj.ro",
-    "resolution": "SD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (SD - Nativ)",
-        "url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/chunklist_b1396000.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (HD - Upscale)",
-        "url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/chunklist_b3096000.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Auto)",
+        "name": "TVR Oficial (FHD)",
         "url": "https://tvr-cluj.lg.mncdn.com/tvrcluj/smil:tvrcluj.smil/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2791,26 +2675,17 @@
     "name": "TVR Timișoara",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/chunklist_b1396000.m3u8",
+    "url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8",
     "headers": {},
     "logo": "logos/TVRTimioara128.png",
     "epg_id": "TVR.Timișoara.ro",
-    "resolution": "SD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "Server 1 (SD - Nativ)",
-        "url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/chunklist_b1396000.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (HD - Upscale)",
-        "url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/chunklist_b3096000.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Auto)",
+        "name": "TVR Oficial (FHD)",
         "url": "https://tvr-timisoara.lg.mncdn.com/tvrtimisoara/smil:tvrtimisoara.smil/playlist.m3u8",
-        "resolution": "SD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -2819,23 +2694,25 @@
     "name": "Kanal D2",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/1012.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://stream2.kanald.ro/iphone/knd2-live.m3u8",
+    "headers": {},
     "logo": "logos/KanalD2130.png",
     "epg_id": "Kanal.D2.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/1012.m3u8",
-        "resolution": "FHD"
+        "name": "Kanal D2 Oficial (SD)",
+        "url": "https://stream2.kanald.ro/iphone/knd2-live.m3u8",
+        "resolution": "SD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://cronos.mangora1.cfd/canad2/usergendx92c4rnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2855,7 +2732,16 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://galandriel1.thobias001.cfd/national/usergendxl4s0rnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "AntenaPlay CDN (HD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/national-tv-sd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2875,7 +2761,16 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://galandriel1.thobias001.cfd/n24/usergendxs2tp0f0wrnd.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "AntenaPlay CDN (HD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/n24-plus-sd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2884,26 +2779,17 @@
     "name": "Trinitas TV",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/10266.m3u8",
+    "url": "https://hls01ns.antenaplay.ro/hls/trinitas-tv-sd/index.m3u8",
     "headers": {},
     "logo": "logos/TrinitasTV134.png",
     "epg_id": "Trinitas.TV.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/10266.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "AntenaPlay CDN (SD)",
         "url": "https://hls01ns.antenaplay.ro/hls/trinitas-tv-sd/index.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/126.m3u8",
-        "resolution": "HD"
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -2916,12 +2802,13 @@
     "headers": {},
     "logo": "logos/CredoTV135.png",
     "epg_id": "Credo.TV.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (FHD)",
+        "name": "Server 1 (HD)",
         "url": "https://651c69fa2ff4e.streamlock.net/ctv/_definst_/livecredo/playlist.m3u8",
-        "resolution": "FHD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2939,7 +2826,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://aom-live.maghost.ro/aomTV/streams/OOztu5o9Fx6dh9mD1711027803849.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2948,18 +2836,17 @@
     "name": "Magic TV",
     "group": "Muzică",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12503.m3u8",
+    "url": "https://tv.broadcasting.ro/magictv/925f90db-5c88-4190-a53d-5163cdffe6f4.m3u8",
     "logo": "logos/MagicTV137.png",
     "epg_id": "Magic.TV.ro",
     "resolution": "HD",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/12503.m3u8",
-        "resolution": "HD"
+        "name": "Broadcasting Oficial (HD)",
+        "url": "https://tv.broadcasting.ro/magictv/925f90db-5c88-4190-a53d-5163cdffe6f4.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2977,7 +2864,16 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://hls02ns.antenaplay.ro/hls/favorit-sd/index.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://arwen1.panaka001.cfd/favorit/usergenrn9jn4gba.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -2986,21 +2882,25 @@
     "name": "Etno TV",
     "group": "Muzica Folclorica",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8376.m3u8",
+    "url": "https://hls02ns.antenaplay.ro/hls/etno-tv-sd/index.m3u8",
     "headers": {},
     "logo": "logos/EtnoTV139.png",
     "epg_id": "Etno.TV.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8376.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay Oficial (SD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/etno-tv-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://hls02ns.antenaplay.ro/hls/etno-tv-sd/index.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://arwen1.panaka001.cfd/etno/usergenrnd7ke5lgt.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -3009,23 +2909,21 @@
     "name": "Acasă Gold",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/100.m3u8",
+    "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/AcasGold140.png",
     "epg_id": "Acasa.Gold.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/100.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (FHD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
-        "resolution": "FHD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -3040,7 +2938,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://s3.myradiostream.com:7022",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3049,17 +2948,17 @@
     "name": "BBC One",
     "group": "Radio - International",
     "is_radio": true,
-    "url": "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_one.mpd",
-    "headers": {
-      "Referer": "https://www.bbc.co.uk/"
-    },
+    "url": "http://as-hls-ww-live.akamaized.net/pool_92079267/live/ww/bbc_1xtra/bbc_1xtra.isml/bbc_1xtra-audio%3d128000.norewind.m3u8",
+    "headers": {},
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_one.mpd",
-        "resolution": "HD"
+        "name": "BBC Official CDN",
+        "url": "http://as-hls-ww-live.akamaized.net/pool_92079267/live/ww/bbc_1xtra/bbc_1xtra.isml/bbc_1xtra-audio%3d128000.norewind.m3u8",
+        "resolution": "SD",
+        "headers": {}
       }
-    ]
+    ],
+    "resolution": "SD"
   },
   {
     "id": "București421",
@@ -3072,7 +2971,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.238.227.6:8032/;stream/1",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3087,7 +2987,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://edge126.rcs-rds.ro/profm/dancefm.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3102,22 +3003,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream.darkedge.ro:8002/stream/3/",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Diaspora767",
-    "name": "Diaspora - Diaspora Media >>",
-    "group": "Radio - Diaspora",
-    "is_radio": true,
-    "url": "https://hls.radiosolution.fr/n8k9kUqbV2W6B5a4v6RX/index.m3u8",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://hls.radiosolution.fr/n8k9kUqbV2W6B5a4v6RX/index.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3132,7 +3019,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream15.top-ix.org/radiotorinointernational",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3147,7 +3035,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radio10es.radioca.st/;;",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3162,32 +3051,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://edge76.rcs-rds.ro/digifm/digifm.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
-  },
-  {
-    "id": "Disco047",
-    "name": "Disco Mix",
-    "group": "Radio - Romania IP",
-    "is_radio": true,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13427.m3u8",
-    "headers": {},
-    "resolution": "1080p FHD",
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13427.m3u8",
-        "resolution": "1080p FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://sonic1-rbx.cloud-center.ro/8002/stream",
-        "resolution": "HD"
-      }
-    ],
-    "epg_id": "Disco.Mix.HD.ro",
-    "logo": "logos/discomix.png"
   },
   {
     "id": "EBS854",
@@ -3200,7 +3067,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://azura.ebsmedia.ro/radio/8010/live128.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3215,7 +3083,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream-286.zeno.fm/ehbuv5erws8uv",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3230,7 +3099,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://astreaming.edi.ro:8000/EuropaFM_aac",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3245,7 +3115,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://80.86.106.110:8000",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3260,37 +3131,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.guerrillaradio.ro:8443/guerrilla.aac",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Impact034",
-    "name": "Impact FM Iași",
-    "group": "Radio - România FM  - Moldova",
-    "is_radio": true,
-    "url": "https://live.gofm.ro:2000/stream/impactFMradio",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://live.gofm.ro:2000/stream/impactFMradio",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Jurnal547",
-    "name": "Jurnal FM - Piatra Neamt",
-    "group": "Radio - România FM  - Moldova",
-    "is_radio": true,
-    "url": "http://ssl.radios.show:8028/stream",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://ssl.radios.show:8028/stream",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3305,7 +3147,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.kissfm.ro/kissfm.aacp",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3320,7 +3163,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://s33.myradiostream.com/16150/listen.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3335,7 +3179,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.magicfm.ro/magicfm.aacp",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3350,7 +3195,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://www.metronom-fm.ro:8000/metronom",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3365,7 +3211,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://93.115.137.75:8000/aquarellefm.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3380,7 +3227,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://ssl.radios.show:7009/stream",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3395,7 +3243,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.muzfm.md/muzfm",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3410,7 +3259,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radiochisinau.md/hls/RChisinau.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3419,15 +3269,17 @@
     "name": "Moldova - Radio Moldova (TRM actualități)",
     "group": "Radio - Moldova",
     "is_radio": true,
-    "url": "https://radiolive.trm.md:8001/hls/actualitati.m3u8",
+    "url": "https://radiolive.trm.md/hls_rma/actualitati.m3u8",
     "headers": {},
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://radiolive.trm.md:8001/hls/actualitati.m3u8",
-        "resolution": "HD"
+        "name": "TRM Oficial",
+        "url": "https://radiolive.trm.md/hls_rma/actualitati.m3u8",
+        "resolution": "SD",
+        "headers": {}
       }
-    ]
+    ],
+    "resolution": "SD"
   },
   {
     "id": "(Moldova)318",
@@ -3438,11 +3290,13 @@
     "headers": {},
     "streams": [
       {
-        "name": "Server 1 (HD)",
+        "name": "Radio ZUM Oficial",
         "url": "https://streams.radiozum.md/listen/zum1/ZUM1",
-        "resolution": "HD"
+        "resolution": "SD",
+        "headers": {}
       }
-    ]
+    ],
+    "resolution": "SD"
   },
   {
     "id": "Radio532",
@@ -3453,26 +3307,13 @@
     "headers": {},
     "streams": [
       {
-        "name": "Server 1 (HD)",
+        "name": "Radio ZUM Oficial",
         "url": "https://streams.radiozum.md/listen/zum2/ZUM2",
-        "resolution": "HD"
+        "resolution": "SD",
+        "headers": {}
       }
-    ]
-  },
-  {
-    "id": "(Moldova763",
-    "name": "Moldova - Radio Zum 3",
-    "group": "Radio - Moldova",
-    "is_radio": true,
-    "url": "https://streams.radiozum.md/listen/zum3/ZUM3",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://streams.radiozum.md/listen/zum3/ZUM3",
-        "resolution": "HD"
-      }
-    ]
+    ],
+    "resolution": "SD"
   },
   {
     "id": "(Moldova)488",
@@ -3485,22 +3326,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream.dixi.md:9443/HitFM",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "[RO][FM]Național957",
-    "name": "Național FM",
-    "group": "Radio - Romania FM",
-    "is_radio": true,
-    "url": "http://live2.nationalfm.ro:8001",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://live2.nationalfm.ro:8001",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3515,7 +3342,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.onefm.ro/onefm.aacp",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3530,7 +3358,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/OWR_INTERNATIONAL_ADP.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3545,22 +3374,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://edge126.rcs-rds.ro/profm/profm.mp3",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Penny395",
-    "name": "Penny FM",
-    "group": "Radio - Romania IP",
-    "is_radio": true,
-    "url": "http://listen.radiomax.technology/Penny-Romania",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://listen.radiomax.technology/Penny-Romania",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3575,7 +3390,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://live.playradio.org:9090/90HD",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3590,7 +3406,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream2.radiotransilvania.ro:8000/Margitta",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3605,7 +3422,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://media.3netmedia.ro:8080/hls/stream.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3620,7 +3438,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://86.123.70.144:8000/sample128",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3635,22 +3454,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://94.52.142.229:85/broadwave.mp3",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Radio570",
-    "name": "Radio Brăila Dens FM",
-    "group": "Radio - România FM  - Muntenia",
-    "is_radio": true,
-    "url": "http://ip1.romaniaradio.ro:8004",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://ip1.romaniaradio.ro:8004",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3665,7 +3470,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream2.radiocfm.ro:8443/CFM",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3680,7 +3486,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://sc6.radiocaroline.net:8040",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3695,7 +3502,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://live.radioclick.ro:8008",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3710,7 +3518,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://www.radiocondor.ro:6303",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3725,7 +3534,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://web-radio.cuplu.ovh/Asculta",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3742,7 +3552,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radiocdn.nxthost.com/radio-deea",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+        }
       }
     ]
   },
@@ -3757,7 +3570,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://n09.radiojar.com/8q8770pucfhvv",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3772,7 +3586,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://asculta.ascultatare.ro:7000/RadioDesireNET",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3787,7 +3602,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream.arhivaradiodobrogea.ro:7000/dobrogea",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3802,7 +3618,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.43.138.116:8000/radiodoina.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3817,7 +3634,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live3ro.antenaplay.ro/radiodor/radiodor-48000.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3832,22 +3650,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream.radiojar.com/fp5c3fgbyzzuv",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Radio201",
-    "name": "Radio Enigma Romania",
-    "group": "Radio - Romania IP",
-    "is_radio": true,
-    "url": "https://ssl.radioenigmaromania.net:8050",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://ssl.radioenigmaromania.net:8050",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3862,22 +3666,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://usa10.fastcast4u.com:9520/;",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Radio742",
-    "name": "Radio Gaga >>",
-    "group": "Radio - Romania IP",
-    "is_radio": true,
-    "url": "https://a3.my-control-panel.com:6700/radio.mp3",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://a3.my-control-panel.com:6700/radio.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3892,7 +3682,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://live02.radiohit.ro:8000/hit.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3907,7 +3698,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://mp3.radiohot.ro:8000",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3922,22 +3714,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.radio-impuls.ro/stream",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Radio578",
-    "name": "Radio Luxembourg Memories (208)",
-    "group": "Radio - Oldies",
-    "is_radio": true,
-    "url": "https://stream.zenolive.com/3384cgvyk2zuv",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://stream.zenolive.com/3384cgvyk2zuv",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3952,7 +3730,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://s4.ssl-stream.com/listen/radio_mplus_fm/live",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3967,7 +3746,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://live.mixcraiova.ro:8241/stream/1/",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -3982,22 +3762,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream2.srr.ro:8370",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Radio483",
-    "name": "Radio Pro Party",
-    "group": "Radio - Romania IP",
-    "is_radio": true,
-    "url": "http://asculta.proparty.net:8567",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://asculta.proparty.net:8567",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4015,7 +3781,11 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://asculta.radiorfi.ro/live.aac",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://www.rfi.ro/",
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+        }
       }
     ]
   },
@@ -4030,7 +3800,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.238.227.6:8332/;stream/1",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4045,7 +3816,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.238.227.6:8202",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4060,7 +3832,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.238.227.6:8344/;stream/1",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4075,7 +3848,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.238.227.6:8354/;stream/1",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4090,7 +3864,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://s8.mediastreaming.it:7050",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4105,7 +3880,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://80.86.106.32:8000/radio7.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4120,7 +3896,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.43.138.116:8000/radiosky.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4135,7 +3912,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://media.gds.ro:8500/128.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4150,7 +3928,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.radiosun.ro/sunfm",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4165,7 +3944,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream2.radiotransilvania.ro:8000/BaiaMare",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4180,7 +3960,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live4ro.antenaplay.ro/radiozu/radiozu-48000.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4195,7 +3976,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://shout.realitatea.net:8001/rfmweb",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4210,7 +3992,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.rockfm.ro/rockfm.aacp",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4225,7 +4008,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.romanfm.ro:8000/;rfm",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4240,7 +4024,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://ivm.antenaplay.ro/liveaudio/radioromantic/playlist.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4255,7 +4040,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://89.238.227.6:8008",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4270,7 +4056,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream2.srr.ro:8012",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4285,7 +4072,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://stream2.srr.ro:8022",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4300,7 +4088,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream.rcs.revma.com/0btynq5r4a0uv",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4315,7 +4104,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.smartradio.ro:8443/live",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4330,22 +4120,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://s5.radio.co/s08e5c5875/listen",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Terra068",
-    "name": "Terra FM - Piatra Neamț",
-    "group": "Radio - România FM  - Moldova",
-    "is_radio": true,
-    "url": "http://cloud.radiosonicpanel.ro:8022",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://cloud.radiosonicpanel.ro:8022",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4360,7 +4136,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://astreaming.edi.ro:8000/VirginRadio_aac",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4375,7 +4152,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cloud.radiosonicpanel.ro:10997",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4390,7 +4168,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://live.westcityradio.ro:8000/mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4405,7 +4184,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://sonicpanel.radiovibefm.eu:8010",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4420,7 +4200,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.radionostalgia.ro:8443/nostalgia.aac",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4435,7 +4216,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://live.oneviberadio.eu:8012",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4450,7 +4232,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://listen.radioking.com/radio/701141/stream/766385",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4465,7 +4248,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://asculta.radioromania.live/listen/radioromania/radio.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4480,7 +4264,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radio.sonicpanel.ro:8002/stream",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4495,22 +4280,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radiostar.roircop.info:8443/stream",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "30+FlirtN4fun087",
-    "name": "CWRC Radio (#30+FlirtN4fun Undernet)",
-    "group": "Radio - Radio pe Undernet",
-    "is_radio": true,
-    "url": "http://198.7.62.157:8117",
-    "headers": {},
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://198.7.62.157:8117",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4525,7 +4296,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radio.underland.team/listen/radio_underland/radio.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4540,7 +4312,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://live.clubbingradio.fr/radio/8000/live.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4555,7 +4328,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://mscp1.gazduireradio.ro:1230/stream",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4570,7 +4344,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://southbayradio.org:8115/live.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4585,7 +4360,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://radio-earth.live:8000/radio128.mp3",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4600,7 +4376,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream.cloudrad.io/5913/8160",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4615,7 +4392,8 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://stream.rcast.net/67731",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4625,22 +4403,20 @@
     "group": "Știri",
     "resolution": "HD",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/24.m3u8",
+    "url": "https://thor1.syndula001.cfd/cienen/usergenrx8ofzq1kr.m3u8",
     "headers": {
-      "Referer": "https://cool-tv.net/"
+      "Referer": "https://canale-tv.net/"
     },
     "logo": "logos/cnn.png",
     "epg_id": "CNN.us",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/24.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
+        "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/cienen/usergenrx8ofzq1kr.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -4650,52 +4426,16 @@
     "group": "Documentare",
     "resolution": "FHD",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/679.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://23.237.104.106:8080/USA_ANIMAL_PLANET/index.m3u8",
+    "headers": {},
     "logo": "logos/animal_planet.png",
     "epg_id": "AnimalPlanet.ro",
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/679.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
-        "url": "http://stream.mcquack.net/114/index.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Secundar)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/9.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Ro:DaVinci",
-    "name": "Da Vinci",
-    "group": "Desene animate",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/32.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/da_vinci.png",
-    "epg_id": "DaVinci.ro",
-    "streams": [
-      {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/32.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
-        "url": "http://stream.mcquack.net/238/index.m3u8",
-        "resolution": "HD"
+        "name": "Animal Planet FHD",
+        "url": "http://23.237.104.106:8080/USA_ANIMAL_PLANET/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -4703,24 +4443,18 @@
     "id": "Ro:FoodNetwork",
     "name": "Food Network",
     "group": "Documentare",
-    "resolution": "HD",
+    "resolution": "FHD",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6316.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/FOODNETWORK/CMAF/index.m3u8",
+    "headers": {},
     "logo": "logos/food_network.png",
     "epg_id": "FoodNetwork.ro",
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6316.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (HD - Backup)",
-        "url": "https://jmp2.uk/plu-68bb167e00a2f063fdf7ee8f.m3u8",
-        "resolution": "HD"
+        "name": "Food Network FHD",
+        "url": "https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/FOODNETWORK/CMAF/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -4740,12 +4474,10 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://edge-fast3.evrideo.tv/bfdbb576-83f7-11f0-9f89-0200170e3e04_1000028043_HLS/manifest.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (HD Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/4685.m3u8",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -4765,7 +4497,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://cool-tv.net/"
+        }
       }
     ]
   },
@@ -4785,7 +4520,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://88.212.7.11/live/test_dorcel_hd_hevc/playlist.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -4805,87 +4543,10 @@
       {
         "name": "Server 1 (4K)",
         "url": "http://212.102.38.45/live/test_extasy_hd_hevc/playlist.m3u8",
-        "resolution": "4K"
-      }
-    ]
-  },
-  {
-    "id": "Adult:HustlerHD",
-    "name": "Hustler HD",
-    "group": "Adult",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/719.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/hustler_hd.png",
-    "epg_id": "Hustler.HD.ro",
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/719.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Adult:PassionXXX",
-    "name": "Passion XXX",
-    "group": "Adult",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13466.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/passion_xxx.png",
-    "epg_id": "PassionXXX.nl",
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13466.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Adult:PrivateHD",
-    "name": "Private HD",
-    "group": "Adult",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/722.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/private_hd.png",
-    "epg_id": "Private.TV.ro",
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/722.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Adult:PlayboyTVHD",
-    "name": "Playboy TV HD",
-    "group": "Adult",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5655.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/playboy_tv_hd.png",
-    "epg_id": "Playboy.TV.ro",
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5655.m3u8",
-        "resolution": "HD"
+        "resolution": "4K",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -4905,7 +4566,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://88.212.7.11/live/test_erox_hd_hevc/playlist.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -4925,47 +4589,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "http://88.212.7.11/live/test_eroxxx_hd_hevc/playlist.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Adult:RedlightHD",
-    "name": "Redlight HD",
-    "group": "Adult",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/721.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/redlight_hd.png",
-    "epg_id": "Redlight.HD.ro",
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/721.m3u8",
-        "resolution": "HD"
-      }
-    ]
-  },
-  {
-    "id": "Adult:LeoTV",
-    "name": "Leo TV",
-    "group": "Adult",
-    "resolution": "HD",
-    "is_radio": false,
-    "url": "http://88.212.7.11/live/test_leo_hd_hevc/playlist.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/leo_tv.png",
-    "epg_id": "LEOTV.cz",
-    "streams": [
-      {
-        "name": "Server 1 (HD)",
-        "url": "http://88.212.7.11/live/test_leo_hd_hevc/playlist.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -4985,7 +4612,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/teen.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5005,7 +4635,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/milf.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5025,7 +4658,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/lesbian.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5045,7 +4681,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/latina.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5065,7 +4704,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/asian.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5085,7 +4727,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/anal.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5105,7 +4750,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/fetish.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5125,7 +4773,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/bigtits.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5145,7 +4796,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/blonde.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5165,7 +4819,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/brunette.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5185,7 +4842,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/russian.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5205,7 +4865,10 @@
       {
         "name": "Server 1 (HD)",
         "url": "https://cdn.adultiptv.net/threesome.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ]
   },
@@ -5213,19 +4876,18 @@
     "id": "Adult:MiamiTV",
     "name": "Miami TV Jenny Live HD",
     "group": "Adult",
-    "resolution": "HD",
+    "resolution": "FHD",
     "is_radio": false,
     "url": "https://59ec5453559f0.streamlock.net/JennyLive/JennyLive/playlist.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "logo": "logos/miamitv.png",
     "epg_id": null,
     "streams": [
       {
-        "name": "Server 1 (HD)",
+        "name": "Server 1 (FHD)",
         "url": "https://59ec5453559f0.streamlock.net/JennyLive/JennyLive/playlist.m3u8",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -5234,18 +4896,17 @@
     "name": "Taraf TV",
     "group": "Muzica Folclorica",
     "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8377.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://hls02ns.antenaplay.ro/hls/taraf-tv-sd/index.m3u8",
+    "headers": {},
     "logo": "logos/taraf.png",
-    "resolution": "HD",
+    "resolution": "SD",
     "epg_id": "Taraf.TV.ro",
     "streams": [
       {
-        "name": "Server 1 (HD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8377.m3u8",
-        "resolution": "HD"
+        "name": "AntenaPlay Taraf (SD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/taraf-tv-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   },
@@ -5260,19 +4921,10 @@
     "epg_id": "Mynele.TV.ro",
     "streams": [
       {
-        "name": "Server 1 (Video HD)",
+        "name": "Server 1 (HD)",
         "url": "https://stream.tequilamusic.net/hls/tequila_tv.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 2 (Video Backup)",
-        "url": "https://online.tvimpact.live/hls/impact_tv.m3u8",
-        "resolution": "HD"
-      },
-      {
-        "name": "Server 3 (Audio Doar)",
-        "url": "https://live.radiomynele.ro/8000/stream",
-        "resolution": "SD"
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -5289,7 +4941,8 @@
       {
         "name": "Server 1 (FHD)",
         "url": "https://lotus.stingray.com/manifest/djazz-djaads-montreal/samsungtvplus/master.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -5304,14 +4957,10 @@
     "epg_id": null,
     "streams": [
       {
-        "name": "Server 1 (4K UHD)",
+        "name": "Server 1 (4K)",
         "url": "https://pb-ehs1glsha1juy.akamaized.net/Love_Nature_4K.m3u8",
-        "resolution": "4K"
-      },
-      {
-        "name": "Server 2 (FHD Audio RO)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/693.m3u8",
-        "resolution": "FHD"
+        "resolution": "4K",
+        "headers": {}
       }
     ]
   },
@@ -5328,27 +4977,8 @@
       {
         "name": "Server 1 (4K)",
         "url": "https://pb-rhq7yj8tne4rm.akamaized.net/Fireplace_4K_SONO20.m3u8",
-        "resolution": "4K"
-      }
-    ]
-  },
-  {
-    "id": "Ro:Trance4K",
-    "name": "TRANCE 2025",
-    "group": "Muzică",
-    "resolution": "FHD",
-    "is_radio": false,
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/15290.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/trance4k.png",
-    "epg_id": null,
-    "streams": [
-      {
-        "name": "Server 1 (FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/15290.m3u8",
-        "resolution": "FHD"
+        "resolution": "4K",
+        "headers": {}
       }
     ]
   },
@@ -5360,20 +4990,14 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/716.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/133.m3u8",
-        "resolution": "HD"
+        "name": "AntenaPlay Oficial (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi13/live2_aws4_sdi13_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/716.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi13/live2_aws4_sdi13_5000k.m3u8",
+    "headers": {},
     "logo": "logos/chefiro.png",
     "epg_id": "Chefiro.ro@SD"
   },
@@ -5385,15 +5009,14 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18661.m3u8",
-        "resolution": "FHD"
+        "name": "Direct HD (FHD)",
+        "url": "http://91.235.165.117:8002/play/bautyon_hd/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18661.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://91.235.165.117:8002/play/bautyon_hd/index.m3u8",
+    "headers": {},
     "logo": "logos/beauty_on.png",
     "epg_id": null
   },
@@ -5405,9 +5028,12 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
+        "name": "Server 1 (FHD)",
         "url": "https://amg01079-nbcuuk-amg01079c2-samsung-gb-1258.playouts.now.amagi.tv/playlist.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
     "url": "https://amg01079-nbcuuk-amg01079c2-samsung-gb-1258.playouts.now.amagi.tv/playlist.m3u8",
@@ -5421,13 +5047,16 @@
     "id": "Ro:Motorvision",
     "name": "Motorvision+",
     "group": "Sport",
-    "resolution": "HD",
+    "resolution": "FHD",
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
+        "name": "Server 1 (FHD)",
         "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=535",
-        "resolution": "HD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
     "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=535",
@@ -5445,9 +5074,12 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
+        "name": "Server 1 (HD)",
         "url": "https://dash3.antik.sk/live/test_fast_and_funbox_medium_atk/playlist.m3u8",
-        "resolution": "HD"
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
     "url": "https://dash3.antik.sk/live/test_fast_and_funbox_medium_atk/playlist.m3u8",
@@ -5465,15 +5097,22 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16678.m3u8",
-        "resolution": "HD"
+        "name": "Direct HD",
+        "url": "http://91.235.165.117:8001/play/a055/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://flash1.bogulus1.cfd/tivi10/usergenrxs4f7zc.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16678.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://91.235.165.117:8001/play/a055/index.m3u8",
+    "headers": {},
     "logo": "logos/viasatkino.png",
     "epg_id": "Viasat.Kino.ro"
   },
@@ -5487,18 +5126,12 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-hits-sd/index.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/60.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ],
     "url": "https://nosignal1.antenaplay.ro/hls/fb-hits-sd/index.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "logo": "logos/Filmbox463.png",
     "epg_id": "Filmbox.Stars.ro"
   },
@@ -5512,18 +5145,12 @@
       {
         "name": "Server 1 (SD)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-love-and-crime-sd/index.m3u8",
-        "resolution": "SD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/59.m3u8",
-        "resolution": "SD"
+        "resolution": "SD",
+        "headers": {}
       }
     ],
     "url": "https://nosignal1.antenaplay.ro/hls/fb-love-and-crime-sd/index.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "headers": {},
     "logo": "logos/Filmbox463.png",
     "epg_id": "FilmBox.Family.ro"
   },
@@ -5531,16 +5158,27 @@
     "id": "Ro:FilmBoxEmotions",
     "name": "FilmBox Emotions",
     "group": "Filme",
-    "resolution": "FHD",
+    "resolution": "HD",
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (FHD)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/697.m3u8",
-        "resolution": "FHD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://onyx1.mofta001.cfd/fboye/usergendlg8sl1ks0tv7sr8n.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "CoolTV Stream (HD)",
+        "url": "https://atlantida1.aquax001.shop/fboz/usergendx7tc9brnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/697.m3u8",
+    "url": "https://onyx1.mofta001.cfd/fboye/usergendlg8sl1ks0tv7sr8n.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -5551,19 +5189,18 @@
     "id": "Ro:CineWow",
     "name": "CineWow",
     "group": "Filme",
-    "resolution": "FHD",
+    "resolution": "SD",
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18659.m3u8",
-        "resolution": "FHD"
+        "name": "AntenaPlay CDN (SD)",
+        "url": "https://hls01ns.antenaplay.ro/hls/cinewow-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18659.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://hls01ns.antenaplay.ro/hls/cinewow-sd/index.m3u8",
+    "headers": {},
     "logo": "logos/cinewow.png",
     "epg_id": "CineWow.ro@SD"
   },
@@ -5571,51 +5208,20 @@
     "id": "Ro:BollywoodClasic",
     "name": "Bollywood Clasic",
     "group": "Filme",
-    "resolution": "FHD",
+    "resolution": "SD",
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8252.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16091.m3u8",
-        "resolution": "HD"
+        "name": "AntenaPlay CDN (SD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/bollywood-sd/index.m3u8",
+        "resolution": "SD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8252.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://hls02ns.antenaplay.ro/hls/bollywood-sd/index.m3u8",
+    "headers": {},
     "logo": null,
     "epg_id": "Bollywood.Clasic.ro"
-  },
-  {
-    "id": "Ro:FilmMania",
-    "name": "Film Mania",
-    "group": "Filme",
-    "resolution": "FHD",
-    "is_radio": false,
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13545.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/15460.m3u8",
-        "resolution": "HD"
-      }
-    ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/13545.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": null,
-    "epg_id": "Film.Mania.ro"
   },
   {
     "id": "Ro:NostalgiaTV",
@@ -5625,15 +5231,14 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (720p HD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/15461.m3u8",
-        "resolution": "HD"
+        "name": "AntenaPlay CDN (HD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/nostalgia-hd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/15461.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://hls02ns.antenaplay.ro/hls/nostalgia-hd/index.m3u8",
+    "headers": {},
     "logo": "logos/nostalgiatv.png",
     "epg_id": "Nostalgia.TV.ro"
   },
@@ -5641,21 +5246,19 @@
     "id": "Ro:InvestigationDiscovery",
     "name": "Investigation Discovery",
     "group": "Documentare",
-    "resolution": "FHD",
+    "resolution": "HD",
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6197.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8034.m3u8",
-        "resolution": "HD"
+        "name": "CoolTV Stream (HD)",
+        "url": "https://onyx1.mofta001.cfd/cryme/usergendxn0487rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6197.m3u8",
+    "url": "https://onyx1.mofta001.cfd/cryme/usergendxn0487rnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -5670,42 +5273,16 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6242.m3u8",
-        "resolution": "FHD"
+        "name": "HGTV FHD",
+        "url": "https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/HGTV/CMAF/index.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/6242.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/HGTV/CMAF/index.m3u8",
+    "headers": {},
     "logo": "logos/HGTV119.png",
     "epg_id": "HGTV.HD.ro"
-  },
-  {
-    "id": "Ro:EEntertainment",
-    "name": "E! Entertainment",
-    "group": "Documentare",
-    "resolution": "FHD",
-    "is_radio": false,
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/694.m3u8",
-        "resolution": "FHD"
-      },
-      {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/49.m3u8",
-        "resolution": "HD"
-      }
-    ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/694.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": null,
-    "epg_id": "E!.Entertainment.HD.ro"
   },
   {
     "id": "Ro:StingrayiConcerts",
@@ -5715,62 +5292,22 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8042.m3u8",
-        "resolution": "FHD"
-      }
-    ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/8042.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": null,
-    "epg_id": "Stingray.iConcerts.HD.ro"
-  },
-  {
-    "id": "Ro:MezzoLiveHD",
-    "name": "Mezzo Live HD",
-    "group": "Muzică",
-    "resolution": "FHD",
-    "is_radio": false,
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "http://stream.mcquack.net/276/index.m3u8",
-        "resolution": "FHD"
-      }
-    ],
-    "url": "http://stream.mcquack.net/276/index.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": null,
-    "epg_id": "Mezzo.Live.HD.ro"
-  },
-  {
-    "id": "Ro:MoozDance",
-    "name": "Mooz Dance",
-    "group": "Muzică",
-    "resolution": "FHD",
-    "is_radio": false,
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5314.m3u8",
-        "resolution": "FHD"
+        "name": "Stingray iConcerts (FHD)",
+        "url": "https://dash4.antik.sk/live/test_stingray_iconcerts_hd_hevc50/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
-        "name": "Server 2 (Backup)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/18143.m3u8",
-        "resolution": "HD"
+        "name": "Qello Concerts (FHD)",
+        "url": "https://lotus.stingray.com/manifest/qello-qello001-montreal/samsungtvplus/master.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/5314.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/moozdance.png",
-    "epg_id": "Mooz.Dance.HD.ro"
+    "url": "https://dash4.antik.sk/live/test_stingray_iconcerts_hd_hevc50/playlist.m3u8",
+    "headers": {},
+    "logo": null,
+    "epg_id": "Stingray.iConcerts.HD.ro"
   },
   {
     "id": "Ro:BoomTV",
@@ -5780,37 +5317,16 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16048.m3u8",
-        "resolution": "FHD"
+        "name": "Boom TV Oficial (FHD)",
+        "url": "https://tvboom.ro/live-tv/live.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/16048.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "https://tvboom.ro/live-tv/live.m3u8",
+    "headers": {},
     "logo": "logos/boomtv.png",
     "epg_id": null
-  },
-  {
-    "id": "Ro:PartyMix",
-    "name": "Party Mix",
-    "group": "Muzică",
-    "resolution": "FHD",
-    "is_radio": false,
-    "streams": [
-      {
-        "name": "Server 1 (1080p FHD - Principal)",
-        "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/10750.m3u8",
-        "resolution": "FHD"
-      }
-    ],
-    "url": "https://vip-acasatv.online:25463/live/lrZuGxAuP3/6782859900/10750.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
-    "logo": "logos/partymix.png",
-    "epg_id": "Party.Mix.HD.ro"
   },
   {
     "id": "Ro:StingrayClassicaSimfonica",
@@ -5820,9 +5336,12 @@
     "is_radio": false,
     "streams": [
       {
-        "name": "Server 1 (1080p FHD - Principal)",
+        "name": "Server 1 (FHD)",
         "url": "https://lotus.stingray.com/manifest/classica-cla008-montreal/samsungtvplus/master.m3u8",
-        "resolution": "FHD"
+        "resolution": "FHD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
       }
     ],
     "url": "https://lotus.stingray.com/manifest/classica-cla008-montreal/samsungtvplus/master.m3u8",

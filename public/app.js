@@ -550,29 +550,57 @@ function filterAndRenderChannels() {
   });
 }
 
+// Direct CORS-capable official CDNs (when no custom Referer is required)
+function isCorsDirectCdn(rawUrl) {
+  if (!rawUrl || !rawUrl.startsWith('https://')) return false;
+  return /\/\/([^/]+\.)?(antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro)\b/i.test(rawUrl);
+}
+
+function getEffectiveStreams(channel) {
+  const list = (channel.streams && channel.streams.length > 0)
+    ? channel.streams
+    : [{ name: 'Server 1', url: channel.url, resolution: channel.resolution, headers: channel.headers || {} }];
+  // On Cloudflare Pages / HTTPS remote origin with relative /proxy, skip raw IP HTTP endpoints first if an HTTPS stream exists
+  const isRemoteHttps = window.location.protocol === 'https:' && (state.proxyMode === 'auto' || state.proxyMode === 'relative');
+  if (isRemoteHttps && list.some(s => s.url && s.url.startsWith('https://'))) {
+    const httpsFirst = list.filter(s => !(s.url && /^https?:\/\/\d+\.\d+\.\d+\.\d+/i.test(s.url)));
+    const ipFallback = list.filter(s => s.url && /^https?:\/\/\d+\.\d+\.\d+\.\d+/i.test(s.url));
+    return [...httpsFirst, ...ipFallback];
+  }
+  return list;
+}
+
 // Resolve Proxy URL
-function resolveStreamUrl(channel) {
-  let rawUrl = (channel.streams && channel.streams.length > 0) ? channel.streams[0].url : channel.url;
+function resolveStreamUrl(channel, streamObj, forceProxy = false) {
+  const s = streamObj || ((channel.streams && channel.streams.length > 0) ? channel.streams[0] : null);
+  let rawUrl = (s && s.url) ? s.url : channel.url;
   if (!rawUrl) return '';
 
-  const referer = (channel.headers && channel.headers.Referer) ? channel.headers.Referer : 'https://canale-tv.net/';
+  const hdrs = (s && s.headers && Object.keys(s.headers).length > 0) ? s.headers : (channel.headers || {});
+  let referer = hdrs.Referer || hdrs['http-referrer'] || '';
+  if (!referer && /\.(shop|cfd|pw|space)\//i.test(rawUrl)) {
+    referer = 'https://canale-tv.net/';
+  }
 
   // Proxy decision
   if (state.proxyMode === 'direct') {
     return rawUrl;
   }
 
+  if (!forceProxy && !referer && isCorsDirectCdn(rawUrl) && (state.proxyMode === 'auto' || state.proxyMode === 'relative')) {
+    return rawUrl;
+  }
+
+  const refSuffix = referer ? `&ref=${encodeURIComponent(referer)}` : '';
+
   if (state.proxyMode === 'custom' && state.customProxyUrl) {
     const base = state.customProxyUrl.endsWith('=') ? state.customProxyUrl : state.customProxyUrl + '?url=';
-    return `${base}${encodeURIComponent(rawUrl)}&ref=${encodeURIComponent(referer)}`;
+    return `${base}${encodeURIComponent(rawUrl)}${refSuffix}`;
   }
 
   // Relative / Auto: Use relative /proxy?url=
-  // This automatically works with the included Node.js server OR Cloudflare Worker
-  const isLocalServer = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '';
   if (state.proxyMode === 'relative' || state.proxyMode === 'auto') {
-    // If hosted on GitHub Pages or custom static host without backend proxy, user can specify custom worker
-    return `/proxy?url=${encodeURIComponent(rawUrl)}&ref=${encodeURIComponent(referer)}`;
+    return `/proxy?url=${encodeURIComponent(rawUrl)}${refSuffix}`;
   }
 
   return rawUrl;
@@ -629,7 +657,12 @@ function playChannel(channel) {
   dom.video.removeAttribute('src');
   dom.video.load();
 
-  const rawUrl = (channel.streams && channel.streams.length > 0) ? channel.streams[0].url : channel.url;
+  const effStreams = getEffectiveStreams(channel);
+  const startStreamIdx = (typeof channel._activeStreamIdx === 'number' && channel._activeStreamIdx < effStreams.length) ? channel._activeStreamIdx : 0;
+  const activeStream = effStreams[startStreamIdx];
+  const rawUrl = (activeStream && activeStream.url) ? activeStream.url : channel.url;
+  const forceProxy = !!channel._forceProxyOnce;
+  channel._forceProxyOnce = false;
 
   // Handle Cartoonix Live 24/7 Channels
   if (rawUrl && (rawUrl.startsWith('cartoonix://') || (channel.group && channel.group.toLowerCase() === 'cartoonix'))) {
@@ -666,8 +699,28 @@ function playChannel(channel) {
     return;
   }
 
-  const streamUrl = resolveStreamUrl(channel);
-  console.log(`[FloLiteTV] Redare ${channel.name} -> ${streamUrl}`);
+  const streamUrl = resolveStreamUrl(channel, activeStream, forceProxy);
+  console.log(`[FloLiteTV] Redare ${channel.name} [S${startStreamIdx + 1}/${effStreams.length}] -> ${streamUrl}`);
+
+  const advanceFallbackStream = () => {
+    if (state.currentChannel !== channel) return;
+    // If direct CORS URL failed, try proxying the same stream first
+    if (!forceProxy && streamUrl === rawUrl && state.proxyMode !== 'direct') {
+      channel._forceProxyOnce = true;
+      channel._activeStreamIdx = startStreamIdx;
+      playChannel(channel);
+      return;
+    }
+    const tried = channel._triedStreamsCount || 0;
+    if (effStreams.length > 1 && tried < effStreams.length - 1) {
+      channel._triedStreamsCount = tried + 1;
+      channel._activeStreamIdx = (startStreamIdx + 1) % effStreams.length;
+      playChannel(channel);
+    } else {
+      channel._triedStreamsCount = 0;
+      dom.spinner.classList.add('hidden');
+    }
+  };
 
   // Check HLS.js support vs Native HTML5 Audio/Video
   // Note: Only use Hls.js for actual .m3u8 playlists. Direct MP3/AAC radio streams MUST play via native HTML5!
@@ -686,14 +739,14 @@ function playChannel(channel) {
       liveDurationInfinity: true,
       lowLatencyMode: false,
       manifestLoadingTimeOut: 12000,
-      manifestLoadingMaxRetry: 5,
-      manifestLoadingRetryDelay: 1000,
+      manifestLoadingMaxRetry: 2,
+      manifestLoadingRetryDelay: 800,
       levelLoadingTimeOut: 12000,
-      levelLoadingMaxRetry: 4,
-      levelLoadingRetryDelay: 1000,
+      levelLoadingMaxRetry: 2,
+      levelLoadingRetryDelay: 800,
       fragLoadingTimeOut: 15000,
-      fragLoadingMaxRetry: 6,
-      fragLoadingRetryDelay: 1000,
+      fragLoadingMaxRetry: 4,
+      fragLoadingRetryDelay: 800,
       nudgeOffset: 0.1,
       nudgeMaxRetry: 5,
       autoStartLoad: true
@@ -704,6 +757,7 @@ function playChannel(channel) {
     hls.attachMedia(dom.video);
 
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      channel._triedStreamsCount = 0;
       dom.video.play().catch(() => {});
       dom.spinner.classList.add('hidden');
     });
@@ -713,8 +767,14 @@ function playChannel(channel) {
         console.warn('[Hls.js Fatal Error]', data);
         switch (data.type) {
           case Hls.ErrorTypes.NETWORK_ERROR:
+            if (data.response && (data.response.code === 403 || data.response.code === 404 || data.response.code === 502)) {
+              hls.destroy();
+              advanceFallbackStream();
+              return;
+            }
             console.log('[Hls.js] Eroare retea, reincercare automata...');
-            hls.startLoad();
+            hls.destroy();
+            advanceFallbackStream();
             break;
           case Hls.ErrorTypes.MEDIA_ERROR:
             console.log('[Hls.js] Eroare media, recuperare decodor...');
@@ -723,7 +783,7 @@ function playChannel(channel) {
           default:
             console.error('[Hls.js] Eroare irecuperabila:', data);
             hls.destroy();
-            dom.spinner.classList.add('hidden');
+            advanceFallbackStream();
             break;
         }
       } else if (data.details === 'bufferStalledError') {
@@ -735,9 +795,11 @@ function playChannel(channel) {
   } else {
     // Native HTML5 Audio / Video (MP3 / AAC / Direct Audio Stream)
     dom.video.src = streamUrl;
+    dom.video.onerror = () => advanceFallbackStream();
     const playPromise = dom.video.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
+        channel._triedStreamsCount = 0;
         dom.spinner.classList.add('hidden');
       }).catch(err => {
         console.warn('Native play error / autoplay blocked:', err);
