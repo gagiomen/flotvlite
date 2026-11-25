@@ -311,21 +311,17 @@
     "name": "Acasă TV",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-pro2/live_fullhd?offsetSeconds=0",
+    "headers": {},
     "logo": "logos/Acasa987.png",
     "epg_id": "Acasa.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
       {
-        "name": "CoolTV Stream (HD)",
-        "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
-        "resolution": "HD",
-        "headers": {
-          "Referer": "https://canale-tv.net/"
-        }
+        "name": "CME Official HbbTV (FHD)",
+        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-pro2/live_fullhd?offsetSeconds=0",
+        "resolution": "FHD",
+        "headers": {}
       },
       {
         "name": "TVRon Mirror (HD)",
@@ -392,6 +388,12 @@
         "headers": {}
       },
       {
+        "name": "AntenaPlay CDN Adaptive (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi01/live2_aws4_sdi01.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
         "name": "CoolTV Stream (HD)",
         "url": "https://alpha1.yozefina.cfd/ah1/usergenx304Jtlrnd.m3u8",
         "resolution": "HD",
@@ -443,6 +445,12 @@
         "headers": {}
       },
       {
+        "name": "AntenaPlay CDN Adaptive (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi02/live2_aws4_sdi02.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
         "name": "AntenaPlay Backup",
         "url": "https://live3vox.antenaplay.ro/a3free/a3free.m3u8",
         "resolution": "SD",
@@ -472,6 +480,12 @@
       {
         "name": "AntenaPlay Oficial (FHD)",
         "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi10/live2_aws4_sdi10_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "AntenaPlay CDN Adaptive (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi10/live2_aws4_sdi10.m3u8",
         "resolution": "FHD",
         "headers": {}
       },
@@ -992,14 +1006,18 @@
     "name": "Eurosport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "https://kuruk1.xn--okq6e.shop/er01/usergendx07slkgx24dqrnd.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://89.44.231.73:7000/eurosport",
+    "headers": {},
     "logo": "logos/Eurosport035.png",
     "epg_id": "Eurosport.1.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
+      {
+        "name": "RO Direct FullHD (FHD)",
+        "url": "http://89.44.231.73:7000/eurosport",
+        "resolution": "FHD",
+        "headers": {}
+      },
       {
         "name": "CoolTV Stream (HD)",
         "url": "https://kuruk1.xn--okq6e.shop/er01/usergendx07slkgx24dqrnd.m3u8",
@@ -1237,6 +1255,12 @@
       {
         "name": "AntenaPlay Oficial (FHD)",
         "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi12/live2_aws4_sdi12_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "AntenaPlay CDN Adaptive (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi12/live2_aws4_sdi12.m3u8",
         "resolution": "FHD",
         "headers": {}
       },
@@ -1781,11 +1805,17 @@
     "name": "Pro Arena",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://arwen1.panaka001.cfd/Prx/usergenrnvdfki42man4l.m3u8",
+    "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-prox/live_fullhd?offsetSeconds=0",
     "logo": "logos/ProX100.png",
     "epg_id": "Pro.Arena.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
+      {
+        "name": "CME Official HbbTV (FHD)",
+        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-prox/live_fullhd?offsetSeconds=0",
+        "resolution": "FHD",
+        "headers": {}
+      },
       {
         "name": "CoolTV Stream (HD)",
         "url": "https://arwen1.panaka001.cfd/Prx/usergenrnvdfki42man4l.m3u8",
@@ -1795,23 +1825,25 @@
         }
       }
     ],
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    }
+    "headers": {}
   },
   {
     "id": "Pro728",
     "name": "Pro Cinema",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://saruman1.tharen001.cfd/porkynema/usergenrnd0ek16an4l.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-procinema/live_fullhd?offsetSeconds=0",
+    "headers": {},
     "logo": "logos/Pro728.png",
     "epg_id": "Pro.Cinema.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
+      {
+        "name": "CME Official HbbTV (FHD)",
+        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-procinema/live_fullhd?offsetSeconds=0",
+        "resolution": "FHD",
+        "headers": {}
+      },
       {
         "name": "CoolTV Stream (HD)",
         "url": "https://saruman1.tharen001.cfd/porkynema/usergenrnd0ek16an4l.m3u8",
@@ -1827,14 +1859,18 @@
     "name": "Pro TV",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "https://ultra3.ronanx001.shop/porky/high/usergenx7240lrnd.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-protv/live_fullhd?offsetSeconds=0",
+    "headers": {},
     "logo": "logos/ProTV266.png",
     "epg_id": "PRO.TV.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
+      {
+        "name": "CME Official HbbTV (FHD)",
+        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-protv/live_fullhd?offsetSeconds=0",
+        "resolution": "FHD",
+        "headers": {}
+      },
       {
         "name": "CoolTV Stream (HD)",
         "url": "https://ultra3.ronanx001.shop/porky/high/usergenx7240lrnd.m3u8",
@@ -3188,14 +3224,18 @@
     "name": "Acasă Gold",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
-    "headers": {
-      "Referer": "https://canale-tv.net/"
-    },
+    "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-progold/live_fullhd?offsetSeconds=0",
+    "headers": {},
     "logo": "logos/AcasGold140.png",
     "epg_id": "Acasa.Gold.ro",
-    "resolution": "HD",
+    "resolution": "FHD",
     "streams": [
+      {
+        "name": "CME Official HbbTV (FHD)",
+        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-progold/live_fullhd?offsetSeconds=0",
+        "resolution": "FHD",
+        "headers": {}
+      },
       {
         "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
@@ -3203,6 +3243,88 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      }
+    ]
+  },
+  {
+    "id": "Ro:ProTVNews",
+    "name": "Pro TV News",
+    "group": "Știri",
+    "is_radio": false,
+    "url": "https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-ro-voyo-news/playlist.m3u8?offsetSeconds=0&url=0",
+    "headers": {},
+    "logo": "logos/ProTV266.png",
+    "epg_id": "ProTV.ro",
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "CME Official OTT (FHD)",
+        "url": "https://cmero-ott-live.ssl.cdn.cra.cz/channels/cme-ro-voyo-news/playlist.m3u8?offsetSeconds=0&url=0",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "CME Official HbbTV (FHD)",
+        "url": "http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-voyo-news/live_fullhd?offsetSeconds=0",
+        "resolution": "FHD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:PartyMix",
+    "name": "Party Mix",
+    "group": "Muzică",
+    "is_radio": false,
+    "url": "https://hls02ns.antenaplay.ro/hls/party-mix-hd/index.m3u8",
+    "headers": {},
+    "logo": "logos/partymix.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "AntenaPlay Official CDN (HD)",
+        "url": "https://hls02ns.antenaplay.ro/hls/party-mix-hd/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:DeluxeDance",
+    "name": "Deluxe Dance",
+    "group": "Muzică",
+    "is_radio": false,
+    "url": "https://sdn-global-live-streaming-packager-cache.3qsdn.com/64733/64733_264_live.m3u8",
+    "headers": {},
+    "logo": "logos/trance4k.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Deluxe Official FAST (FHD)",
+        "url": "https://sdn-global-live-streaming-packager-cache.3qsdn.com/64733/64733_264_live.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:ImpactDance",
+    "name": "Impact TV Dance",
+    "group": "Muzică",
+    "is_radio": false,
+    "url": "https://online.tvimpact.live/hls/dancetv.m3u8",
+    "headers": {},
+    "logo": "logos/music_channel.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Impact TV Official (FHD)",
+        "url": "https://online.tvimpact.live/hls/dancetv.m3u8",
+        "resolution": "FHD",
+        "headers": {}
       }
     ]
   },
@@ -5260,9 +5382,9 @@
         "headers": {}
       },
       {
-        "name": "HD Direct (88) (HD)",
+        "name": "HD Direct Backup (FHD)",
         "url": "http://88.212.15.50/live/test_love_nature_uhd_atktv/playlist.m3u8",
-        "resolution": "HD",
+        "resolution": "FHD",
         "headers": {}
       }
     ]
@@ -5301,6 +5423,12 @@
       {
         "name": "AntenaPlay Oficial (FHD)",
         "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi13/live2_aws4_sdi13_5000k.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "AntenaPlay CDN Adaptive (FHD)",
+        "url": "https://live77cdn2.antenaplay.ro/live2_aws4_sdi13/live2_aws4_sdi13.m3u8",
         "resolution": "FHD",
         "headers": {}
       }

@@ -553,7 +553,7 @@ function filterAndRenderChannels() {
 // Direct CORS-capable official CDNs (when no custom Referer is required)
 function isCorsDirectCdn(rawUrl) {
   if (!rawUrl || !rawUrl.startsWith('https://')) return false;
-  return /\/\/([^/]+\.)?(antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|cloudfront\.net|wurl\.com|cinerama\.uz|privesc\.eu|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro|rundle\.tv)\b/i.test(rawUrl);
+  return /\/\/([^/]+\.)?(antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|cloudfront\.net|wurl\.com|cinerama\.uz|privesc\.eu|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro|rundle\.tv|cdn\.cra\.cz|3qsdn\.com|tvimpact\.live)\b/i.test(rawUrl);
 }
 
 function isCanaleTvBlockedOnCf(rawUrl) {
@@ -561,18 +561,27 @@ function isCanaleTvBlockedOnCf(rawUrl) {
   return /\.(shop|cfd|pw|space)\//i.test(rawUrl);
 }
 
+function isBrowserHlsUrl(rawUrl) {
+  if (!rawUrl) return false;
+  return /\.(m3u8|htm)(\?|$)|\/usergen|^cartoonix:\/\//i.test(rawUrl);
+}
+
 function getEffectiveStreams(channel) {
   const list = (channel.streams && channel.streams.length > 0)
     ? channel.streams
     : [{ name: 'Server 1', url: channel.url, resolution: channel.resolution, headers: channel.headers || {} }];
+  // Browser hls.js cannot decode raw HTTP MPEG-TS (e.g. HbbTV/port streams), so place HLS .m3u8 first on TV channels
+  const hlsOrdered = (!channel.is_radio && list.length > 1)
+    ? [...list.filter(s => isBrowserHlsUrl(s.url)), ...list.filter(s => !isBrowserHlsUrl(s.url))]
+    : list;
   // Prefer rundle-compatible / CORS-open / sslip-capable streams, avoiding dokagents (blocks CF datacenter TS fetches)
   const isRemoteHttps = window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-  if (isRemoteHttps && list.length > 1) {
-    const nonDok = list.filter(s => !(s.url && s.url.includes('dokagents.site')));
-    const dokOnly = list.filter(s => s.url && s.url.includes('dokagents.site'));
+  if (isRemoteHttps && hlsOrdered.length > 1) {
+    const nonDok = hlsOrdered.filter(s => !(s.url && s.url.includes('dokagents.site')));
+    const dokOnly = hlsOrdered.filter(s => s.url && s.url.includes('dokagents.site'));
     return [...nonDok, ...dokOnly];
   }
-  return list;
+  return hlsOrdered;
 }
 
 // Resolve Proxy URL
