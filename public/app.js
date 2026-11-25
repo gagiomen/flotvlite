@@ -553,19 +553,24 @@ function filterAndRenderChannels() {
 // Direct CORS-capable official CDNs (when no custom Referer is required)
 function isCorsDirectCdn(rawUrl) {
   if (!rawUrl || !rawUrl.startsWith('https://')) return false;
-  return /\/\/([^/]+\.)?(antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro)\b/i.test(rawUrl);
+  return /\/\/([^/]+\.)?(antenaplay\.ro|lg\.mncdn\.com|kanald\.ro|rcs-rds\.ro|tv\.broadcasting\.ro|trm\.md|a7tvlive\.ro|senstv\.ro|livemetropolatv\.ro|tvboom\.ro|streamlock\.net|enhanced\.live|lotus\.stingray\.com|dash4\.antik\.sk|akamaized\.net|cloudfront\.net|wurl\.com|cinerama\.uz|privesc\.eu|realitatea\.net|romaniatv\.net|streamnet\.ro|streamnet\.pro|jstre\.am|dai\.google\.com|streamw\.m\.ro|streams\.radiozum\.md|moldovatv\.ro|rundle\.tv)\b/i.test(rawUrl);
+}
+
+function isCanaleTvBlockedOnCf(rawUrl) {
+  if (!rawUrl) return false;
+  return /\.(shop|cfd|pw|space)\//i.test(rawUrl);
 }
 
 function getEffectiveStreams(channel) {
   const list = (channel.streams && channel.streams.length > 0)
     ? channel.streams
     : [{ name: 'Server 1', url: channel.url, resolution: channel.resolution, headers: channel.headers || {} }];
-  // On Cloudflare Pages / HTTPS remote origin with relative /proxy, skip raw IP HTTP endpoints first if an HTTPS stream exists
-  const isRemoteHttps = window.location.protocol === 'https:' && (state.proxyMode === 'auto' || state.proxyMode === 'relative');
-  if (isRemoteHttps && list.some(s => s.url && s.url.startsWith('https://'))) {
-    const httpsFirst = list.filter(s => !(s.url && /^https?:\/\/\d+\.\d+\.\d+\.\d+/i.test(s.url)));
-    const ipFallback = list.filter(s => s.url && /^https?:\/\/\d+\.\d+\.\d+\.\d+/i.test(s.url));
-    return [...httpsFirst, ...ipFallback];
+  // Prefer rundle-compatible / CORS-open / sslip-capable streams, avoiding dokagents (blocks CF datacenter TS fetches)
+  const isRemoteHttps = window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  if (isRemoteHttps && list.length > 1) {
+    const nonDok = list.filter(s => !(s.url && s.url.includes('dokagents.site')));
+    const dokOnly = list.filter(s => s.url && s.url.includes('dokagents.site'));
+    return [...nonDok, ...dokOnly];
   }
   return list;
 }
@@ -578,13 +583,20 @@ function resolveStreamUrl(channel, streamObj, forceProxy = false) {
 
   const hdrs = (s && s.headers && Object.keys(s.headers).length > 0) ? s.headers : (channel.headers || {});
   let referer = hdrs.Referer || hdrs['http-referrer'] || '';
-  if (!referer && /\.(shop|cfd|pw|space)\//i.test(rawUrl)) {
+  if (!referer && isCanaleTvBlockedOnCf(rawUrl)) {
     referer = 'https://canale-tv.net/';
   }
 
   // Proxy decision
   if (state.proxyMode === 'direct') {
     return rawUrl;
+  }
+
+  const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+  // Bypass Cloudflare Worker 403 block on canale-tv domains via CORS-open rundle.tv relay when on remote web
+  if (!forceProxy && !isLocalHost && isCanaleTvBlockedOnCf(rawUrl) && state.proxyMode !== 'custom') {
+    return `https://rundle.tv/proxy5.php?src=${encodeURIComponent(rawUrl)}`;
   }
 
   if (!forceProxy && !referer && isCorsDirectCdn(rawUrl) && (state.proxyMode === 'auto' || state.proxyMode === 'relative')) {
@@ -598,7 +610,7 @@ function resolveStreamUrl(channel, streamObj, forceProxy = false) {
     return `${base}${encodeURIComponent(rawUrl)}${refSuffix}`;
   }
 
-  // Relative / Auto: Use relative /proxy?url=
+  // Relative / Auto: Use relative /proxy?url= (includes sslip.io raw-IP bypass & radiozu resolver on Cloudflare Pages)
   if (state.proxyMode === 'relative' || state.proxyMode === 'auto') {
     return `/proxy?url=${encodeURIComponent(rawUrl)}${refSuffix}`;
   }

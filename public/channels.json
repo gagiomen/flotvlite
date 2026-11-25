@@ -1,5 +1,106 @@
 [
   {
+    "id": "Ro:Eurosport4K",
+    "name": "Eurosport 4K",
+    "group": "4K",
+    "resolution": "4K",
+    "is_radio": false,
+    "url": "http://88.212.15.50/live/esp_4k_atk/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/eurosport4k.png",
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Eurosport 4K UHD",
+        "url": "http://88.212.15.50/live/esp_4k_atk/playlist.m3u8",
+        "resolution": "4K",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:Travelxp4K",
+    "name": "Travelxp 4K",
+    "group": "4K",
+    "resolution": "4K",
+    "is_radio": false,
+    "url": "http://88.212.7.14/live/travel_xp_4k/index.m3u8",
+    "headers": {},
+    "logo": "logos/travelxp_4k.png",
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Travelxp 4K UHD",
+        "url": "http://88.212.7.14/live/travel_xp_4k/index.m3u8",
+        "resolution": "4K",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:Home4K",
+    "name": "Home 4K",
+    "group": "4K",
+    "resolution": "4K",
+    "is_radio": false,
+    "url": "http://88.212.7.14/live/test_home_uhd_tizen/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/lovenature4k.png",
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Home 4K UHD",
+        "url": "http://88.212.7.14/live/test_home_uhd_tizen/playlist.m3u8",
+        "resolution": "4K",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:OceanVibes4K",
+    "name": "Ocean Vibes 4K",
+    "group": "4K",
+    "resolution": "4K",
+    "is_radio": false,
+    "url": "https://pb-vt93jy06rfty1.akamaized.net/SONOS45.m3u8",
+    "headers": {},
+    "logo": "logos/naturescape4k.png",
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Akamai CDN (4K)",
+        "url": "https://pb-vt93jy06rfty1.akamaized.net/SONOS45.m3u8",
+        "resolution": "4K",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:Bloomberg4K",
+    "name": "Bloomberg TV+ 4K",
+    "group": "4K",
+    "resolution": "4K",
+    "is_radio": false,
+    "url": "https://d8975dc3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9CbG9vbWJlcmdUVlBsdXNfSExT/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/bbc_news.png",
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Wurl CDN 1 (4K)",
+        "url": "https://d8975dc3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9CbG9vbWJlcmdUVlBsdXNfSExT/playlist.m3u8",
+        "resolution": "4K",
+        "headers": {}
+      },
+      {
+        "name": "Wurl CDN 2 (4K)",
+        "url": "https://66e4bbba.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfQmxvb21iZXJnVFZQbHVzX0hMUw/playlist.m3u8",
+        "resolution": "4K",
+        "headers": {}
+      }
+    ]
+  },
+  {
     "id": "Ro:369",
     "name": "1 RO Music Channel",
     "group": "Muzică",
@@ -109,6 +210,12 @@
         }
       },
       {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.7.14/live/amc_hun/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      },
+      {
         "name": "TVRon Mirror (HD)",
         "url": "https://dokagents.site/live/amc/mono.m3u8",
         "resolution": "HD",
@@ -138,6 +245,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_axn/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -184,6 +297,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_white/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -192,7 +311,7 @@
     "name": "Acasă TV",
     "group": "Filme",
     "is_radio": false,
-    "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
+    "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
     "headers": {
       "Referer": "https://canale-tv.net/"
     },
@@ -200,14 +319,6 @@
     "epg_id": "Acasa.ro",
     "resolution": "HD",
     "streams": [
-      {
-        "name": "CoolTV Stream (HD)",
-        "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
-        "resolution": "HD",
-        "headers": {
-          "Referer": "https://canale-tv.net/"
-        }
-      },
       {
         "name": "CoolTV Stream (HD)",
         "url": "https://thor1.syndula001.cfd/gold/usergendxt638rnd.m3u8",
@@ -459,6 +570,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.7.14/live/bbce_hun/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -500,6 +617,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_boomerang_tizen/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -550,6 +673,12 @@
         "headers": {
           "Referer": "https://canale-tv.com/"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_cinemax2_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -770,6 +899,18 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_discovery_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      },
+      {
+        "name": "EU Backup 2 (HD)",
+        "url": "http://88.212.7.14/live/discovery_hungary/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -866,6 +1007,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.7.14/live/esp1_hun/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -889,6 +1036,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.7.14/live/esp2_hun/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -930,6 +1083,12 @@
         "name": "Server 1 (SD)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-one-sd/index.m3u8",
         "resolution": "SD",
+        "headers": {}
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_filmbox/playlist.m3u8",
+        "resolution": "HD",
         "headers": {}
       }
     ]
@@ -983,6 +1142,12 @@
         }
       },
       {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_hbo_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      },
+      {
         "name": "TVRon Mirror (HD)",
         "url": "https://dokagents.site/live/hbo/mono.m3u8",
         "resolution": "HD",
@@ -1012,6 +1177,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_hbo2_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1035,6 +1206,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_hbo3_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
         "name": "TVRon Mirror (HD)",
@@ -1093,6 +1270,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_history/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       },
       {
         "name": "TVRon Mirror (HD)",
@@ -1240,6 +1423,12 @@
           "Referer": "https://atlantida1.aquax001.shop/000/minmax.html",
           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_minimax/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1332,6 +1521,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_ngw/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1355,6 +1550,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_ngc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1790,6 +1991,12 @@
         "headers": {
           "Referer": "https://atlantida1.aquax001.shop/000/1telece.html"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_tlc_1200_atk/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1934,6 +2141,12 @@
           "Referer": "https://cronos.mangora1.cfd/000/1travil.html",
           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_travel_channel_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -1979,6 +2192,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_viasat_nature_atk_tv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ],
     "headers": {
@@ -2005,6 +2224,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_viasat_explore_atk_tv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2028,6 +2253,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_viasat_history_atk_tv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2116,6 +2347,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_cartoon_network_tizen/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2139,6 +2376,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_disney/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2162,6 +2405,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_disney_junior/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2189,6 +2438,12 @@
       {
         "name": "HD Direct (91) (HD)",
         "url": "http://91.235.165.117:8001/play/a05z/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_nickelodeon_hevc_25p/playlist.m3u8",
         "resolution": "HD",
         "headers": {}
       }
@@ -2243,6 +2498,12 @@
         "url": "http://91.235.165.117:8001/play/a061/index.m3u8",
         "resolution": "HD",
         "headers": {}
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_nicktoons/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2266,6 +2527,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.7.14/live/jim_jam_hun/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2327,6 +2594,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/warner_tv/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -2507,6 +2780,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_parpika_tv_sd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4417,6 +4696,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_cnn_1200_atk/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4436,6 +4721,12 @@
         "url": "http://23.237.104.106:8080/USA_ANIMAL_PLANET/index.m3u8",
         "resolution": "FHD",
         "headers": {}
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_animal_planet_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4454,6 +4745,12 @@
         "name": "Food Network FHD",
         "url": "https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/FOODNETWORK/CMAF/index.m3u8",
         "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_food_network_atk_tv/playlist.m3u8",
+        "resolution": "HD",
         "headers": {}
       }
     ]
@@ -4961,6 +5258,12 @@
         "url": "https://pb-ehs1glsha1juy.akamaized.net/Love_Nature_4K.m3u8",
         "resolution": "4K",
         "headers": {}
+      },
+      {
+        "name": "HD Direct (88) (HD)",
+        "url": "http://88.212.15.50/live/test_love_nature_uhd_atktv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ]
   },
@@ -4978,6 +5281,12 @@
         "name": "Server 1 (4K)",
         "url": "https://pb-rhq7yj8tne4rm.akamaized.net/Fireplace_4K_SONO20.m3u8",
         "resolution": "4K",
+        "headers": {}
+      },
+      {
+        "name": "CDN (d21izs34d0y5tl.cloudfront.net) (HD)",
+        "url": "https://d21izs34d0y5tl.cloudfront.net/Fireplace_4K_SONO20.m3u8",
+        "resolution": "HD",
         "headers": {}
       }
     ]
@@ -5256,6 +5565,12 @@
         "headers": {
           "Referer": "https://canale-tv.net/"
         }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_id_hevc_atktv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
       }
     ],
     "url": "https://onyx1.mofta001.cfd/cryme/usergendxn0487rnd.m3u8",
@@ -5276,6 +5591,12 @@
         "name": "HGTV FHD",
         "url": "https://streaming.aurora.enhanced.live/live/mpc/enl0eG1mLmVncmVzcy5mZDJ2eHI=/out/v1/IT_SIMULCAST/HGTV/CMAF/index.m3u8",
         "resolution": "FHD",
+        "headers": {}
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_hgtv_hevc_25p/playlist.m3u8",
+        "resolution": "HD",
         "headers": {}
       }
     ],
@@ -5433,6 +5754,163 @@
         "name": "Cartoonix Live (Jetix)",
         "url": "cartoonix://Jetix",
         "resolution": "FHD"
+      }
+    ]
+  },
+  {
+    "id": "UTV781",
+    "name": "Cinemax",
+    "group": "Filme",
+    "resolution": "HD",
+    "is_radio": false,
+    "url": "https://cronos.mangora1.cfd/xmas1/usergendx27y41s0rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
+    "logo": "logos/Cinemax2232.png",
+    "epg_id": "Cinemax.ro",
+    "streams": [
+      {
+        "name": "CoolTV Cinemax (HD)",
+        "url": "https://cronos.mangora1.cfd/xmas1/usergendx27y41s0rnd.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.15.50/live/test_cinemax_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "BBCFirst116",
+    "name": "BBC First",
+    "group": "Filme",
+    "resolution": "HD",
+    "is_radio": false,
+    "url": "https://onyx1.mofta001.cfd/bibi1/usergendxn09l2s6cek.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
+    "logo": "logos/BBCFirst116.png",
+    "epg_id": "BBC.First.ro",
+    "streams": [
+      {
+        "name": "CoolTV BBC First (HD)",
+        "url": "https://onyx1.mofta001.cfd/bibi1/usergendxn09l2s6cek.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      },
+      {
+        "name": "EU Backup (HD)",
+        "url": "http://88.212.7.14/live/bbc_first/index.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Film563",
+    "name": "Film Now",
+    "group": "Filme",
+    "resolution": "HD",
+    "is_radio": false,
+    "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
+    "logo": "logos/Film563.png",
+    "epg_id": "Film.Now.ro",
+    "streams": [
+      {
+        "name": "CoolTV Film Now (HD)",
+        "url": "https://thor1.syndula001.cfd/df/usergendlg1ks0t2n.m3u8",
+        "resolution": "HD",
+        "headers": {
+          "Referer": "https://canale-tv.net/"
+        }
+      }
+    ]
+  },
+  {
+    "id": "Ro:DaVinci",
+    "name": "Da Vinci",
+    "group": "Desene animate",
+    "resolution": "HD",
+    "is_radio": false,
+    "url": "https://stream8.cinerama.uz/1231/tracks-v1a1/mono.m3u8",
+    "headers": {},
+    "logo": "logos/DaVinciKids842.png",
+    "epg_id": "DaVinci.ro",
+    "streams": [
+      {
+        "name": "Da Vinci CDN (HD)",
+        "url": "https://stream8.cinerama.uz/1231/tracks-v1a1/mono.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Adult:PassionXXX",
+    "name": "Passion XXX",
+    "group": "Adult",
+    "resolution": "FHD",
+    "is_radio": false,
+    "url": "https://5f22d76e220e1.streamlock.net/canale9/canale9/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/passion_xxx.png",
+    "epg_id": "PassionXXX.nl",
+    "streams": [
+      {
+        "name": "Passion XXX FHD",
+        "url": "https://5f22d76e220e1.streamlock.net/canale9/canale9/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Adult:LeoTV",
+    "name": "Leo TV",
+    "group": "Adult",
+    "resolution": "HD",
+    "is_radio": false,
+    "url": "http://88.212.7.11/live/test_leo_hd_hevc/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/leo_tv.png",
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Leo TV HD",
+        "url": "http://88.212.7.11/live/test_leo_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "UndernetRomania",
+    "name": "Radio #Romania",
+    "group": "Radio - Radio pe Undernet",
+    "resolution": "SD",
+    "is_radio": true,
+    "url": "https://asculta.radioromania.live/listen/radioromania/radio.mp3",
+    "headers": {},
+    "logo": null,
+    "epg_id": null,
+    "streams": [
+      {
+        "name": "Radio #Romania Direct",
+        "url": "https://asculta.radioromania.live/listen/radioromania/radio.mp3",
+        "resolution": "SD",
+        "headers": {}
       }
     ]
   }

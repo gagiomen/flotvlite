@@ -30,7 +30,27 @@ export default {
     }
 
     try {
-      const isAudioLike = !targetUrl.includes('.m3u8') && (targetUrl.includes('.mp3') || targetUrl.includes('.aac') || targetUrl.includes('listen') || /:\d{4}/.test(targetUrl));
+      let effectiveUrl = targetUrl;
+      if (effectiveUrl.includes('radiozu.ro/live')) {
+        const pageRes = await fetch('https://radiozu.ro/live', {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+          },
+        });
+        const html = await pageRes.text();
+        const match = html.match(/https:\/\/ivm\.antenaplay\.ro\/live\/zurtv\/playlist\.m3u8[^"'\s<>]+/);
+        if (match) {
+          effectiveUrl = match[0].replace(/&amp;/g, '&');
+        }
+      }
+
+      const parsedTarget = new URL(effectiveUrl);
+      if (/^\d{1,3}(\.\d{1,3}){3}$/.test(parsedTarget.hostname)) {
+        const sslipHost = parsedTarget.hostname.replace(/\./g, '-') + '.sslip.io';
+        effectiveUrl = `${parsedTarget.protocol}//${sslipHost}${parsedTarget.port ? ':' + parsedTarget.port : ''}${parsedTarget.pathname}${parsedTarget.search}`;
+      }
+
+      const isAudioLike = !effectiveUrl.includes('.m3u8') && (effectiveUrl.includes('.mp3') || effectiveUrl.includes('.aac') || effectiveUrl.includes('listen') || /:\d{4}/.test(effectiveUrl));
       const upstreamHeaders = new Headers();
       upstreamHeaders.set('User-Agent', isAudioLike
         ? 'VLC/3.0.18 LibVLC/3.0.18'
@@ -45,8 +65,7 @@ export default {
         upstreamHeaders.set('range', range);
       }
 
-      const isPlaylistCandidate = targetUrl.includes('.m3u8') || targetUrl.includes('playlist');
-      const isStaticSegment = targetUrl.includes('.ts') || targetUrl.includes('.m4s') || targetUrl.includes('.mp4');
+      const isStaticSegment = effectiveUrl.includes('.ts') || effectiveUrl.includes('.m4s') || effectiveUrl.includes('.mp4');
 
       const fetchOptions = {
         method: request.method,
@@ -61,12 +80,12 @@ export default {
         };
       }
 
-      const upstreamRes = await fetch(targetUrl, fetchOptions);
+      const upstreamRes = await fetch(effectiveUrl, fetchOptions);
 
       const contentType = upstreamRes.headers.get('content-type') || '';
-      const isPlaylist = targetUrl.includes('.m3u8') || contentType.includes('mpegurl');
+      const isPlaylist = effectiveUrl.includes('.m3u8') || contentType.includes('mpegurl');
 
-      const baseTargetUrl = upstreamRes.url || targetUrl;
+      const baseTargetUrl = upstreamRes.url || effectiveUrl;
       const origin = url.origin;
 
       const refSuffix = referer ? `&ref=${encodeURIComponent(referer)}` : '';
