@@ -24,6 +24,7 @@ const state = {
   statsInterval: null,
   aspectToastTimeout: null,
   hls: null,
+  mpegts: null,
   osdTimeout: null,
   numBuffer: '',
   numBufferTimeout: null,
@@ -213,10 +214,7 @@ function switchMode(mode, playTarget = true) {
     dom.vodSection.classList.remove('hidden');
 
     // Pause any live TV or Radio stream
-    if (state.hls) {
-      state.hls.destroy();
-      state.hls = null;
-    }
+    destroyActivePlayers();
     dom.video.pause();
     dom.radioBackdrop.classList.add('hidden');
 
@@ -568,20 +566,41 @@ function isCanaleTvBlockedOnCf(rawUrl) {
   return /\.(shop|cfd|pw|space)\//i.test(rawUrl);
 }
 
+function destroyActivePlayers() {
+  if (state.hls) {
+    try { state.hls.destroy(); } catch (_) {}
+    state.hls = null;
+  }
+  if (state.mpegts) {
+    try {
+      state.mpegts.pause();
+      state.mpegts.unload();
+      state.mpegts.detachMediaElement();
+      state.mpegts.destroy();
+    } catch (_) {}
+    state.mpegts = null;
+  }
+}
+
 function isBrowserHlsUrl(rawUrl) {
   if (!rawUrl) return false;
   return /\.(m3u8|htm)(\?|$)|\/usergen|^cartoonix:\/\//i.test(rawUrl);
+}
+
+function isMpegTsHbbtvUrl(rawUrl) {
+  if (!rawUrl) return false;
+  return /rpprod\.hbbtv\.cdn\.cra\.cz/i.test(rawUrl);
 }
 
 function getEffectiveStreams(channel) {
   const list = (channel.streams && channel.streams.length > 0)
     ? channel.streams
     : [{ name: 'Server 1', url: channel.url, resolution: channel.resolution, headers: channel.headers || {} }];
-  // Browser hls.js cannot decode raw HTTP MPEG-TS (e.g. HbbTV/port streams), so keep only HLS when HLS exists
+  const hasMpegTs = Boolean(window.mpegts && mpegts.isSupported());
   let hlsOrdered = list;
   if (!channel.is_radio && list.length > 1) {
-    const hlsOnly = list.filter(s => isBrowserHlsUrl(s.url));
-    hlsOrdered = hlsOnly.length > 0 ? hlsOnly : list;
+    const playable = list.filter(s => isBrowserHlsUrl(s.url) || (hasMpegTs && isMpegTsHbbtvUrl(s.url)));
+    hlsOrdered = playable.length > 0 ? playable : list;
   }
   // Prefer rundle-compatible / CORS-open / sslip-capable streams, omitting dokagents on remote HTTPS when working HLS exists
   const isRemoteHttps = window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
@@ -658,6 +677,11 @@ function playChannel(channel) {
   dom.spinner.classList.remove('hidden');
   updateDetailsPanel(channel);
   showOsd(channel);
+  if (channel._manualFallbackMsg && dom.osdEpgTitle && dom.osdEpgNow) {
+    dom.osdEpgTitle.textContent = channel._manualFallbackMsg;
+    dom.osdEpgNow.classList.remove('hidden');
+    channel._manualFallbackMsg = '';
+  }
 
   // Update active state in list
   document.querySelectorAll('.channel-card').forEach(el => el.classList.remove('active'));
@@ -677,11 +701,8 @@ function playChannel(channel) {
     dom.radioBackdrop.classList.add('hidden');
   }
 
-  // Destroy previous HLS player & reset HTMLMediaElement
-  if (state.hls) {
-    state.hls.destroy();
-    state.hls = null;
-  }
+  // Destroy previous HLS / MPEG-TS player & reset HTMLMediaElement
+  destroyActivePlayers();
   dom.video.onerror = null;
   dom.video.pause();
   dom.video.removeAttribute('src');
@@ -754,11 +775,7 @@ function playChannel(channel) {
       const nextIdx = (startStreamIdx + 1) % effStreams.length;
       if (channel._manualStreamPick) {
         channel._manualStreamPick = false;
-        showOsd(channel);
-        if (dom.osdEpgTitle && dom.osdEpgNow) {
-          dom.osdEpgTitle.textContent = `Serverul S${startStreamIdx + 1} indisponibil — trec la S${nextIdx + 1}`;
-          dom.osdEpgNow.classList.remove('hidden');
-        }
+        channel._manualFallbackMsg = `Serverul S${startStreamIdx + 1} indisponibil — trec la S${nextIdx + 1}`;
       }
       channel._activeStreamIdx = nextIdx;
       playChannel(channel);
@@ -769,11 +786,38 @@ function playChannel(channel) {
     }
   };
 
-  // Check HLS.js support vs Native HTML5 Audio/Video
+  // Check MPEG-TS HbbTV (mpegts.js) vs HLS.js vs Native HTML5 Audio/Video
   // Note: Only use Hls.js for actual .m3u8 playlists. Direct MP3/AAC radio streams MUST play via native HTML5!
-  const isHls = Boolean(rawUrl && (rawUrl.includes('.m3u8') || rawUrl.includes('playlist') || (!channel.is_radio && !rawUrl.includes('.mp4') && !rawUrl.includes('.mp3'))));
+  const isMpegTs = !channel.is_radio && isMpegTsHbbtvUrl(rawUrl) && window.mpegts && mpegts.isSupported();
+  const isHls = !isMpegTs && Boolean(rawUrl && (rawUrl.includes('.m3u8') || rawUrl.includes('playlist') || (!channel.is_radio && !rawUrl.includes('.mp4') && !rawUrl.includes('.mp3'))));
 
-  if (isHls && window.Hls && Hls.isSupported()) {
+  if (isMpegTs) {
+    const mpegtsPlayer = mpegts.createPlayer({
+      type: 'mpegts',
+      isLive: true,
+      url: streamUrl
+    }, {
+      enableWorker: false,
+      liveBufferLatencyChasing: false,
+      stashInitialSize: 256
+    });
+    state.mpegts = mpegtsPlayer;
+    mpegtsPlayer.attachMediaElement(dom.video);
+    mpegtsPlayer.on(mpegts.Events.ERROR, (errType, errDetail) => {
+      console.warn('[mpegts.js Error]', errType, errDetail);
+      if (state.mpegts === mpegtsPlayer) {
+        destroyActivePlayers();
+        advanceFallbackStream();
+      }
+    });
+    mpegtsPlayer.on(mpegts.Events.MEDIA_INFO, () => {
+      channel._triedStreamsCount = 0;
+      dom.spinner.classList.add('hidden');
+      updateWebTrackControls(channel);
+    });
+    mpegtsPlayer.load();
+    mpegtsPlayer.play().catch(() => {});
+  } else if (isHls && window.Hls && Hls.isSupported()) {
     const isRelay = streamUrl.includes('rundle.tv');
     class AntenaFixLoader extends Hls.DefaultConfig.loader {
       load(context, config, callbacks) {
@@ -2225,10 +2269,7 @@ function playCartoonixEpisode(show, episode) {
   }
   dom.video.classList.remove('hidden');
 
-  if (state.hls) {
-    state.hls.destroy();
-    state.hls = null;
-  }
+  destroyActivePlayers();
 
   const fullUrl = 'https://cartoonix.ro/api' + encodeUriPath(episode.video_url);
   dom.video.src = fullUrl;
@@ -2276,10 +2317,7 @@ function playCinepubMovie(movie) {
   state.currentVodMovie = movie;
   state.isVodPlaying = true;
 
-  if (state.hls) {
-    state.hls.destroy();
-    state.hls = null;
-  }
+  destroyActivePlayers();
   dom.video.pause();
   dom.video.removeAttribute('src');
   dom.video.classList.add('hidden');
