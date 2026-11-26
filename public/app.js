@@ -1307,23 +1307,36 @@ async function syncEpgFromNetwork() {
     const minTime = now - (6 * 3600 * 1000);
     const maxTime = now + (48 * 3600 * 1000);
 
-    const progRegex = new RegExp('<programme\\s+start="([^"]+)"\\s+stop="([^"]+)"\\s+channel="([^"]+)"[^>]*>([\\s\\S]*?)<\\/programme>', 'g');
+    const progRegex = /<programme\s+([^>]+)>([\s\S]*?)<\/programme>/g;
+    const decodeXml = (str) => str
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;|&apos;/g, "'")
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
     let match;
     let count = 0;
 
     while ((match = progRegex.exec(xmlText)) !== null) {
-      const chId = match[3];
+      const attrs = match[1];
+      const chM = attrs.match(/\bchannel="([^"]+)"/);
+      if (!chM) continue;
+      const chId = chM[1];
       if (!targetIds.has(chId)) continue;
 
-      const s = parseXmltvTimestamp(match[1]);
-      const e = parseXmltvTimestamp(match[2]);
+      const startM = attrs.match(/\bstart="([^"]+)"/);
+      const stopM = attrs.match(/\bstop="([^"]+)"/);
+      if (!startM || !stopM) continue;
+
+      const s = parseXmltvTimestamp(startM[1]);
+      const e = parseXmltvTimestamp(stopM[1]);
 
       if (e >= minTime && s <= maxTime) {
-        const inner = match[4];
-        const titleM = inner.match(new RegExp('<title[^>]*>([^<]+)<\\/title>'));
-        const descM = inner.match(new RegExp('<desc[^>]*>([^<]+)<\\/desc>'));
-        const title = titleM ? titleM[1].trim() : '';
-        const desc = descM ? descM[1].trim() : '';
+        const inner = match[2];
+        const titleM = inner.match(/<title[^>]*>([\s\S]*?)<\/title>/);
+        const descM = inner.match(/<desc[^>]*>([\s\S]*?)<\/desc>/);
+        const title = titleM ? decodeXml(titleM[1].replace(/<[^>]+>/g, '').trim()) : '';
+        const desc = descM ? decodeXml(descM[1].replace(/<[^>]+>/g, '').trim()) : '';
 
         if (!newEpg[chId]) newEpg[chId] = [];
         newEpg[chId].push({ start: s, stop: e, title, desc });
@@ -1690,23 +1703,22 @@ function setupEventListeners() {
     toggleControls();
   });
 
-  // Only bind mousemove on desktop mice, preventing touchscreen synthetic mousemove
-  if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    dom.playerWrapper.addEventListener('mousemove', (e) => {
-      const dx = Math.abs(e.clientX - lastMousePos.x);
-      const dy = Math.abs(e.clientY - lastMousePos.y);
-      lastMousePos = { x: e.clientX, y: e.clientY };
-      if (dx < 3 && dy < 3) return;
-      if (Date.now() - lastClickHideAt < 450) return;
-      showControls(true);
-    });
+  // Wake controls on real mouse movement (works across desktop mice, touch-laptops, and headless), ignoring touch synthetic moves
+  dom.playerWrapper.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
+    const dx = Math.abs(e.clientX - lastMousePos.x);
+    const dy = Math.abs(e.clientY - lastMousePos.y);
+    lastMousePos = { x: e.clientX, y: e.clientY };
+    if (dx < 3 && dy < 3) return;
+    if (Date.now() - lastClickHideAt < 450) return;
+    showControls(true);
+  });
 
-    dom.playerWrapper.addEventListener('mouseleave', () => {
-      if (!dom.video.paused) {
-        hideControls();
-      }
-    });
-  }
+  dom.playerWrapper.addEventListener('mouseleave', () => {
+    if (!dom.video.paused) {
+      hideControls();
+    }
+  });
 
   dom.btnPlayPause.addEventListener('click', () => {
     if (dom.video.paused) {
@@ -2563,10 +2575,17 @@ function openEpgGuide(initialChannel = null) {
     document.exitFullscreen().catch(() => {});
   }
 
+  const hasEpgData = (c) => Boolean(c && !c.is_radio && c.epg_id && Array.isArray(state.epg[c.epg_id]) && state.epg[c.epg_id].length > 0);
+  const firstEpgChannel =
+    state.channels.find(c => hasEpgData(c) && getCurrentEpg(c.epg_id)) ||
+    state.channels.find(c => hasEpgData(c));
+
   const targetChannel =
+    (hasEpgData(initialChannel) ? initialChannel : null) ||
+    (hasEpgData(state.currentChannel) ? state.currentChannel : null) ||
+    firstEpgChannel ||
     initialChannel ||
     state.currentChannel ||
-    state.channels.find(c => !c.is_radio && c.epg_id && state.epg[c.epg_id]) ||
     state.channels.find(c => !c.is_radio) ||
     state.channels[0] ||
     null;
@@ -2580,9 +2599,9 @@ function openEpgGuide(initialChannel = null) {
     });
   }
 
-  // On narrow screens start on Schedule if we already have an active playing channel, otherwise Channels
+  // On narrow screens start on Schedule if we already have an active playing channel with EPG, otherwise Channels
   const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-  setEpgMobilePane(isMobile && Boolean(state.currentChannel));
+  setEpgMobilePane(isMobile && hasEpgData(state.currentChannel));
 
   updateEpgSyncBadge();
   renderEpgChannels();
@@ -2590,13 +2609,15 @@ function openEpgGuide(initialChannel = null) {
 
   dom.epgModal.classList.remove('hidden');
 
-  // If EPG has no current program for today yet, kick off network sync in background
+  // If EPG has too few current programs for today yet, kick off network sync in background
   if (typeof syncEpgFromNetwork === 'function') {
     const now = Date.now();
-    const hasCurrent = Object.values(state.epg || {}).some(
-      list => Array.isArray(list) && list.some(p => p.start <= now && p.stop > now)
-    );
-    if (!hasCurrent) {
+    let liveCount = 0;
+    for (const list of Object.values(state.epg || {})) {
+      if (Array.isArray(list) && list.some(p => p.start <= now && p.stop > now)) liveCount++;
+    }
+    if (liveCount < 10) {
+      localStorage.removeItem('flolite_epg_timestamp');
       syncEpgFromNetwork();
     }
   }
@@ -2632,9 +2653,18 @@ function renderEpgChannels() {
     return;
   }
 
+  const ordered = q
+    ? filtered
+    : filtered.slice().sort((a, b) => {
+        const aHas = (a.epg_id && state.epg[a.epg_id] && state.epg[a.epg_id].length > 0) ? 1 : 0;
+        const bHas = (b.epg_id && state.epg[b.epg_id] && state.epg[b.epg_id].length > 0) ? 1 : 0;
+        if (aHas !== bHas) return bHas - aHas;
+        return 0;
+      });
+
   // Put channels with EPG first when not searching so guide feels rich immediately, while preserving active channel visibility
   const frag = document.createDocumentFragment();
-  filtered.slice(0, 220).forEach(ch => {
+  ordered.slice(0, 220).forEach(ch => {
     const row = document.createElement('button');
     row.type = 'button';
     const isSelected = epgGuideState.selectedChannel && epgGuideState.selectedChannel.id === ch.id;
