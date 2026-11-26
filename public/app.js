@@ -1278,7 +1278,11 @@ function parseXmltvTimestamp(str) {
 }
 
 // Background Network EPG Sync (uses gzip DecompressionStream & /proxy)
+let _epgSyncPromise = null;
+
 async function syncEpgFromNetwork() {
+  if (_epgSyncPromise) return _epgSyncPromise;
+  _epgSyncPromise = (async () => {
   try {
     const lastSync = parseInt(localStorage.getItem('flolite_epg_timestamp') || '0', 10);
     const now = Date.now();
@@ -1348,6 +1352,17 @@ async function syncEpgFromNetwork() {
       for (const cid in newEpg) {
         newEpg[cid].sort((a, b) => a.start - b.start);
       }
+      // Preserve custom/curated channels (e.g., Voyo.Sport.1.ro) not in epgshare01 when they still have active/future items
+      if (state.epg) {
+        for (const cid of Object.keys(state.epg)) {
+          if (!newEpg[cid] && Array.isArray(state.epg[cid])) {
+            const activeItems = state.epg[cid].filter(p => p.stop > minTime && p.start <= maxTime);
+            if (activeItems.length > 0) {
+              newEpg[cid] = activeItems;
+            }
+          }
+        }
+      }
       state.epg = newEpg;
       try {
         localStorage.setItem('flolite_epg_cache', JSON.stringify(newEpg));
@@ -1377,7 +1392,11 @@ async function syncEpgFromNetwork() {
     }
   } catch (err) {
     console.warn('[FloLite EPG] Eroare sync fundal (non-fatal):', err);
+  } finally {
+    _epgSyncPromise = null;
   }
+  })();
+  return _epgSyncPromise;
 }
 
 // Aspect Ratio Modes (Fit Original, Fill Screen, 16:9 Standard, 4:3 Retro, Zoom Crop)
