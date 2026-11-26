@@ -1871,21 +1871,14 @@
     "name": "Voyo Sport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "http://89.45.22.101:8011/play/1",
+    "url": "http://89.45.22.101:8011/play/1/index.m3u8",
     "headers": {},
     "logo": "logos/VoyoSport1.png",
     "epg_id": "Voyo.Sport.1.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Direct Stream TS (FHD • 8.1 Mbps)",
-        "url": "http://89.45.22.101:8011/play/1",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 8126
-      },
-      {
-        "name": "Direct HLS 8.2Mbps (FHD • 8.1 Mbps)",
+        "name": "Direct FHD 8.2Mbps (FHD • 8.1 Mbps)",
         "url": "http://89.45.22.101:8011/play/1/index.m3u8",
         "resolution": "FHD",
         "headers": {},

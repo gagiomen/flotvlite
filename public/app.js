@@ -577,10 +577,12 @@ function getEffectiveStreams(channel) {
   const list = (channel.streams && channel.streams.length > 0)
     ? channel.streams
     : [{ name: 'Server 1', url: channel.url, resolution: channel.resolution, headers: channel.headers || {} }];
-  // Browser hls.js cannot decode raw HTTP MPEG-TS (e.g. HbbTV/port streams), so place HLS .m3u8 first on TV channels
-  const hlsOrdered = (!channel.is_radio && list.length > 1)
-    ? [...list.filter(s => isBrowserHlsUrl(s.url)), ...list.filter(s => !isBrowserHlsUrl(s.url))]
-    : list;
+  // Browser hls.js cannot decode raw HTTP MPEG-TS (e.g. HbbTV/port streams), so keep only HLS when HLS exists
+  let hlsOrdered = list;
+  if (!channel.is_radio && list.length > 1) {
+    const hlsOnly = list.filter(s => isBrowserHlsUrl(s.url));
+    hlsOrdered = hlsOnly.length > 0 ? hlsOnly : list;
+  }
   // Prefer rundle-compatible / CORS-open / sslip-capable streams, avoiding dokagents (blocks CF datacenter TS fetches)
   const isRemoteHttps = window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
   if (isRemoteHttps && hlsOrdered.length > 1) {
@@ -681,11 +683,19 @@ function playChannel(channel) {
     state.hls.destroy();
     state.hls = null;
   }
+  dom.video.onerror = null;
   dom.video.pause();
   dom.video.removeAttribute('src');
   dom.video.load();
 
   const effStreams = getEffectiveStreams(channel);
+  if (typeof channel._activeStreamIdx !== 'number') {
+    const savedSrvUrl = localStorage.getItem('flolite_srv_url_' + channel.id);
+    if (savedSrvUrl) {
+      const savedIdx = effStreams.findIndex(s => s && s.url === savedSrvUrl);
+      if (savedIdx >= 0) channel._activeStreamIdx = savedIdx;
+    }
+  }
   const startStreamIdx = (typeof channel._activeStreamIdx === 'number' && channel._activeStreamIdx < effStreams.length) ? channel._activeStreamIdx : 0;
   const activeStream = effStreams[startStreamIdx];
   const rawUrl = (activeStream && activeStream.url) ? activeStream.url : channel.url;
@@ -732,8 +742,8 @@ function playChannel(channel) {
 
   const advanceFallbackStream = () => {
     if (state.currentChannel !== channel) return;
-    // If direct CORS URL failed, try proxying the same stream first
-    if (!forceProxy && streamUrl === rawUrl && state.proxyMode !== 'direct') {
+    // If direct CDN or third-party relay failed, try our /proxy once for the same selected server
+    if (!forceProxy && (streamUrl === rawUrl || streamUrl.includes('rundle.tv')) && state.proxyMode !== 'direct') {
       channel._forceProxyOnce = true;
       channel._activeStreamIdx = startStreamIdx;
       playChannel(channel);
@@ -742,10 +752,20 @@ function playChannel(channel) {
     const tried = channel._triedStreamsCount || 0;
     if (effStreams.length > 1 && tried < effStreams.length - 1) {
       channel._triedStreamsCount = tried + 1;
-      channel._activeStreamIdx = (startStreamIdx + 1) % effStreams.length;
+      const nextIdx = (startStreamIdx + 1) % effStreams.length;
+      if (channel._manualStreamPick) {
+        channel._manualStreamPick = false;
+        showOsd(channel);
+        if (dom.osdEpgTitle && dom.osdEpgNow) {
+          dom.osdEpgTitle.textContent = `Serverul S${startStreamIdx + 1} indisponibil — trec la S${nextIdx + 1}`;
+          dom.osdEpgNow.classList.remove('hidden');
+        }
+      }
+      channel._activeStreamIdx = nextIdx;
       playChannel(channel);
     } else {
       channel._triedStreamsCount = 0;
+      channel._manualStreamPick = false;
       dom.spinner.classList.add('hidden');
     }
   };
@@ -964,12 +984,17 @@ function openWebTrackPicker(type) {
     const activeIdx = (typeof ch._activeStreamIdx === 'number' && ch._activeStreamIdx < effStreams.length) ? ch._activeStreamIdx : 0;
     effStreams.forEach((s, i) => {
       const btn = document.createElement('button');
+      btn.type = 'button';
       btn.className = 'track-picker-item' + (i === activeIdx ? ' active' : '');
-      btn.textContent = s.name || `Server ${i + 1}`;
+      btn.textContent = (i === activeIdx ? '✓ ' : '') + (s.name || `Server ${i + 1}`);
       btn.onclick = (e) => {
+        e.preventDefault();
         e.stopPropagation();
         ch._activeStreamIdx = i;
         ch._triedStreamsCount = 0;
+        ch._forceProxyOnce = false;
+        ch._manualStreamPick = true;
+        if (s && s.url) localStorage.setItem('flolite_srv_url_' + ch.id, s.url);
         closeMenu();
         playChannel(ch);
       };
