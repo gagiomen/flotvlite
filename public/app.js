@@ -143,6 +143,26 @@ const dom = {
   aboutModal: document.getElementById('about-modal'),
   btnCloseAbout: document.getElementById('btn-close-about'),
   btnAboutClose: document.getElementById('btn-about-close'),
+  btnEpgGuide: document.getElementById('btn-epg-guide'),
+  btnPlayerEpg: document.getElementById('btn-player-epg'),
+  btnDetailsEpg: document.getElementById('btn-details-epg'),
+  epgModal: document.getElementById('epg-modal'),
+  btnCloseEpgModal: document.getElementById('btn-close-epg-modal'),
+  epgSyncStatus: document.getElementById('epg-sync-status'),
+  epgTabChannels: document.getElementById('epg-tab-channels'),
+  epgTabSchedule: document.getElementById('epg-tab-schedule'),
+  epgSearchInput: document.getElementById('epg-search-input'),
+  btnClearEpgSearch: document.getElementById('btn-clear-epg-search'),
+  epgGuideBody: document.getElementById('epg-guide-body'),
+  epgChannelsPane: document.getElementById('epg-channels-pane'),
+  epgSchedulePane: document.getElementById('epg-schedule-pane'),
+  btnEpgBackChannels: document.getElementById('btn-epg-back-channels'),
+  epgHeroLogo: document.getElementById('epg-hero-logo'),
+  epgHeroName: document.getElementById('epg-hero-name'),
+  epgHeroGroup: document.getElementById('epg-hero-group'),
+  btnEpgWatch: document.getElementById('btn-epg-watch'),
+  epgDayFilters: document.getElementById('epg-day-filters'),
+  epgTimelineList: document.getElementById('epg-timeline-list'),
   btnSettings: document.getElementById('btn-settings'),
   settingsModal: document.getElementById('settings-modal'),
   btnCloseSettings: document.getElementById('btn-close-settings'),
@@ -157,6 +177,7 @@ async function init() {
   setupEventListeners();
   setupSettings();
   setupAboutModal();
+  setupEpgGuide();
   applyAspectRatio(state.aspectRatio, false);
   setupKeyboardShortcuts();
 
@@ -1033,7 +1054,12 @@ function openWebTrackPicker(type) {
   const ch = state.currentChannel;
   if (!ch || !dom.trackPickerMenu || !dom.trackPickerList || !dom.trackPickerTitle) return;
   dom.trackPickerList.innerHTML = '';
-  const closeMenu = () => dom.trackPickerMenu.classList.add('hidden');
+  const closeMenu = () => {
+    dom.trackPickerMenu.classList.add('hidden');
+    if (typeof window.__floliteRefreshControlsTimer === 'function') {
+      window.__floliteRefreshControlsTimer();
+    }
+  };
 
   if (type === 'server') {
     dom.trackPickerTitle.textContent = '🌐 Server Stream (RO / Rezoluție)';
@@ -1322,6 +1348,11 @@ async function syncEpgFromNetwork() {
       updateLiveEpgUI();
       filterAndRenderChannels();
       if (state.currentChannel) showOsd(state.currentChannel);
+      if (dom.epgModal && !dom.epgModal.classList.contains('hidden')) {
+        updateEpgSyncBadge();
+        renderEpgChannels();
+        renderEpgSchedule();
+      }
     }
   } catch (err) {
     console.warn('[FloLite EPG] Eroare sync fundal (non-fatal):', err);
@@ -1597,17 +1628,20 @@ function setupEventListeners() {
     filterAndRenderChannels();
   });
 
-  // Controls Tap/Click Toggle & Auto-Hide on Mobile/Desktop
+  // Controls Tap/Click Toggle & Auto-Hide on Mobile/Desktop (incl. Fullscreen)
   let controlsTimer = null;
   let controlsVisible = false;
   let lastToggleTime = 0;
+  let lastClickHideAt = 0;
+  let lastMousePos = { x: -1, y: -1 };
 
   function showControls(autoHide = true) {
     controlsVisible = true;
     if (dom.playerControlsBar) dom.playerControlsBar.classList.add('visible');
     if (dom.playerWrapper) dom.playerWrapper.classList.add('show-controls');
     clearTimeout(controlsTimer);
-    if (autoHide && !dom.video.paused) {
+    const pickerOpen = dom.trackPickerMenu && !dom.trackPickerMenu.classList.contains('hidden');
+    if (autoHide && !dom.video.paused && !pickerOpen) {
       controlsTimer = setTimeout(hideControls, 3500);
     }
   }
@@ -1616,6 +1650,12 @@ function setupEventListeners() {
     controlsVisible = false;
     if (dom.playerControlsBar) dom.playerControlsBar.classList.remove('visible');
     if (dom.playerWrapper) dom.playerWrapper.classList.remove('show-controls');
+    if (dom.trackPickerMenu) dom.trackPickerMenu.classList.add('hidden');
+    if (document.activeElement && dom.playerWrapper && dom.playerWrapper.contains(document.activeElement)) {
+      if (typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+    }
     clearTimeout(controlsTimer);
   }
 
@@ -1625,15 +1665,26 @@ function setupEventListeners() {
     lastToggleTime = now;
 
     if (controlsVisible) {
+      lastClickHideAt = now;
       hideControls();
     } else {
       showControls(true);
     }
   }
 
+  // Expose helper so closing track picker or changing tracks restarts auto-hide cleanly
+  window.__floliteRefreshControlsTimer = () => {
+    if (controlsVisible) showControls(true);
+  };
+
   // Tap or click on player background to toggle controls
   dom.playerWrapper.addEventListener('click', (e) => {
-    if (e.target.closest('.player-controls-bar') || e.target.closest('.modal') || e.target.closest('.stats-overlay')) {
+    if (
+      e.target.closest('.player-controls-bar') ||
+      e.target.closest('.track-picker-menu') ||
+      e.target.closest('.modal') ||
+      e.target.closest('.stats-overlay')
+    ) {
       return;
     }
     toggleControls();
@@ -1641,7 +1692,12 @@ function setupEventListeners() {
 
   // Only bind mousemove on desktop mice, preventing touchscreen synthetic mousemove
   if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    dom.playerWrapper.addEventListener('mousemove', () => {
+    dom.playerWrapper.addEventListener('mousemove', (e) => {
+      const dx = Math.abs(e.clientX - lastMousePos.x);
+      const dy = Math.abs(e.clientY - lastMousePos.y);
+      lastMousePos = { x: e.clientX, y: e.clientY };
+      if (dx < 3 && dy < 3) return;
+      if (Date.now() - lastClickHideAt < 450) return;
       showControls(true);
     });
 
@@ -1699,12 +1755,24 @@ function setupEventListeners() {
   });
 
   dom.btnFullscreen.addEventListener('click', () => {
+    dom.btnFullscreen.blur();
     if (!document.fullscreenElement) {
       dom.playerWrapper.requestFullscreen().catch(() => {});
     } else {
       document.exitFullscreen().catch(() => {});
     }
   });
+
+  const handleFullscreenChange = () => {
+    if (dom.btnFullscreen) dom.btnFullscreen.blur();
+    if (document.fullscreenElement === dom.playerWrapper) {
+      showControls(true);
+    } else if (!dom.video.paused) {
+      showControls(true);
+    }
+  };
+  document.addEventListener('fullscreenchange', handleFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
   dom.btnPip.addEventListener('click', async () => {
     try {
@@ -1731,6 +1799,9 @@ function setupEventListeners() {
     dom.btnCloseTrackPicker.addEventListener('click', (e) => {
       e.stopPropagation();
       if (dom.trackPickerMenu) dom.trackPickerMenu.classList.add('hidden');
+      if (typeof window.__floliteRefreshControlsTimer === 'function') {
+        window.__floliteRefreshControlsTimer();
+      }
     });
   }
   if (dom.btnServer) {
@@ -1854,12 +1925,37 @@ function setupSettings() {
 // Keyboard & TV Remote Control Navigation
 function setupKeyboardShortcuts() {
   window.addEventListener('keydown', (e) => {
+    const activeEl = document.activeElement;
     // If typing in input, don't intercept navigation
-    if (document.activeElement === dom.searchInput || document.activeElement === dom.customProxyInput) {
+    if (
+      activeEl === dom.searchInput ||
+      activeEl === dom.customProxyInput ||
+      activeEl === dom.vodSearchInput ||
+      activeEl === dom.epgSearchInput
+    ) {
       if (e.key === 'Escape') {
-        document.activeElement.blur();
+        activeEl.blur();
       }
       return;
+    }
+
+    if (e.key === 'Escape') {
+      if (dom.epgModal && !dom.epgModal.classList.contains('hidden')) {
+        closeEpgGuide();
+        return;
+      }
+      if (dom.aboutModal && !dom.aboutModal.classList.contains('hidden')) {
+        dom.aboutModal.classList.add('hidden');
+        return;
+      }
+      if (dom.settingsModal && !dom.settingsModal.classList.contains('hidden')) {
+        dom.settingsModal.classList.add('hidden');
+        return;
+      }
+      if (dom.vodModal && !dom.vodModal.classList.contains('hidden')) {
+        dom.vodModal.classList.add('hidden');
+        return;
+      }
     }
 
     // Direct channel digits (0-9)
@@ -1914,6 +2010,15 @@ function setupKeyboardShortcuts() {
       case 'f':
       case 'F':
         dom.btnFullscreen.click();
+        break;
+      case 'g':
+      case 'G':
+        e.preventDefault();
+        if (dom.epgModal && !dom.epgModal.classList.contains('hidden')) {
+          closeEpgGuide();
+        } else {
+          openEpgGuide(state.currentChannel);
+        }
         break;
       case 'm':
       case 'M':
@@ -1975,7 +2080,7 @@ function updateMediaSession(channel) {
       const logoUrl = channel.logo ? (window.location.origin + '/' + channel.logo) : (window.location.origin + '/logos/acasa4k.png');
       navigator.mediaSession.metadata = new MediaMetadata({
         title: channel.name,
-        artist: channel.is_radio ? 'Radio Live • FloLite 4.0' : 'TV Live • FloLite 4.0',
+        artist: channel.is_radio ? 'Radio Live • FloLite 4.5' : 'TV Live • FloLite 4.5',
         album: channel.group || 'FloLite Universal',
         artwork: [
           { src: logoUrl, sizes: '128x128', type: 'image/png' },
@@ -2007,7 +2112,13 @@ function setupAboutModal() {
       if (diagChannels) diagChannels.textContent = `${state.channels.length} posturi TV & Radio`;
 
       const diagHls = document.getElementById('diag-hls-mode');
-      if (diagHls) diagHls.textContent = window.Hls && Hls.isSupported() ? 'HLS.js Hardware Accelerated' : 'Native Browser HLS';
+      if (diagHls) {
+        const hasMpegTs = typeof window.mpegts !== 'undefined' && mpegts.getFeatureList().mseLivePlayback;
+        const hasHls = window.Hls && Hls.isSupported();
+        diagHls.textContent = hasHls && hasMpegTs
+          ? 'HLS.js + mpegts.js Hybrid (Hardware Accelerated)'
+          : (hasHls ? 'HLS.js Hardware Accelerated' : 'Native Browser HLS');
+      }
 
       const diagWake = document.getElementById('diag-wakelock');
       if (diagWake) diagWake.textContent = 'wakeLock' in navigator ? (wakeLockSentinel ? 'Activ (Ecran blocat aprins)' : 'Suportat (Standby)') : 'Nesuportat pe acest browser';
@@ -2400,6 +2511,358 @@ function playPreviousVodEpisode() {
   const curIdx = eps.indexOf(state.currentVodEpisode);
   if (curIdx > 0) {
     playCartoonixEpisode(state.currentVodShow, eps[curIdx - 1]);
+  }
+}
+
+// ========================
+// EPG PROGRAM GUIDE (DESKTOP + MOBILE)
+// ========================
+const epgGuideState = {
+  selectedChannel: null,
+  dayFilter: 'today',
+  searchQuery: '',
+  mobileShowSchedule: false
+};
+
+function updateEpgSyncBadge() {
+  if (!dom.epgSyncStatus) return;
+  const channelKeys = Object.keys(state.epg || {});
+  const now = Date.now();
+  let liveCount = 0;
+  for (const key of channelKeys) {
+    const list = state.epg[key];
+    if (Array.isArray(list) && list.some(p => p.start <= now && p.stop > now)) {
+      liveCount++;
+    }
+  }
+  if (liveCount > 0) {
+    dom.epgSyncStatus.textContent = `${liveCount} canale cu program LIVE`;
+  } else if (channelKeys.length > 0) {
+    dom.epgSyncStatus.textContent = `${channelKeys.length} ghiduri încărcate (Sync activ)`;
+  } else {
+    dom.epgSyncStatus.textContent = 'Se încarcă ghidul EPG...';
+  }
+}
+
+function setEpgMobilePane(showSchedule) {
+  epgGuideState.mobileShowSchedule = Boolean(showSchedule);
+  if (dom.epgGuideBody) {
+    dom.epgGuideBody.classList.toggle('mobile-show-schedule', epgGuideState.mobileShowSchedule);
+  }
+  if (dom.epgTabChannels) {
+    dom.epgTabChannels.classList.toggle('active', !epgGuideState.mobileShowSchedule);
+  }
+  if (dom.epgTabSchedule) {
+    dom.epgTabSchedule.classList.toggle('active', epgGuideState.mobileShowSchedule);
+  }
+}
+
+function openEpgGuide(initialChannel = null) {
+  if (!dom.epgModal) return;
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
+
+  const targetChannel =
+    initialChannel ||
+    state.currentChannel ||
+    state.channels.find(c => !c.is_radio && c.epg_id && state.epg[c.epg_id]) ||
+    state.channels.find(c => !c.is_radio) ||
+    state.channels[0] ||
+    null;
+
+  epgGuideState.selectedChannel = targetChannel;
+  epgGuideState.dayFilter = 'today';
+
+  if (dom.epgDayFilters) {
+    dom.epgDayFilters.querySelectorAll('.epg-day-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.day === 'today');
+    });
+  }
+
+  // On narrow screens start on Schedule if we already have an active playing channel, otherwise Channels
+  const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  setEpgMobilePane(isMobile && Boolean(state.currentChannel));
+
+  updateEpgSyncBadge();
+  renderEpgChannels();
+  renderEpgSchedule();
+
+  dom.epgModal.classList.remove('hidden');
+
+  // If EPG has no current program for today yet, kick off network sync in background
+  if (typeof syncEpgFromNetwork === 'function') {
+    const now = Date.now();
+    const hasCurrent = Object.values(state.epg || {}).some(
+      list => Array.isArray(list) && list.some(p => p.start <= now && p.stop > now)
+    );
+    if (!hasCurrent) {
+      syncEpgFromNetwork();
+    }
+  }
+}
+
+function closeEpgGuide() {
+  if (dom.epgModal) dom.epgModal.classList.add('hidden');
+}
+
+function renderEpgChannels() {
+  if (!dom.epgChannelsPane) return;
+  dom.epgChannelsPane.innerHTML = '';
+
+  const q = epgGuideState.searchQuery.trim().toLowerCase();
+  const tvChannels = (state.channels || []).filter(ch => !ch.is_radio);
+
+  const filtered = tvChannels.filter(ch => {
+    if (!q) return true;
+    const nameMatch = (ch.name || '').toLowerCase().includes(q);
+    const groupMatch = (ch.group || '').toLowerCase().includes(q);
+    const cur = ch.epg_id ? getCurrentEpg(ch.epg_id) : null;
+    const nxt = ch.epg_id ? getNextEpg(ch.epg_id) : null;
+    const curMatch = cur && (cur.title || '').toLowerCase().includes(q);
+    const nxtMatch = nxt && (nxt.title || '').toLowerCase().includes(q);
+    return nameMatch || groupMatch || curMatch || nxtMatch;
+  });
+
+  if (filtered.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'epg-empty-state';
+    empty.textContent = 'Niciun canal sau emisiune găsită pentru filtrul curent.';
+    dom.epgChannelsPane.appendChild(empty);
+    return;
+  }
+
+  // Put channels with EPG first when not searching so guide feels rich immediately, while preserving active channel visibility
+  const frag = document.createDocumentFragment();
+  filtered.slice(0, 220).forEach(ch => {
+    const row = document.createElement('button');
+    row.type = 'button';
+    const isSelected = epgGuideState.selectedChannel && epgGuideState.selectedChannel.id === ch.id;
+    row.className = 'epg-channel-row' + (isSelected ? ' active' : '');
+
+    const img = document.createElement('img');
+    img.className = 'epg-row-logo';
+    img.src = ch.logo || 'logos/acasa4k.png';
+    img.alt = ch.name || '';
+    img.loading = 'lazy';
+    img.onerror = () => { img.src = 'logos/acasa4k.png'; };
+
+    const info = document.createElement('div');
+    info.className = 'epg-row-info';
+
+    const title = document.createElement('span');
+    title.className = 'epg-row-name';
+    title.textContent = `${ch.number ? ch.number + '. ' : ''}${ch.name}`;
+
+    const cur = ch.epg_id ? getCurrentEpg(ch.epg_id) : null;
+    const nowLine = document.createElement('span');
+    if (cur) {
+      nowLine.className = 'epg-row-now';
+      nowLine.textContent = `${formatTime(cur.start)} • ${cur.title}`;
+    } else {
+      const list = ch.epg_id && state.epg[ch.epg_id];
+      nowLine.className = 'epg-row-now empty';
+      nowLine.textContent = list && list.length > 0
+        ? `${list.length} emisiuni în ghid`
+        : `${ch.group || 'TV'} • Fără program EPG`;
+    }
+
+    info.appendChild(title);
+    info.appendChild(nowLine);
+    row.appendChild(img);
+    row.appendChild(info);
+
+    row.addEventListener('click', () => {
+      epgGuideState.selectedChannel = ch;
+      renderEpgChannels();
+      renderEpgSchedule();
+      setEpgMobilePane(true);
+    });
+
+    frag.appendChild(row);
+  });
+
+  dom.epgChannelsPane.appendChild(frag);
+}
+
+function renderEpgSchedule() {
+  if (!dom.epgTimelineList) return;
+  const ch = epgGuideState.selectedChannel;
+
+  if (!ch) {
+    dom.epgTimelineList.innerHTML = '';
+    return;
+  }
+
+  if (dom.epgHeroLogo) {
+    dom.epgHeroLogo.src = ch.logo || 'logos/acasa4k.png';
+    dom.epgHeroLogo.onerror = () => { dom.epgHeroLogo.src = 'logos/acasa4k.png'; };
+  }
+  if (dom.epgHeroName) dom.epgHeroName.textContent = ch.name || 'Canal TV';
+  if (dom.epgHeroGroup) dom.epgHeroGroup.textContent = `${ch.group || 'General'} • ${ch.resolution || 'HD'}`;
+
+  dom.epgTimelineList.innerHTML = '';
+  const rawList = (ch.epg_id && Array.isArray(state.epg[ch.epg_id])) ? state.epg[ch.epg_id] : [];
+
+  if (rawList.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'epg-empty-state';
+    empty.textContent = 'Momentan nu există program EPG disponibil pentru acest canal.';
+    dom.epgTimelineList.appendChild(empty);
+    return;
+  }
+
+  const now = Date.now();
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const todayStartMs = startOfToday.getTime();
+  const tomorrowStartMs = todayStartMs + 86400000;
+  const dayAfterStartMs = tomorrowStartMs + 86400000;
+
+  let items = rawList.slice().sort((a, b) => a.start - b.start);
+  if (epgGuideState.dayFilter === 'today') {
+    items = items.filter(p => p.stop > todayStartMs && p.start < tomorrowStartMs);
+  } else if (epgGuideState.dayFilter === 'tomorrow') {
+    items = items.filter(p => p.stop > tomorrowStartMs && p.start < dayAfterStartMs);
+  }
+
+  if (items.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'epg-empty-state';
+    empty.textContent = 'Nu sunt emisiuni pentru ziua selectată. Încearcă filtrul „Toate (48h)” sau așteaptă sincronizarea EPG.';
+    dom.epgTimelineList.appendChild(empty);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  let liveCardEl = null;
+
+  items.forEach(prog => {
+    const isLive = prog.start <= now && prog.stop > now;
+    const isPast = prog.stop <= now;
+
+    const card = document.createElement('div');
+    card.className = 'epg-prog-card' + (isLive ? ' is-live' : (isPast ? ' is-past' : ''));
+    if (isLive) liveCardEl = card;
+
+    const top = document.createElement('div');
+    top.className = 'epg-prog-top';
+
+    const timeEl = document.createElement('span');
+    timeEl.className = 'epg-prog-time';
+    const dayPrefix = epgGuideState.dayFilter === 'all'
+      ? new Date(prog.start).toLocaleDateString('ro-RO', { weekday: 'short', day: '2-digit', month: '2-digit' }) + ' • '
+      : '';
+    timeEl.textContent = `${dayPrefix}${formatTime(prog.start)} – ${formatTime(prog.stop)}`;
+    top.appendChild(timeEl);
+
+    if (isLive) {
+      const livePill = document.createElement('span');
+      livePill.className = 'epg-prog-live-pill';
+      livePill.textContent = 'LIVE ACUM';
+      top.appendChild(livePill);
+    }
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'epg-prog-title';
+    titleEl.textContent = prog.title || 'Emisiune TV';
+
+    card.appendChild(top);
+    card.appendChild(titleEl);
+
+    if (prog.desc) {
+      const descEl = document.createElement('div');
+      descEl.className = 'epg-prog-desc';
+      descEl.textContent = prog.desc;
+      card.appendChild(descEl);
+    }
+
+    if (isLive) {
+      const progBar = document.createElement('div');
+      progBar.className = 'epg-prog-progress';
+      const fill = document.createElement('div');
+      fill.className = 'epg-prog-progress-fill';
+      fill.style.width = `${Math.round(getProgressPercent(prog.start, prog.stop))}%`;
+      progBar.appendChild(fill);
+      card.appendChild(progBar);
+    }
+
+    frag.appendChild(card);
+  });
+
+  dom.epgTimelineList.appendChild(frag);
+  if (liveCardEl) {
+    requestAnimationFrame(() => {
+      liveCardEl.scrollIntoView({ block: 'center', behavior: 'auto' });
+    });
+  }
+}
+
+function setupEpgGuide() {
+  if (dom.btnEpgGuide) {
+    dom.btnEpgGuide.addEventListener('click', () => openEpgGuide(state.currentChannel));
+  }
+  if (dom.btnPlayerEpg) {
+    dom.btnPlayerEpg.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openEpgGuide(state.currentChannel);
+    });
+  }
+  if (dom.btnDetailsEpg) {
+    dom.btnDetailsEpg.addEventListener('click', () => openEpgGuide(state.currentChannel));
+  }
+  if (dom.btnCloseEpgModal) {
+    dom.btnCloseEpgModal.addEventListener('click', closeEpgGuide);
+  }
+  if (dom.epgModal) {
+    dom.epgModal.addEventListener('click', (e) => {
+      if (e.target === dom.epgModal) closeEpgGuide();
+    });
+  }
+  if (dom.epgTabChannels) {
+    dom.epgTabChannels.addEventListener('click', () => setEpgMobilePane(false));
+  }
+  if (dom.epgTabSchedule) {
+    dom.epgTabSchedule.addEventListener('click', () => setEpgMobilePane(true));
+  }
+  if (dom.btnEpgBackChannels) {
+    dom.btnEpgBackChannels.addEventListener('click', () => setEpgMobilePane(false));
+  }
+  if (dom.epgSearchInput) {
+    dom.epgSearchInput.addEventListener('input', (e) => {
+      epgGuideState.searchQuery = e.target.value || '';
+      if (dom.btnClearEpgSearch) {
+        dom.btnClearEpgSearch.classList.toggle('hidden', !epgGuideState.searchQuery);
+      }
+      renderEpgChannels();
+    });
+  }
+  if (dom.btnClearEpgSearch) {
+    dom.btnClearEpgSearch.addEventListener('click', () => {
+      epgGuideState.searchQuery = '';
+      if (dom.epgSearchInput) dom.epgSearchInput.value = '';
+      dom.btnClearEpgSearch.classList.add('hidden');
+      renderEpgChannels();
+    });
+  }
+  if (dom.epgDayFilters) {
+    dom.epgDayFilters.querySelectorAll('.epg-day-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        epgGuideState.dayFilter = pill.dataset.day || 'today';
+        dom.epgDayFilters.querySelectorAll('.epg-day-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        renderEpgSchedule();
+      });
+    });
+  }
+  if (dom.btnEpgWatch) {
+    dom.btnEpgWatch.addEventListener('click', () => {
+      if (epgGuideState.selectedChannel) {
+        const ch = epgGuideState.selectedChannel;
+        closeEpgGuide();
+        playChannel(ch);
+      }
+    });
   }
 }
 
