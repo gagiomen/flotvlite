@@ -1871,36 +1871,43 @@
     "name": "Voyo Sport 1",
     "group": "Sport",
     "is_radio": false,
-    "url": "http://89.45.22.101:8011/play/1/index.m3u8",
+    "url": "http://89.45.22.101:8011/play/1",
     "headers": {},
     "logo": "logos/VoyoSport1.png",
     "epg_id": "Voyo.Sport.1.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "Direct FHD 8.2Mbps (FHD • 8.1 Mbps)",
+        "name": "Direct Stream TS (FHD • 8.1 Mbps)",
+        "url": "http://89.45.22.101:8011/play/1",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 8126
+      },
+      {
+        "name": "Direct HLS 8.2Mbps (FHD • 8.1 Mbps)",
         "url": "http://89.45.22.101:8011/play/1/index.m3u8",
         "resolution": "FHD",
         "headers": {},
         "bitrate": 8126
       },
       {
-        "name": "CoolTV PPV Backup (FHD • 1.9 Mbps)",
+        "name": "CoolTV PPV 2 Backup (HD • 3.1 Mbps)",
         "url": "https://pulse1.sanseny001.shop/puki2/usergendxpk2s6utg0l.m3u8",
-        "resolution": "FHD",
+        "resolution": "HD",
         "headers": {
           "Referer": "https://canale-tv.net/"
         },
-        "bitrate": 1890
+        "bitrate": 3107
       },
       {
-        "name": "CoolTV PPV Backup (HD • 1.9 Mbps)",
+        "name": "CoolTV PPV 1 Backup (HD • 3.1 Mbps)",
         "url": "https://pulse1.sanseny001.shop/puki1/usergendx6kal0r2bsm.m3u8",
         "resolution": "HD",
         "headers": {
           "Referer": "https://canale-tv.net/"
         },
-        "bitrate": 1890
+        "bitrate": 3107
       }
     ]
   },
