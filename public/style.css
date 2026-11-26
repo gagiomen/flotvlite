@@ -606,6 +606,7 @@ body {
   .player-wrapper:hover .player-controls-bar,
   .player-controls-bar:focus-within {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
     transform: translateY(0);
   }

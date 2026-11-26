@@ -123,8 +123,8 @@ export async function onRequest(context) {
           }
           rewritten.push(line);
         } else {
-          // Playlist line or segment URI
-          const absUri = new URL(trimmed, baseTargetUrl).toString();
+          // Playlist line or segment URI (fix broken livebalancer02 AntenaPlay hosts -> live77cdn2)
+          const absUri = new URL(trimmed, baseTargetUrl).toString().replace('https://livebalancer02.antenaplay.ro/', 'https://live77cdn2.antenaplay.ro/');
           const proxiedUri = `${origin}/proxy?url=${encodeURIComponent(absUri)}${refSuffix}`;
           rewritten.push(proxiedUri);
         }

@@ -583,12 +583,11 @@ function getEffectiveStreams(channel) {
     const hlsOnly = list.filter(s => isBrowserHlsUrl(s.url));
     hlsOrdered = hlsOnly.length > 0 ? hlsOnly : list;
   }
-  // Prefer rundle-compatible / CORS-open / sslip-capable streams, avoiding dokagents (blocks CF datacenter TS fetches)
+  // Prefer rundle-compatible / CORS-open / sslip-capable streams, omitting dokagents on remote HTTPS when working HLS exists
   const isRemoteHttps = window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
   if (isRemoteHttps && hlsOrdered.length > 1) {
     const nonDok = hlsOrdered.filter(s => !(s.url && s.url.includes('dokagents.site')));
-    const dokOnly = hlsOrdered.filter(s => s.url && s.url.includes('dokagents.site'));
-    return [...nonDok, ...dokOnly];
+    if (nonDok.length > 0) return nonDok;
   }
   return hlsOrdered;
 }
@@ -775,26 +774,40 @@ function playChannel(channel) {
   const isHls = Boolean(rawUrl && (rawUrl.includes('.m3u8') || rawUrl.includes('playlist') || (!channel.is_radio && !rawUrl.includes('.mp4') && !rawUrl.includes('.mp3'))));
 
   if (isHls && window.Hls && Hls.isSupported()) {
+    const isRelay = streamUrl.includes('rundle.tv');
+    class AntenaFixLoader extends Hls.DefaultConfig.loader {
+      load(context, config, callbacks) {
+        const origOnSuccess = callbacks.onSuccess;
+        callbacks.onSuccess = (response, stats, ctx, networkDetails) => {
+          if (response && typeof response.data === 'string' && response.data.includes('livebalancer02.antenaplay.ro')) {
+            response.data = response.data.replace(/https:\/\/livebalancer02\.antenaplay\.ro\//g, 'https://live77cdn2.antenaplay.ro/');
+          }
+          origOnSuccess(response, stats, ctx, networkDetails);
+        };
+        super.load(context, config, callbacks);
+      }
+    }
     const hls = new Hls({
       enableWorker: true,
-      startFragPrefetch: true,
-      maxBufferLength: 25,
+      pLoader: AntenaFixLoader,
+      startFragPrefetch: !isRelay,
+      maxBufferLength: isRelay ? 16 : 25,
       maxMaxBufferLength: 45,
       maxBufferSize: 80 * 1000 * 1000,
       maxBufferHole: 0.8,
       backBufferLength: 20,
-      liveSyncDurationCount: 2,
+      liveSyncDurationCount: isRelay ? 1 : 2,
       liveMaxLatencyDurationCount: 6,
       liveDurationInfinity: true,
       lowLatencyMode: false,
-      manifestLoadingTimeOut: 15000,
-      manifestLoadingMaxRetry: 4,
+      manifestLoadingTimeOut: isRelay ? 24000 : 12000,
+      manifestLoadingMaxRetry: isRelay ? 2 : 3,
       manifestLoadingRetryDelay: 800,
-      levelLoadingTimeOut: 15000,
-      levelLoadingMaxRetry: 4,
+      levelLoadingTimeOut: isRelay ? 24000 : 12000,
+      levelLoadingMaxRetry: isRelay ? 2 : 3,
       levelLoadingRetryDelay: 800,
-      fragLoadingTimeOut: 20000,
-      fragLoadingMaxRetry: 5,
+      fragLoadingTimeOut: isRelay ? 28000 : 16000,
+      fragLoadingMaxRetry: isRelay ? 3 : 4,
       fragLoadingRetryDelay: 800,
       nudgeOffset: 0.2,
       nudgeMaxRetry: 10,
