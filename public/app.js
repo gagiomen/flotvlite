@@ -1362,6 +1362,14 @@ async function syncEpgFromNetwork() {
       filterAndRenderChannels();
       if (state.currentChannel) showOsd(state.currentChannel);
       if (dom.epgModal && !dom.epgModal.classList.contains('hidden')) {
+        const sel = epgGuideState.selectedChannel;
+        const selHasData = sel && sel.epg_id && Array.isArray(state.epg[sel.epg_id]) && state.epg[sel.epg_id].length > 0;
+        if (!selHasData) {
+          epgGuideState.selectedChannel =
+            state.channels.find(c => !c.is_radio && c.epg_id && getCurrentEpg(c.epg_id)) ||
+            state.channels.find(c => !c.is_radio && c.epg_id && state.epg[c.epg_id] && state.epg[c.epg_id].length > 0) ||
+            sel;
+        }
         updateEpgSyncBadge();
         renderEpgChannels();
         renderEpgSchedule();
