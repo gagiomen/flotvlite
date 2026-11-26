@@ -195,19 +195,14 @@
     "name": "AMC",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.7.14/live/amc_hun/index.m3u8",
-    "headers": {},
+    "url": "https://saruman1.tharen001.cfd/amece/usergenrx3oq1kr.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/AMC010.png",
     "epg_id": "AMC.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "EU Backup [HUN] (FHD • 1.0 Mbps)",
-        "url": "http://88.212.7.14/live/amc_hun/index.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 1048
-      },
       {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
         "url": "https://saruman1.tharen001.cfd/amece/usergenrx3oq1kr.m3u8",
@@ -216,6 +211,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [HUN] (FHD • 1.0 Mbps)",
+        "url": "http://88.212.7.14/live/amc_hun/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 1048
       },
       {
         "name": "TVRon Mirror (HD)",
@@ -590,19 +592,14 @@
     "name": "BBC Earth",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.7.14/live/bbce_hun/index.m3u8",
-    "headers": {},
+    "url": "https://saruman1.tharen001.cfd/ert/usergenrx8ofzq1kr.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/BBC206.png",
     "epg_id": "BBC.Earth.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [HUN] (FHD • 699 kbps)",
-        "url": "http://88.212.7.14/live/bbce_hun/index.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 699
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://saruman1.tharen001.cfd/ert/usergenrx8ofzq1kr.m3u8",
@@ -611,6 +608,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [HUN] (FHD • 699 kbps)",
+        "url": "http://88.212.7.14/live/bbce_hun/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 699
       }
     ]
   },
@@ -638,19 +642,14 @@
     "name": "Cartoonito (Boomerang)",
     "group": "Desene animate",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_boomerang_tizen/playlist.m3u8",
-    "headers": {},
+    "url": "https://flash1.bogulus1.cfd/bomer/usergenrx2c86jey.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/Boomerang383.png",
     "epg_id": "Cartoonito.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 733 kbps)",
-        "url": "http://88.212.15.50/live/test_boomerang_tizen/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 733
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://flash1.bogulus1.cfd/bomer/usergenrx2c86jey.m3u8",
@@ -659,6 +658,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 733 kbps)",
+        "url": "http://88.212.15.50/live/test_boomerang_tizen/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 733
       }
     ]
   },
@@ -695,19 +701,14 @@
     "name": "Cinemax2",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_cinemax2_hd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://cronos.mangora1.cfd/xmas2/usergendxt1v8klq6rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.com/"
+    },
     "logo": "logos/Cinemax2232.png",
     "epg_id": "Cinemax.2.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "EU Direct [CZ] (88) (FHD • 819 kbps)",
-        "url": "http://88.212.15.50/live/test_cinemax2_hd_hevc/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 819
-      },
       {
         "name": "Server 1 (HD • 1.9 Mbps)",
         "url": "https://cronos.mangora1.cfd/xmas2/usergendxt1v8klq6rnd.m3u8",
@@ -716,6 +717,13 @@
           "Referer": "https://canale-tv.com/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Direct [CZ] (88) (FHD • 819 kbps)",
+        "url": "http://88.212.15.50/live/test_cinemax2_hd_hevc/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 819
       }
     ]
   },
@@ -928,19 +936,14 @@
     "name": "Discovery Channel ",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.7.14/live/discovery_hungary/index.m3u8",
-    "headers": {},
+    "url": "https://saruman1.tharen001.cfd/disco/usergenrxljmx9su.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/Discovery067.png",
     "epg_id": "Discovery.Channel.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "EU Backup 2 [HUN] (FHD • 699 kbps)",
-        "url": "http://88.212.7.14/live/discovery_hungary/index.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 699
-      },
       {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
         "url": "https://saruman1.tharen001.cfd/disco/usergenrxljmx9su.m3u8",
@@ -949,6 +952,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup 2 [HUN] (FHD • 699 kbps)",
+        "url": "http://88.212.7.14/live/discovery_hungary/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 699
       },
       {
         "name": "EU Backup [CZ] (HD • 1.0 Mbps)",
@@ -1055,13 +1065,6 @@
         "bitrate": 6478
       },
       {
-        "name": "EU Backup [HUN] (FHD • 694 kbps)",
-        "url": "http://88.212.7.14/live/esp1_hun/index.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 694
-      },
-      {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
         "url": "https://kuruk1.xn--okq6e.shop/er01/usergendx07slkgx24dqrnd.m3u8",
         "resolution": "HD",
@@ -1069,6 +1072,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [HUN] (FHD • 694 kbps)",
+        "url": "http://88.212.7.14/live/esp1_hun/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 694
       }
     ]
   },
@@ -1077,18 +1087,18 @@
     "name": "Eurosport 2",
     "group": "Sport",
     "is_radio": false,
-    "url": "http://88.212.7.14/live/esp2_hun/index.m3u8",
+    "url": "http://89.44.231.73:7000/eurosport2",
     "headers": {},
     "logo": "logos/Eurosport939.png",
     "epg_id": "Eurosport.2.ro",
     "resolution": "FHD",
     "streams": [
       {
-        "name": "EU Backup [HUN] (FHD • 1.1 Mbps)",
-        "url": "http://88.212.7.14/live/esp2_hun/index.m3u8",
+        "name": "RO Direct FullHD (FHD • 11.7 Mbps)",
+        "url": "http://89.44.231.73:7000/eurosport2",
         "resolution": "FHD",
-        "headers": {},
-        "bitrate": 1053
+        "bitrate": 11672,
+        "headers": {}
       },
       {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
@@ -1098,6 +1108,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [HUN] (FHD • 1.1 Mbps)",
+        "url": "http://88.212.7.14/live/esp2_hun/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 1053
       }
     ]
   },
@@ -1129,23 +1146,23 @@
     "name": "Filmbox",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_filmbox/playlist.m3u8",
+    "url": "https://nosignal1.antenaplay.ro/hls/fb-one-sd/index.m3u8",
     "headers": {},
     "logo": "logos/Filmbox463.png",
     "epg_id": "Filmbox.ro",
-    "resolution": "HD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Direct [CZ] (88) (HD • 699 kbps)",
-        "url": "http://88.212.15.50/live/test_filmbox/playlist.m3u8",
-        "resolution": "HD",
-        "headers": {},
-        "bitrate": 699
-      },
       {
         "name": "Server 1 (SD • 699 kbps)",
         "url": "https://nosignal1.antenaplay.ro/hls/fb-one-sd/index.m3u8",
         "resolution": "SD",
+        "headers": {},
+        "bitrate": 699
+      },
+      {
+        "name": "EU Direct [CZ] (88) (HD • 699 kbps)",
+        "url": "http://88.212.15.50/live/test_filmbox/playlist.m3u8",
+        "resolution": "HD",
         "headers": {},
         "bitrate": 699
       }
@@ -1156,19 +1173,14 @@
     "name": "Fishing and Hunting",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.7.14/live/fishing_hun/index.m3u8",
-    "headers": {},
+    "url": "https://arwen1.panaka001.cfd/fishy/usergenrpz6q.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/Fishing479.png",
     "epg_id": "The.Fishing.&.Hunting.Channel.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "Direct FHD 1080p [HUN] (FHD • 1.0 Mbps)",
-        "url": "http://88.212.7.14/live/fishing_hun/index.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 1043
-      },
       {
         "name": "CoolTV Stream (HD • 1.8 Mbps)",
         "url": "https://arwen1.panaka001.cfd/fishy/usergenrpz6q.m3u8",
@@ -1177,6 +1189,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1780
+      },
+      {
+        "name": "Direct FHD 1080p [HUN] (FHD • 1.0 Mbps)",
+        "url": "http://88.212.7.14/live/fishing_hun/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 1043
       }
     ]
   },
@@ -1185,19 +1204,14 @@
     "name": "HBO",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_hbo_hd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://thor1.syndula001.cfd/h1/usergendx172s9rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/HBO754.png",
     "epg_id": "HBO.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 819 kbps)",
-        "url": "http://88.212.15.50/live/test_hbo_hd_hevc/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 819
-      },
       {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
         "url": "https://thor1.syndula001.cfd/h1/usergendx172s9rnd.m3u8",
@@ -1206,6 +1220,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 819 kbps)",
+        "url": "http://88.212.15.50/live/test_hbo_hd_hevc/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 819
       },
       {
         "name": "TVRon Mirror (HD)",
@@ -1222,19 +1243,14 @@
     "name": "HBO 2",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_hbo2_hd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://onyx1.mofta001.cfd/h2/usergendxn430rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/HBO2440.png",
     "epg_id": "HBO.2.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 819 kbps)",
-        "url": "http://88.212.15.50/live/test_hbo2_hd_hevc/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 819
-      },
       {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
         "url": "https://onyx1.mofta001.cfd/h2/usergendxn430rnd.m3u8",
@@ -1243,6 +1259,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 819 kbps)",
+        "url": "http://88.212.15.50/live/test_hbo2_hd_hevc/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 819
       }
     ]
   },
@@ -1251,19 +1274,14 @@
     "name": "HBO 3",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_hbo3_hd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://galandriel1.thobias001.cfd/h3/usergendx3kdg4rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/HBO183.png",
     "epg_id": "HBO.3.ro",
-    "resolution": "FHD",
+    "resolution": "HD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 819 kbps)",
-        "url": "http://88.212.15.50/live/test_hbo3_hd_hevc/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 819
-      },
       {
         "name": "CoolTV Stream (HD • 1.9 Mbps)",
         "url": "https://galandriel1.thobias001.cfd/h3/usergendx3kdg4rnd.m3u8",
@@ -1272,6 +1290,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 819 kbps)",
+        "url": "http://88.212.15.50/live/test_hbo3_hd_hevc/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 819
       },
       {
         "name": "TVRon Mirror (HD)",
@@ -1590,19 +1615,14 @@
     "name": "NatGeo Wild  ",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_ngw/playlist.m3u8",
-    "headers": {},
+    "url": "https://flash1.bogulus1.cfd/wild/usergenr9qsi5gt.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/NatGeo047.png",
     "epg_id": "National.Geographic.Wild.ro",
-    "resolution": "HD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (HD • 1.1 Mbps)",
-        "url": "http://88.212.15.50/live/test_ngw/playlist.m3u8",
-        "resolution": "HD",
-        "headers": {},
-        "bitrate": 1053
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://flash1.bogulus1.cfd/wild/usergenr9qsi5gt.m3u8",
@@ -1611,6 +1631,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (HD • 1.1 Mbps)",
+        "url": "http://88.212.15.50/live/test_ngw/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {},
+        "bitrate": 1053
       }
     ]
   },
@@ -2116,19 +2143,14 @@
     "name": "TLC ",
     "group": "Generaliste",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_tlc_1200_atk/playlist.m3u8",
-    "headers": {},
+    "url": "https://atlantida1.aquax001.shop/telece/usergendc8sxt317rnd.m3u8",
+    "headers": {
+      "Referer": "https://atlantida1.aquax001.shop/000/1telece.html"
+    },
     "logo": "logos/TLC640.png",
     "epg_id": "TLC.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Direct [CZ] (88) (FHD • 1.0 Mbps)",
-        "url": "http://88.212.15.50/live/test_tlc_1200_atk/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 1048
-      },
       {
         "name": "Server 1 (SD • 1.9 Mbps)",
         "url": "https://atlantida1.aquax001.shop/telece/usergendc8sxt317rnd.m3u8",
@@ -2137,6 +2159,13 @@
           "Referer": "https://atlantida1.aquax001.shop/000/1telece.html"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Direct [CZ] (88) (FHD • 1.0 Mbps)",
+        "url": "http://88.212.15.50/live/test_tlc_1200_atk/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 1048
       }
     ]
   },
@@ -2270,19 +2299,15 @@
     "name": "Travel channel",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_travel_channel_hd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://cronos.mangora1.cfd/travil/usergenjc20r4rnd.m3u8",
+    "headers": {
+      "Referer": "https://cronos.mangora1.cfd/000/1travil.html",
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
     "logo": "logos/Travel086.png",
     "epg_id": "Travel.Mix.ro",
-    "resolution": "HD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Direct [CZ] (88) (HD • 701 kbps)",
-        "url": "http://88.212.15.50/live/test_travel_channel_hd_hevc/playlist.m3u8",
-        "resolution": "HD",
-        "headers": {},
-        "bitrate": 701
-      },
       {
         "name": "Server 1 (SD • 1.9 Mbps)",
         "url": "https://cronos.mangora1.cfd/travil/usergenjc20r4rnd.m3u8",
@@ -2292,6 +2317,13 @@
           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Direct [CZ] (88) (HD • 701 kbps)",
+        "url": "http://88.212.15.50/live/test_travel_channel_hd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {},
+        "bitrate": 701
       }
     ]
   },
@@ -2387,19 +2419,14 @@
     "name": "Viasat History",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_viasat_history_atk_tv/playlist.m3u8",
-    "headers": {},
+    "url": "https://arwen1.panaka001.cfd/vhis/usergenrnd4v6g8eigt.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/Viasat951.png",
     "epg_id": "Viasat.Nature.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 1.0 Mbps)",
-        "url": "http://88.212.15.50/live/test_viasat_history_atk_tv/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 1048
-      },
       {
         "name": "CoolTV Stream (SD • 1.8 Mbps)",
         "url": "https://arwen1.panaka001.cfd/vhis/usergenrnd4v6g8eigt.m3u8",
@@ -2408,6 +2435,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1780
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 1.0 Mbps)",
+        "url": "http://88.212.15.50/live/test_viasat_history_atk_tv/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 1048
       }
     ]
   },
@@ -2485,19 +2519,14 @@
     "name": "Cartoon Network",
     "group": "Desene animate",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_cartoon_network_tizen/playlist.m3u8",
-    "headers": {},
+    "url": "https://saruman1.tharen001.cfd/cartun/usergenrx2xfzol0q.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/CartoonNetwork100.png",
     "epg_id": "Cartoon.Network.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 782 kbps)",
-        "url": "http://88.212.15.50/live/test_cartoon_network_tizen/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 782
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://saruman1.tharen001.cfd/cartun/usergenrx2xfzol0q.m3u8",
@@ -2506,6 +2535,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 782 kbps)",
+        "url": "http://88.212.15.50/live/test_cartoon_network_tizen/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 782
       }
     ]
   },
@@ -2740,19 +2776,14 @@
     "name": "Warner TV",
     "group": "Filme",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/warner_tv/index.m3u8",
-    "headers": {},
+    "url": "https://atlantida1.aquax001.shop/tnnt/usergendxq726jrnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/WarnerTV109.png",
     "epg_id": "Warner.TV.ro",
-    "resolution": "FHD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 1.0 Mbps)",
-        "url": "http://88.212.15.50/live/warner_tv/index.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 1048
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://atlantida1.aquax001.shop/tnnt/usergendxq726jrnd.m3u8",
@@ -2761,6 +2792,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 1.0 Mbps)",
+        "url": "http://88.212.15.50/live/warner_tv/index.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 1048
       }
     ]
   },
@@ -2928,19 +2966,14 @@
     "name": "TV Paprika",
     "group": "Documentare",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_parpika_tv_sd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://galandriel1.thobias001.cfd/papi/usergendxs3jk0s9nd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/TVPaprika118.png",
     "epg_id": "TV.Paprika.ro",
-    "resolution": "HD",
+    "resolution": "SD",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (HD • 706 kbps)",
-        "url": "http://88.212.15.50/live/test_parpika_tv_sd_hevc/playlist.m3u8",
-        "resolution": "HD",
-        "headers": {},
-        "bitrate": 706
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://galandriel1.thobias001.cfd/papi/usergendxs3jk0s9nd.m3u8",
@@ -2949,6 +2982,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (HD • 706 kbps)",
+        "url": "http://88.212.15.50/live/test_parpika_tv_sd_hevc/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {},
+        "bitrate": 706
       }
     ]
   },
@@ -2957,12 +2997,19 @@
     "name": "Travel Mix",
     "group": "Documentare",
     "is_radio": false,
-    "url": "https://hls02ns.antenaplay.ro/hls/travel-mix-hd/index.m3u8",
+    "url": "http://91.235.165.117:8001/play/a08c/index.m3u8",
     "headers": {},
     "logo": "logos/TravelMix120.png",
     "epg_id": "Travel.Mix.ro",
-    "resolution": "HD",
+    "resolution": "4K",
     "streams": [
+      {
+        "name": "Travel Mix 4K HEVC (4K • 15.6 Mbps)",
+        "url": "http://91.235.165.117:8001/play/a08c/index.m3u8",
+        "resolution": "4K",
+        "bitrate": 15646,
+        "headers": {}
+      },
       {
         "name": "Server 1 (HD)",
         "url": "https://hls02ns.antenaplay.ro/hls/travel-mix-hd/index.m3u8",
@@ -3879,6 +3926,146 @@
       {
         "name": "Akamai Official CDN (FHD • 4.0 Mbps)",
         "url": "https://cc-mgr91yrk4pehy.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-mgr91yrk4pehy/playlist.m3u8",
+        "resolution": "FHD",
+        "bitrate": 4000,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:TVRFolclor",
+    "name": "TVR Folclor",
+    "group": "Muzica Folclorica",
+    "is_radio": false,
+    "url": "https://tvr-folclor.lg.mncdn.com/tvrfolclor/smil:tvrfolclor.smil/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/tvrfolclor.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Official CDN (FHD • 3.5 Mbps)",
+        "url": "https://tvr-folclor.lg.mncdn.com/tvrfolclor/smil:tvrfolclor.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "bitrate": 3500,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:TVRIntl",
+    "name": "TVR Internațional",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://tvr-international.lg.mncdn.com/tvrinternational/smil:tvrinternational.smil/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/tvrinternational.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Official CDN (FHD • 3.5 Mbps)",
+        "url": "https://tvr-international.lg.mncdn.com/tvrinternational/smil:tvrinternational.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "bitrate": 3500,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:TVRTgMures",
+    "name": "TVR Tîrgu-Mureș",
+    "group": "Generaliste",
+    "is_radio": false,
+    "url": "https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8",
+    "headers": {},
+    "logo": "logos/tvrtgmures.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Official CDN (FHD • 3.5 Mbps)",
+        "url": "https://tvr-tgmures.lg.mncdn.com/tvrtgmures/smil:tvrtgmures.smil/playlist.m3u8",
+        "resolution": "FHD",
+        "bitrate": 3500,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:HoraTV",
+    "name": "Hora TV",
+    "group": "Muzica Folclorica",
+    "is_radio": false,
+    "url": "http://91.235.165.117:8001/play/a02f/index.m3u8",
+    "headers": {},
+    "logo": "logos/horatv.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Official CDN (FHD • 6.5 Mbps)",
+        "url": "http://91.235.165.117:8001/play/a02f/index.m3u8",
+        "resolution": "FHD",
+        "bitrate": 6455,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Ro:RealitateaSportiva",
+    "name": "Realitatea Sportivă",
+    "group": "Sport",
+    "is_radio": false,
+    "url": "https://stream.realitatea.net/realitatea/sportiva_md/ts:playlist.m3u8",
+    "headers": {},
+    "logo": "logos/realitateasportiva.png",
+    "epg_id": null,
+    "resolution": "HD",
+    "streams": [
+      {
+        "name": "Official CDN (HD • 2.2 Mbps)",
+        "url": "https://stream.realitatea.net/realitatea/sportiva_md/ts:playlist.m3u8",
+        "resolution": "HD",
+        "bitrate": 2200,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Md:NorocTV",
+    "name": "Noroc TV",
+    "group": "Moldova",
+    "is_radio": false,
+    "url": "https://media.noroc.tv/noroc/bitrate_1080p.m3u8",
+    "headers": {},
+    "logo": "logos/noroctv.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Official CDN (FHD • 4.0 Mbps)",
+        "url": "https://media.noroc.tv/noroc/bitrate_1080p.m3u8",
+        "resolution": "FHD",
+        "bitrate": 4000,
+        "headers": {}
+      }
+    ]
+  },
+  {
+    "id": "Md:VoceaBasarabiei",
+    "name": "Vocea Basarabiei TV",
+    "group": "Moldova",
+    "is_radio": false,
+    "url": "https://media.voceabasarabiei.md/vocea/bitrate_1080p.m3u8",
+    "headers": {},
+    "logo": "logos/voceabasarabiei.png",
+    "epg_id": null,
+    "resolution": "FHD",
+    "streams": [
+      {
+        "name": "Official CDN (FHD • 4.0 Mbps)",
+        "url": "https://media.voceabasarabiei.md/vocea/bitrate_1080p.m3u8",
         "resolution": "FHD",
         "bitrate": 4000,
         "headers": {}
@@ -5359,20 +5546,15 @@
     "id": "Ro:CNN",
     "name": "CNN",
     "group": "Știri",
-    "resolution": "HD",
+    "resolution": "SD",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_cnn_1200_atk/playlist.m3u8",
-    "headers": {},
+    "url": "https://thor1.syndula001.cfd/cienen/usergenrx8ofzq1kr.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/cnn.png",
     "epg_id": "CNN.us",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (HD • 699 kbps)",
-        "url": "http://88.212.15.50/live/test_cnn_1200_atk/playlist.m3u8",
-        "resolution": "HD",
-        "headers": {},
-        "bitrate": 699
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://thor1.syndula001.cfd/cienen/usergenrx8ofzq1kr.m3u8",
@@ -5381,6 +5563,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (HD • 699 kbps)",
+        "url": "http://88.212.15.50/live/test_cnn_1200_atk/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {},
+        "bitrate": 699
       }
     ]
   },
@@ -6258,16 +6447,9 @@
     "id": "Ro:InvestigationDiscovery",
     "name": "Investigation Discovery",
     "group": "Documentare",
-    "resolution": "HD",
+    "resolution": "SD",
     "is_radio": false,
     "streams": [
-      {
-        "name": "EU Backup [CZ] (HD • 1.0 Mbps)",
-        "url": "http://88.212.15.50/live/test_id_hevc_atktv/playlist.m3u8",
-        "resolution": "HD",
-        "headers": {},
-        "bitrate": 1048
-      },
       {
         "name": "CoolTV Stream (SD • 1.9 Mbps)",
         "url": "https://onyx1.mofta001.cfd/cryme/usergendxn0487rnd.m3u8",
@@ -6276,10 +6458,19 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (HD • 1.0 Mbps)",
+        "url": "http://88.212.15.50/live/test_id_hevc_atktv/playlist.m3u8",
+        "resolution": "HD",
+        "headers": {},
+        "bitrate": 1048
       }
     ],
-    "url": "http://88.212.15.50/live/test_id_hevc_atktv/playlist.m3u8",
-    "headers": {},
+    "url": "https://onyx1.mofta001.cfd/cryme/usergendxn0487rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": null,
     "epg_id": "ID.Investigation.Discovery.HD.ro"
   },
@@ -6473,20 +6664,15 @@
     "id": "UTV781",
     "name": "Cinemax",
     "group": "Filme",
-    "resolution": "FHD",
+    "resolution": "HD",
     "is_radio": false,
-    "url": "http://88.212.15.50/live/test_cinemax_hd_hevc/playlist.m3u8",
-    "headers": {},
+    "url": "https://cronos.mangora1.cfd/xmas1/usergendx27y41s0rnd.m3u8",
+    "headers": {
+      "Referer": "https://canale-tv.net/"
+    },
     "logo": "logos/Cinemax2232.png",
     "epg_id": "Cinemax.ro",
     "streams": [
-      {
-        "name": "EU Backup [CZ] (FHD • 936 kbps)",
-        "url": "http://88.212.15.50/live/test_cinemax_hd_hevc/playlist.m3u8",
-        "resolution": "FHD",
-        "headers": {},
-        "bitrate": 936
-      },
       {
         "name": "CoolTV Cinemax (HD • 1.9 Mbps)",
         "url": "https://cronos.mangora1.cfd/xmas1/usergendx27y41s0rnd.m3u8",
@@ -6495,6 +6681,13 @@
           "Referer": "https://canale-tv.net/"
         },
         "bitrate": 1890
+      },
+      {
+        "name": "EU Backup [CZ] (FHD • 936 kbps)",
+        "url": "http://88.212.15.50/live/test_cinemax_hd_hevc/playlist.m3u8",
+        "resolution": "FHD",
+        "headers": {},
+        "bitrate": 936
       }
     ]
   },

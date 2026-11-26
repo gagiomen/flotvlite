@@ -129,6 +129,13 @@ const dom = {
   volumeSlider: document.getElementById('volume-slider'),
   btnFullscreen: document.getElementById('btn-fullscreen'),
   btnPip: document.getElementById('btn-pip'),
+  btnServer: document.getElementById('btn-server'),
+  btnAudioTrack: document.getElementById('btn-audio-track'),
+  btnSubtitles: document.getElementById('btn-subtitles'),
+  trackPickerMenu: document.getElementById('track-picker-menu'),
+  trackPickerTitle: document.getElementById('track-picker-title'),
+  trackPickerList: document.getElementById('track-picker-list'),
+  btnCloseTrackPicker: document.getElementById('btn-close-track-picker'),
   btnAspect: document.getElementById('btn-aspect'),
   btnStats: document.getElementById('btn-stats'),
   btnAbout: document.getElementById('btn-about'),
@@ -781,9 +788,44 @@ function playChannel(channel) {
       channel._triedStreamsCount = 0;
       dom.video.play().catch(() => {});
       dom.spinner.classList.add('hidden');
+      updateWebTrackControls(channel);
+    });
+
+    hls.on(Hls.Events.AUDIO_TRACKS_UPDATED, (_, data) => {
+      const tracks = (data && data.audioTracks) || hls.audioTracks || [];
+      if (tracks.length > 0) {
+        const saved = localStorage.getItem('flolite_audio_' + channel.id);
+        let targetIdx = saved !== null ? tracks.findIndex((t, i) => String(t.id ?? i) === saved || (t.lang && t.lang === saved)) : -1;
+        if (targetIdx < 0) {
+          targetIdx = tracks.findIndex(t => /^(ro|ron|rum)$/i.test(t.lang || '') || /rom[aâ]n/i.test(t.name || ''));
+        }
+        if (targetIdx >= 0 && hls.audioTrack !== targetIdx) {
+          hls.audioTrack = targetIdx;
+        }
+      }
+      updateWebTrackControls(channel);
+    });
+
+    hls.on(Hls.Events.SUBTITLE_TRACKS_UPDATED, (_, data) => {
+      const tracks = (data && data.subtitleTracks) || hls.subtitleTracks || [];
+      if (tracks.length > 0) {
+        const saved = localStorage.getItem('flolite_sub_' + channel.id);
+        if (saved === 'OFF') {
+          hls.subtitleTrack = -1;
+          hls.subtitleDisplay = false;
+        } else if (saved !== null) {
+          const idx = tracks.findIndex((t, i) => String(t.id ?? i) === saved || (t.lang && t.lang === saved));
+          if (idx >= 0) {
+            hls.subtitleTrack = idx;
+            hls.subtitleDisplay = true;
+          }
+        }
+      }
+      updateWebTrackControls(channel);
     });
 
     hls.on(Hls.Events.ERROR, (event, data) => {
+      if (data.details && /subtitle/i.test(data.details) && !data.fatal) return;
       if (data.fatal) {
         console.warn('[Hls.js Fatal Error]', data);
         switch (data.type) {
@@ -827,11 +869,168 @@ function playChannel(channel) {
         dom.spinner.classList.add('hidden');
       });
     }
-    dom.video.onloadeddata = () => dom.spinner.classList.add('hidden');
+    dom.video.onloadeddata = () => { dom.spinner.classList.add('hidden'); updateWebTrackControls(channel); };
     dom.video.oncanplay = () => dom.spinner.classList.add('hidden');
   }
 
+  updateWebTrackControls(channel);
   dom.btnPlayPause.textContent = '⏸';
+}
+
+function formatTrackLabelWeb(t, idx, kind) {
+  const code = (t && (t.lang || t.language || '')).toLowerCase();
+  const map = { ro: 'Română', ron: 'Română', rum: 'Română', en: 'Engleză', eng: 'Engleză', hu: 'Maghiară', hun: 'Maghiară', cs: 'Cehă', cze: 'Cehă', ces: 'Cehă', fr: 'Franceză', fre: 'Franceză', fra: 'Franceză', de: 'Germană', ger: 'Germană', deu: 'Germană', es: 'Spaniolă', spa: 'Spaniolă', it: 'Italiană', ita: 'Italiană', ru: 'Rusă', rus: 'Rusă' };
+  const langName = map[code] || (code ? code.toUpperCase() : '');
+  const rawName = (t && (t.name || t.label)) ? String(t.name || t.label).trim() : '';
+  if (rawName && langName && !rawName.toLowerCase().includes(langName.toLowerCase())) return `${langName} — ${rawName}`;
+  return rawName || langName || `${kind} ${idx + 1}`;
+}
+
+function getWebAudioTracks() {
+  if (state.hls && state.hls.audioTracks && state.hls.audioTracks.length > 0) {
+    return state.hls.audioTracks.map((t, i) => ({ idx: i, label: formatTrackLabelWeb(t, i, 'Audio'), active: state.hls.audioTrack === i, kind: 'hls', lang: t.lang || '' }));
+  }
+  if (dom.video && dom.video.audioTracks && dom.video.audioTracks.length > 0) {
+    const out = [];
+    for (let i = 0; i < dom.video.audioTracks.length; i++) {
+      const t = dom.video.audioTracks[i];
+      out.push({ idx: i, label: formatTrackLabelWeb(t, i, 'Audio'), active: !!t.enabled, kind: 'native', lang: t.language || '' });
+    }
+    return out;
+  }
+  return [];
+}
+
+function getWebSubtitleTracks() {
+  if (state.hls && state.hls.subtitleTracks && state.hls.subtitleTracks.length > 0) {
+    return state.hls.subtitleTracks.map((t, i) => ({ idx: i, label: formatTrackLabelWeb(t, i, 'Subtitrare'), active: state.hls.subtitleTrack === i, kind: 'hls', lang: t.lang || '' }));
+  }
+  if (dom.video && dom.video.textTracks && dom.video.textTracks.length > 0) {
+    const out = [];
+    for (let i = 0; i < dom.video.textTracks.length; i++) {
+      const t = dom.video.textTracks[i];
+      out.push({ idx: i, label: formatTrackLabelWeb(t, i, 'Subtitrare'), active: t.mode === 'showing', kind: 'native', lang: t.language || '' });
+    }
+    return out;
+  }
+  return [];
+}
+
+function updateWebTrackControls(channel) {
+  if (!channel) return;
+  const effStreams = getEffectiveStreams(channel);
+  const activeSrvIdx = (typeof channel._activeStreamIdx === 'number' && channel._activeStreamIdx < effStreams.length) ? channel._activeStreamIdx : 0;
+  if (dom.btnServer) {
+    if (!channel.is_radio && effStreams.length > 1) {
+      dom.btnServer.classList.remove('hidden');
+      const resTag = (effStreams[activeSrvIdx] && effStreams[activeSrvIdx].resolution) || '';
+      dom.btnServer.textContent = `S${activeSrvIdx + 1}${resTag ? ' ' + resTag : ''}`;
+    } else {
+      dom.btnServer.classList.add('hidden');
+    }
+  }
+  const auds = getWebAudioTracks();
+  if (dom.btnAudioTrack) {
+    if (!channel.is_radio && auds.length > 0) {
+      dom.btnAudioTrack.classList.remove('hidden');
+      const act = auds.find(a => a.active);
+      dom.btnAudioTrack.textContent = act ? `🎵 ${act.label.split(' ')[0]}` : '🎵 Audio';
+    } else {
+      dom.btnAudioTrack.classList.add('hidden');
+    }
+  }
+  const subs = getWebSubtitleTracks();
+  if (dom.btnSubtitles) {
+    if (!channel.is_radio && subs.length > 0) {
+      dom.btnSubtitles.classList.remove('hidden');
+      const act = subs.find(s => s.active);
+      dom.btnSubtitles.textContent = act ? `CC: ${act.label.split(' ')[0]}` : 'CC';
+    } else {
+      dom.btnSubtitles.classList.add('hidden');
+    }
+  }
+}
+
+function openWebTrackPicker(type) {
+  const ch = state.currentChannel;
+  if (!ch || !dom.trackPickerMenu || !dom.trackPickerList || !dom.trackPickerTitle) return;
+  dom.trackPickerList.innerHTML = '';
+  const closeMenu = () => dom.trackPickerMenu.classList.add('hidden');
+
+  if (type === 'server') {
+    dom.trackPickerTitle.textContent = '🌐 Server Stream (RO / Rezoluție)';
+    const effStreams = getEffectiveStreams(ch);
+    const activeIdx = (typeof ch._activeStreamIdx === 'number' && ch._activeStreamIdx < effStreams.length) ? ch._activeStreamIdx : 0;
+    effStreams.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'track-picker-item' + (i === activeIdx ? ' active' : '');
+      btn.textContent = s.name || `Server ${i + 1}`;
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        ch._activeStreamIdx = i;
+        ch._triedStreamsCount = 0;
+        closeMenu();
+        playChannel(ch);
+      };
+      dom.trackPickerList.appendChild(btn);
+    });
+  } else if (type === 'audio') {
+    dom.trackPickerTitle.textContent = '🎵 Alege Pistă Audio';
+    const auds = getWebAudioTracks();
+    auds.forEach(a => {
+      const btn = document.createElement('button');
+      btn.className = 'track-picker-item' + (a.active ? ' active' : '');
+      btn.textContent = a.label;
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        if (a.kind === 'hls' && state.hls) {
+          state.hls.audioTrack = a.idx;
+        } else if (dom.video && dom.video.audioTracks) {
+          for (let j = 0; j < dom.video.audioTracks.length; j++) dom.video.audioTracks[j].enabled = (j === a.idx);
+        }
+        localStorage.setItem('flolite_audio_' + ch.id, a.lang || String(a.idx));
+        updateWebTrackControls(ch);
+        closeMenu();
+      };
+      dom.trackPickerList.appendChild(btn);
+    });
+  } else if (type === 'sub') {
+    dom.trackPickerTitle.textContent = '💬 Alege Subtitrare';
+    const subs = getWebSubtitleTracks();
+    const offBtn = document.createElement('button');
+    offBtn.className = 'track-picker-item' + (!subs.some(s => s.active) ? ' active' : '');
+    offBtn.textContent = 'Dezactivat';
+    offBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (state.hls) { state.hls.subtitleTrack = -1; state.hls.subtitleDisplay = false; }
+      if (dom.video && dom.video.textTracks) {
+        for (let j = 0; j < dom.video.textTracks.length; j++) dom.video.textTracks[j].mode = 'disabled';
+      }
+      localStorage.setItem('flolite_sub_' + ch.id, 'OFF');
+      updateWebTrackControls(ch);
+      closeMenu();
+    };
+    dom.trackPickerList.appendChild(offBtn);
+    subs.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'track-picker-item' + (s.active ? ' active' : '');
+      btn.textContent = s.label;
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        if (s.kind === 'hls' && state.hls) {
+          state.hls.subtitleTrack = s.idx;
+          state.hls.subtitleDisplay = true;
+        } else if (dom.video && dom.video.textTracks) {
+          for (let j = 0; j < dom.video.textTracks.length; j++) dom.video.textTracks[j].mode = (j === s.idx ? 'showing' : 'disabled');
+        }
+        localStorage.setItem('flolite_sub_' + ch.id, s.lang || String(s.idx));
+        updateWebTrackControls(ch);
+        closeMenu();
+      };
+      dom.trackPickerList.appendChild(btn);
+    });
+  }
+  dom.trackPickerMenu.classList.remove('hidden');
 }
 
 // OSD Banner Display
@@ -1444,6 +1643,34 @@ function setupEventListeners() {
       cycleAspectRatio();
     });
   }
+
+  if (dom.btnCloseTrackPicker) {
+    dom.btnCloseTrackPicker.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (dom.trackPickerMenu) dom.trackPickerMenu.classList.add('hidden');
+    });
+  }
+  if (dom.btnServer) {
+    dom.btnServer.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openWebTrackPicker('server');
+    });
+  }
+  if (dom.btnAudioTrack) {
+    dom.btnAudioTrack.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openWebTrackPicker('audio');
+    });
+  }
+  if (dom.btnSubtitles) {
+    dom.btnSubtitles.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openWebTrackPicker('sub');
+    });
+  }
+  document.addEventListener('click', () => {
+    if (dom.trackPickerMenu) dom.trackPickerMenu.classList.add('hidden');
+  });
 
   if (dom.btnStats) {
     dom.btnStats.addEventListener('click', (e) => {
