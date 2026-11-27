@@ -40,6 +40,7 @@ export async function onRequestGet(context) {
     paypal_currency: env.PAYPAL_CURRENCY || "EUR",
     plan_days: PLAN_DAYS,
     paypal_enabled: Boolean(env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET),
+    paypal_me_handle: env.PAYPAL_ME_HANDLE || "",
     revolut_handle: env.REVOLUT_HANDLE || "",
   });
 }

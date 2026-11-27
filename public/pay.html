@@ -150,6 +150,19 @@
       </button>
       <div id="paypal-note" class="note">Deblocare automată pe TV în 3–5 secunde după confirmare.</div>
 
+      <div id="paypal-me-section" class="hidden">
+        <a id="btn-paypal-me-link" class="btn btn-paypal" href="#" target="_blank" rel="noopener">
+          <span id="paypal-me-label">Plătește prin PayPal.me</span>
+        </a>
+        <div class="note">
+          La mesaj/notă trece obligatoriu codul TV:
+          <span id="copy-pp-chip" class="copy-ref">--</span>
+        </div>
+        <button id="btn-paypal-me-paid" class="btn btn-secondary" style="margin-top:10px;padding:11px;font-size:13px;">
+          Am trimis plata PayPal (Notifică Admin)
+        </button>
+      </div>
+
       <div id="revolut-section" class="hidden" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
         <a id="btn-revolut-link" class="btn btn-revolut" href="#" target="_blank" rel="noopener">
           <span>Plătește 6 LEI prin Revolut</span>
@@ -193,6 +206,11 @@
       eurEquiv: document.getElementById('eur-equiv'),
       btnPaypal: document.getElementById('btn-paypal'),
       paypalNote: document.getElementById('paypal-note'),
+      paypalMeSection: document.getElementById('paypal-me-section'),
+      btnPaypalMeLink: document.getElementById('btn-paypal-me-link'),
+      paypalMeLabel: document.getElementById('paypal-me-label'),
+      copyPpChip: document.getElementById('copy-pp-chip'),
+      btnPaypalMePaid: document.getElementById('btn-paypal-me-paid'),
       revolutSection: document.getElementById('revolut-section'),
       btnRevolutLink: document.getElementById('btn-revolut-link'),
       copyRefChip: document.getElementById('copy-ref-chip'),
@@ -246,8 +264,22 @@
           el.meta.textContent = `Expirat la ${fmtDate(data.expires_at)}. Achită mai jos pentru deblocare instantă pe televizor.`;
         }
 
-        el.btnPaypal.disabled = !data.paypal_enabled;
-        if (!data.paypal_enabled) {
+        if (data.paypal_enabled) {
+          el.btnPaypal.classList.remove('hidden');
+          el.paypalNote.classList.remove('hidden');
+          el.btnPaypal.disabled = false;
+          el.paypalMeSection.classList.add('hidden');
+        } else if (data.paypal_me_handle) {
+          el.btnPaypal.classList.add('hidden');
+          el.paypalNote.classList.add('hidden');
+          el.paypalMeSection.classList.remove('hidden');
+          const ppHandle = data.paypal_me_handle.replace(/^@/, '').trim();
+          const cur = (data.paypal_currency || 'EUR').toUpperCase();
+          el.btnPaypalMeLink.href = `https://www.paypal.me/${encodeURIComponent(ppHandle)}/${encodeURIComponent(data.price_eur)}${cur}`;
+          el.paypalMeLabel.textContent = `Plătește ${data.price_eur} ${cur} prin PayPal.me`;
+          el.copyPpChip.textContent = data.pairing_code;
+        } else {
+          el.btnPaypal.disabled = true;
           el.paypalNote.textContent = 'PayPal Business API urmează să fie conectat din variabilele Cloudflare.';
         }
 
@@ -317,32 +349,36 @@
       el.btnPaypal.textContent = 'Plătește Automat cu PayPal';
     });
 
-    el.copyRefChip.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(currentCode);
-        showBanner('info', `Codul ${currentCode} a fost copiat. Lipește-l la descrierea transferului Revolut.`);
-      } catch {}
-    });
-
-    el.btnRevolutPaid.addEventListener('click', async () => {
-      el.btnRevolutPaid.disabled = true;
-      try {
-        const res = await fetch('/api/pay/revolut-intent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pairing_code: currentCode })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          showBanner('ok', `✅ Notificare trimisă pentru ${currentCode}! După confirmarea transferului Revolut, TV-ul se deblochează automat.`);
-        } else {
-          showBanner('err', data.error || 'Eroare la trimiterea notificării.');
+    function bindManualPayment(chipEl, btnEl, provider, label) {
+      chipEl.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(currentCode);
+          showBanner('info', `Codul ${currentCode} a fost copiat. Lipește-l la descrierea transferului ${label}.`);
+        } catch {}
+      });
+      btnEl.addEventListener('click', async () => {
+        btnEl.disabled = true;
+        try {
+          const res = await fetch('/api/pay/revolut-intent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pairing_code: currentCode, provider })
+          });
+          if (res.ok) {
+            showBanner('ok', `✅ Notificare ${label} trimisă pentru ${currentCode}! După confirmarea plății, TV-ul se deblochează automat.`);
+          } else {
+            const data = await res.json();
+            showBanner('err', data.error || 'Eroare la trimiterea notificării.');
+          }
+        } catch {
+          showBanner('err', 'Eroare de rețea.');
         }
-      } catch {
-        showBanner('err', 'Eroare de rețea.');
-      }
-      el.btnRevolutPaid.disabled = false;
-    });
+        btnEl.disabled = false;
+      });
+    }
+
+    bindManualPayment(el.copyPpChip, el.btnPaypalMePaid, 'paypal_me', 'PayPal');
+    bindManualPayment(el.copyRefChip, el.btnRevolutPaid, 'revolut', 'Revolut');
 
     el.btnRedeem.addEventListener('click', async () => {
       const code = (el.voucherInput.value || '').trim().toUpperCase();
