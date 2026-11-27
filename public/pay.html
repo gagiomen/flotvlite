@@ -151,7 +151,7 @@
       <div id="paypal-note" class="note">Deblocare automată pe TV în 3–5 secunde după confirmare.</div>
 
       <div id="paypal-me-section" class="hidden">
-        <a id="btn-paypal-me-link" class="btn btn-paypal" href="#" target="_blank" rel="noopener">
+        <a id="btn-paypal-me-link" class="btn btn-paypal" href="#">
           <span id="paypal-me-label">Plătește prin PayPal.me</span>
         </a>
         <div class="note">
@@ -168,7 +168,7 @@
       </div>
 
       <div id="revolut-section" class="hidden" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
-        <a id="btn-revolut-link" class="btn btn-revolut" href="#" target="_blank" rel="noopener">
+        <a id="btn-revolut-link" class="btn btn-revolut" href="#">
           <span>Plătește 6 LEI prin Revolut</span>
         </a>
         <div class="note">
@@ -298,9 +298,10 @@
         if (data.revolut_handle) {
           el.revolutSection.classList.remove('hidden');
           const cleanHandle = data.revolut_handle.replace(/^@/, '').trim();
-          el.btnRevolutLink.href = `https://revolut.me/${encodeURIComponent(cleanHandle)}/6ron`;
+          el.btnRevolutLink.href = `https://revolut.me/${encodeURIComponent(cleanHandle)}/ron${encodeURIComponent(data.price_ron)}/${encodeURIComponent(data.pairing_code)}`;
           el.copyRefChip.textContent = data.pairing_code;
         }
+        window.dispatchEvent(new Event('flolite-device-loaded'));
       } catch (e) {
         showBanner('err', 'Eroare de conexiune la server.');
       }
@@ -363,8 +364,17 @@
 
     function bindManualPayment(linkEl, step2El, chipEl, senderEl, btnEl, provider, label) {
       let openedApp = false;
+      const syncOpened = () => {
+        if (currentCode && sessionStorage.getItem(`flolite_opened_${provider}`) === currentCode) {
+          openedApp = true;
+          step2El.classList.remove('hidden');
+        }
+      };
+      window.addEventListener('flolite-device-loaded', syncOpened);
+      window.addEventListener('pageshow', syncOpened);
       linkEl.addEventListener('click', () => {
         openedApp = true;
+        if (currentCode) sessionStorage.setItem(`flolite_opened_${provider}`, currentCode);
         step2El.classList.remove('hidden');
       });
       chipEl.addEventListener('click', async () => {
