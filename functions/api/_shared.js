@@ -8,9 +8,12 @@ export const DAY_MS = 86400000;
 
 export function corsHeaders(extra = {}) {
   return {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://flotvlite.pages.dev",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Admin-Key",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
     "Cache-Control": "no-store, no-cache, must-revalidate",
     ...extra,
   };

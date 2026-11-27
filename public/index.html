@@ -2,462 +2,89 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
-  <meta name="referrer" content="no-referrer">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>FloLite Universal 4.5</title>
-  <link rel="icon" type="image/png" href="logos/acasa4k.png">
-  <link rel="stylesheet" href="style.css?v=450">
-  <!-- HLS.js & mpegts.js for cross-browser live stream support -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flo Lite TV 5.0 • Aplicație Android TV</title>
+  <style>
+    :root {
+      --bg: #0b111e;
+      --card: #131d31;
+      --border: #243554;
+      --cyan: #00e5ff;
+      --green: #22c55e;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: radial-gradient(circle at top, #13213c 0%, var(--bg) 70%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 28px 16px 48px;
+    }
+    .wrap { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 18px; }
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    h1 span { color: var(--cyan); }
+    p { margin: 0 0 12px; color: var(--muted); line-height: 1.6; font-size: 14px; }
+    .badge {
+      display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      background: rgba(34, 197, 94, 0.16); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.4);
+      margin-bottom: 12px;
+    }
+    .cta {
+      display: inline-block; margin-top: 6px; background: var(--cyan); color: #04121f; font-weight: 800;
+      text-decoration: none; padding: 13px 22px; border-radius: 12px; font-size: 15px;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
+    }
+    h2 { margin: 0 0 8px; font-size: 16px; color: #fff; }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    footer { text-align: center; font-size: 12px; color: var(--muted); line-height: 1.6; }
+  </style>
 </head>
-<body class="theme-dark">
-  <div class="app-layout">
-    <!-- Header -->
-    <header class="app-header">
-      <div class="header-top-row">
-        <div class="brand">
-          <span class="brand-logo">📺</span>
-          <span class="brand-title">FloLite <span class="highlight">4.5</span></span>
-          <span id="channel-counter" class="hidden">0 Canale</span>
-        </div>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="badge">Portal Oficial Licențiere • Flo Lite TV 5.0</div>
+      <h1>Flo Lite <span>TV 5.0</span></h1>
+      <p>
+        Portal web dedicat activării și gestionării licențelor pentru aplicația <strong>Flo Lite TV 5.0</strong> pe Android TV.
+        La prima pornire pe televizor primești automat <strong>7 zile de probă gratuită</strong>, apoi reînnoirea opțională este <strong>6 LEI / 30 de zile</strong>.
+      </p>
+      <a class="cta" href="/pay">Activează sau Prelungește Cod TV</a>
+    </section>
 
-        <div class="header-nav-group">
-          <button id="btn-mode-tv" class="btn-header-nav active" tabindex="1" title="Mod Televiziune Live">
-            <span class="btn-nav-icon">📺</span>
-            <span class="btn-nav-text">TV Live</span>
-          </button>
-          <button id="btn-mode-radio" class="btn-header-nav" tabindex="2" title="Mod Posturi Radio">
-            <span class="btn-nav-icon">📻</span>
-            <span class="btn-nav-text">Radio</span>
-          </button>
-          <button id="btn-mode-vod" class="btn-header-nav" tabindex="3" title="Biblioteca Video VOD (Cartoonix &amp; Cinepub)">
-            <span class="btn-nav-icon">🍿</span>
-            <span class="btn-nav-text">VOD</span>
-          </button>
-          <button id="btn-epg-guide" class="btn-header-nav" tabindex="4" title="Ghid TV / Program EPG (G)">
-            <span class="btn-nav-icon">📅</span>
-            <span class="btn-nav-text">Ghid EPG</span>
-          </button>
-          <button id="btn-about" class="btn-header-nav btn-nav-compact" tabindex="5" title="Despre FloLite 4.5 (Istoric &amp; Diagnostic)">
-            <span class="btn-nav-icon">ℹ️</span>
-            <span class="btn-nav-text">Info</span>
-          </button>
-          <button id="btn-settings" class="btn-header-nav btn-nav-compact" tabindex="6" title="Setări Proxy &amp; Redare">
-            <span class="btn-nav-icon">⚙️</span>
-            <span class="btn-nav-text">Setări</span>
-          </button>
-        </div>
-      </div>
+    <section class="card">
+      <h2>Cum funcționează activarea</h2>
+      <ul>
+        <li>Deschide aplicația <strong>Flo Lite TV 5.0</strong> pe televizor.</li>
+        <li>Introdu codul scurt afișat pe ecran (format <code>FL-XXXX</code>) în pagina <a href="/pay" style="color:var(--cyan);">Activare &amp; Plată</a> sau scanează codul QR de pe ecran.</li>
+        <li>După confirmarea plății sau introducerea unui cod voucher, televizorul se deblochează automat în câteva secunde.</li>
+      </ul>
+    </section>
 
-      <div class="header-search-row">
-        <div class="search-box full-width">
-          <span class="search-icon-symbol">🔍</span>
-          <input type="text" id="search-input" placeholder="Caută canal TV sau post radio... [ / ]" tabindex="5" autocomplete="off">
-          <button id="btn-clear-search" class="btn-clear-icon hidden" title="Șterge căutarea">&times;</button>
-        </div>
-      </div>
-    </header>
+    <section class="card">
+      <h2>Securitate &amp; Confidențialitate</h2>
+      <ul>
+        <li>Nu colectăm și nu stocăm numere de card bancar, parole PayPal sau parole Revolut pe acest site.</li>
+        <li>Singurul identificator asociat licenței este codul dispozitivului TV (<code>device_id</code> / cod scurt <code>FL-XXXX</code>).</li>
+        <li>Plățile electronice se procesează direct prin paginile oficiale PayPal și Revolut, în conexiune HTTPS criptată.</li>
+      </ul>
+    </section>
 
-    <!-- Main Content -->
-    <main class="main-content mode-tv" id="main-content">
-      <!-- Player Section -->
-      <section class="player-section" id="player-section">
-        <!-- VOD Theatre Header Bar (Visible ONLY in VOD Mode when video is playing) -->
-        <div id="vod-theatre-bar" class="vod-theatre-bar hidden">
-          <button id="btn-vod-back-catalog" class="btn-theatre-back" title="Înapoi la Catalogul VOD">
-            <span class="theatre-back-icon">←</span>
-            <span class="theatre-back-text">Catalog VOD</span>
-          </button>
-          <div class="vod-theatre-meta" id="vod-theatre-meta">
-            <span class="vod-theatre-badge" id="vod-theatre-badge">CARTOONIX</span>
-            <span class="vod-theatre-title" id="vod-theatre-title">Titlu Video</span>
-          </div>
-          <div class="vod-theatre-actions">
-            <button id="btn-vod-prev-ep" class="btn-theatre-action hidden" title="Episodul Anterior">⏮ Ep. Anterior</button>
-            <button id="btn-vod-next-ep" class="btn-theatre-action hidden" title="Episodul Următor">Ep. Următor ⏭</button>
-            <button id="btn-vod-close-player" class="btn-theatre-close" title="Închide Player">&times;</button>
-          </div>
-        </div>
-
-        <div class="player-wrapper" id="player-wrapper">
-          <!-- Video Player -->
-          <video id="video-player" playsinline preload="auto"></video>
-          <!-- YouTube Iframe Player (for Cinepub VOD) -->
-          <iframe id="youtube-player" class="youtube-player hidden" frameborder="0" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
-          <!-- Aspect Ratio Toast Notification -->
-          <div id="aspect-toast" class="aspect-toast hidden">Raport: Adaptat (Original)</div>
-
-          <!-- Stats for Nerds (Statistici Flux Live) Overlay -->
-          <div id="stats-overlay" class="stats-overlay hidden">
-            <div class="stats-header">
-              <span class="stats-title">📊 Statistici pentru pasionați</span>
-              <button id="btn-close-stats" class="stats-close-btn" title="Închide">&times;</button>
-            </div>
-            <div class="stats-grid">
-              <div class="stat-item"><span class="stat-lbl">Canal / Categorie:</span><span class="stat-val" id="stat-channel">--</span></div>
-              <div class="stat-item"><span class="stat-lbl">Motor Redare:</span><span class="stat-val" id="stat-engine">--</span></div>
-              <div class="stat-item"><span class="stat-lbl">Rezoluție Sursă:</span><span class="stat-val" id="stat-resolution">--</span></div>
-              <div class="stat-item"><span class="stat-lbl">Dimensiune Ecran:</span><span class="stat-val" id="stat-viewport">--</span></div>
-              <div class="stat-item"><span class="stat-lbl">Raport Imagine:</span><span class="stat-val" id="stat-aspect">Adaptat (Fit)</span></div>
-              <div class="stat-item"><span class="stat-lbl">Buffer În Avans:</span><span class="stat-val" id="stat-buffer">0.0 s</span></div>
-              <div class="stat-item"><span class="stat-lbl">Bitrate / Calitate:</span><span class="stat-val" id="stat-bitrate">--</span></div>
-              <div class="stat-item"><span class="stat-lbl">Cadre Dropped:</span><span class="stat-val" id="stat-frames">0 / 0 (0%)</span></div>
-              <div class="stat-item"><span class="stat-lbl">Conexiune Proxy:</span><span class="stat-val" id="stat-network">Cloudflare Edge Function</span></div>
-              <div class="stat-item"><span class="stat-lbl">Nivel Volum:</span><span class="stat-val" id="stat-audio">100%</span></div>
-            </div>
-          </div>
-
-          <!-- Radio Player Screen (Clean Hi-Fi Card) -->
-          <div id="radio-backdrop" class="radio-backdrop hidden">
-            <div class="radio-card" id="radio-card">
-              <img id="radio-logo" src="logos/discomix.png" alt="Radio Logo" class="radio-card-logo">
-              <div class="radio-card-info">
-                <div class="radio-live-tag">
-                  <span class="pulse-dot"></span>
-                  <span>LIVE HI-FI STEREO</span>
-                </div>
-                <h2 id="radio-name" class="radio-name">Selectează un post</h2>
-                <p id="radio-genre" class="radio-genre">Muzică & Divertisment</p>
-                <div class="radio-stream-tag" id="radio-stream-info">Audio Live • HQ Stream</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- OSD Banner (Overlaid on Video) -->
-          <div id="osd-banner" class="osd-banner hidden">
-            <img id="osd-logo" class="osd-logo" src="" alt="">
-            <div class="osd-text">
-              <div class="osd-row-top">
-                <span id="osd-channel-num" class="osd-num">1</span>
-                <span id="osd-channel-name" class="osd-name">Nume Canal</span>
-                <span id="osd-badge-res" class="badge-res">HD</span>
-              </div>
-              <div id="osd-group" class="osd-group">Generaliste</div>
-              <div id="osd-epg-now" class="osd-epg-now hidden">
-                <span class="epg-live-dot">●</span>
-                <span id="osd-epg-title">Titlu Emisiune</span>
-                <span id="osd-epg-time" class="osd-epg-time">20:00 - 22:00</span>
-              </div>
-              <div id="osd-progress-bar" class="osd-progress-bar hidden">
-                <div id="osd-progress-fill" class="osd-progress-fill"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Buffering / Loading Spinner -->
-          <div id="player-spinner" class="player-spinner hidden">
-            <div class="spinner-ring"></div>
-            <span class="spinner-text">Se încarcă fluxul...</span>
-          </div>
-
-          <!-- Track / Server Picker Popover -->
-          <div id="track-picker-menu" class="track-picker-menu hidden">
-            <div class="track-picker-header">
-              <span id="track-picker-title">Selectează</span>
-              <button id="btn-close-track-picker" class="stats-close-btn">✕</button>
-            </div>
-            <div id="track-picker-list" class="track-picker-list"></div>
-          </div>
-
-          <!-- Player Controls Bar -->
-          <div class="player-controls-bar">
-            <button id="btn-play-pause" class="ctrl-btn" title="Pauză / Redare (Spațiu)">▶</button>
-            <button id="btn-prev" class="ctrl-btn" title="Canalul Anterior (Page Up)">⏮</button>
-            <button id="btn-next" class="ctrl-btn" title="Canalul Următor (Page Down)">⏭</button>
-            <div class="volume-container">
-              <button id="btn-mute" class="ctrl-btn" title="Mute (M)">🔊</button>
-              <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1">
-            </div>
-            <div class="channel-info-pill" id="pill-current-channel">Niciun canal selectat</div>
-            <button id="btn-server" class="ctrl-btn ctrl-pill-btn hidden" title="Schimbă Server Stream / Rezoluție">S1</button>
-            <button id="btn-audio-track" class="ctrl-btn ctrl-pill-btn hidden" title="Alege Pistă Audio">🎵 Audio</button>
-            <button id="btn-subtitles" class="ctrl-btn ctrl-pill-btn hidden" title="Alege Subtitrare (CC)">CC</button>
-            <button id="btn-player-epg" class="ctrl-btn ctrl-pill-btn" title="Ghid TV / Program EPG (G)">📅 EPG</button>
-            <button id="btn-aspect" class="ctrl-btn" title="Raport Imagine / Aspect Ratio (Fit, Fill, Zoom, 4:3)">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
-              </svg>
-            </button>
-            <button id="btn-stats" class="ctrl-btn" title="Statistici pentru pasionați (Stats for nerds)">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-              </svg>
-            </button>
-            <button id="btn-pip" class="ctrl-btn" title="Picture in Picture">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M19 11h-8v6h8v-6zm4 8V4.98C23 3.88 22.1 3 21 3H3c-1.1 0-2 .88-2 1.98V19c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2zm-2 .02H3V4.97h18v14.05z"/>
-              </svg>
-            </button>
-            <button id="btn-fullscreen" class="ctrl-btn" title="Ecran Complet (F)">⛶</button>
-          </div>
-        </div>
-
-        <!-- TV Details & EPG Guide Panel -->
-        <div class="current-details-panel" id="current-details-panel">
-          <div class="details-header">
-            <img id="detail-logo" class="detail-logo" src="" alt="">
-            <div class="detail-titles">
-              <h1 id="detail-name">Selectează un canal din listă</h1>
-              <p id="detail-sub">Navighează cu telecomanda (tastele săgeți) sau prin touch / click</p>
-            </div>
-            <div class="detail-badges">
-              <span id="badge-tech-res" class="tech-badge">AUTO</span>
-              <span id="badge-tech-codec" class="tech-badge">HLS / AAC</span>
-              <button id="btn-details-epg" class="tech-badge btn-badge-action" title="Deschide Ghidul TV Complet (G)">📅 Ghid Complet</button>
-            </div>
-          </div>
-          <div class="epg-schedule" id="epg-schedule">
-            <div class="epg-item active" id="epg-live-item">
-              <span class="epg-time" id="epg-live-time">--:--</span>
-              <div class="epg-desc">
-                <strong id="epg-live-title">Informații program nedisponibile</strong>
-                <p id="epg-live-synopsis"></p>
-                <div class="epg-meter"><div id="epg-meter-fill" style="width: 0%"></div></div>
-              </div>
-            </div>
-            <div class="epg-item epg-next-item hidden" id="epg-next-item">
-              <span class="epg-time" id="epg-next-time">--:--</span>
-              <div class="epg-desc">
-                <strong id="epg-next-title">Următoarea emisiune</strong>
-                <span class="epg-badge-next">URMEAZĂ</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Sidebar / Channel List Section -->
-      <aside class="channels-section" id="channels-section">
-        <!-- Categories Filter Carousel -->
-        <div class="categories-bar" id="categories-bar">
-          <!-- Dinamic populate -->
-        </div>
-
-        <!-- Channel Cards Grid / List -->
-        <div class="channels-container" id="channels-container" tabindex="5">
-          <!-- Dinamic populate -->
-        </div>
-      </aside>
-
-      <!-- VOD Library Section (Cartoonix & Cinepub) -->
-      <section class="vod-section hidden" id="vod-section">
-        <div class="vod-header-row">
-          <div class="vod-platform-tabs">
-            <button id="tab-vod-cartoonix" class="vod-tab active" data-platform="cartoonix">
-              <img src="logos/cartoonix.png" alt="Cartoonix" class="vod-tab-logo">
-              <div class="vod-tab-text">
-                <span class="vod-tab-name">CARTOONIX</span>
-                <span class="vod-tab-desc">85 Seriale • Desene Dublate</span>
-              </div>
-            </button>
-            <button id="tab-vod-cinepub" class="vod-tab" data-platform="cinepub">
-              <img src="logos/cinepub.png" alt="Cinepub" class="vod-tab-logo">
-              <div class="vod-tab-text">
-                <span class="vod-tab-name">CINEPUB</span>
-                <span class="vod-tab-desc">543 Filme Românești Online</span>
-              </div>
-            </button>
-          </div>
-
-          <div class="vod-search-container">
-            <div class="search-box">
-              <span class="search-icon-symbol">🔍</span>
-              <input type="text" id="vod-search-input" placeholder="Caută titlu serial sau film..." autocomplete="off">
-              <button id="btn-clear-vod-search" class="btn-clear-icon hidden">&times;</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- VOD Now Watching Floating Strip (when video is playing) -->
-        <div id="vod-now-watching-bar" class="vod-now-watching-bar hidden">
-          <div class="now-watching-left">
-            <span class="now-watching-pulse"></span>
-            <span class="now-watching-label">Vizionezi acum:</span>
-            <strong class="now-watching-title" id="now-watching-title">--</strong>
-          </div>
-          <button id="btn-scroll-to-player" class="btn-scroll-player">▲ Mergi la Player</button>
-        </div>
-
-        <!-- VOD Category Chips -->
-        <div class="vod-categories-bar" id="vod-categories-bar"></div>
-
-        <!-- VOD Cards Grid -->
-        <div class="vod-grid-container" id="vod-grid-container"></div>
-      </section>
-    </main>
-
-    <!-- VOD Details Modal (Episodes & Movie Info) -->
-    <div id="vod-modal" class="modal hidden">
-      <div class="modal-content vod-modal-dialog">
-        <div class="modal-header">
-          <h3 id="vod-modal-title">Detalii Video</h3>
-          <button id="btn-close-vod-modal" class="btn-icon">&times;</button>
-        </div>
-        <div class="modal-body vod-modal-scroll" id="vod-modal-body">
-          <!-- Dynamic Content -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="modal hidden">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Setări Flo Lite TV Web</h3>
-          <button id="btn-close-settings" class="btn-icon">&times;</button>
-        </div>
-        <div class="modal-body">
-          <label for="proxy-mode-select">Mod Stream Proxy (CORS / Referer Bypass):</label>
-          <select id="proxy-mode-select">
-            <option value="auto">Automat (Proxy local / Worker dacă e disponibil)</option>
-            <option value="relative">Relativ (/proxy?url=) - pentru Server Node / Cloudflare</option>
-            <option value="custom">Server Proxy Personalizat</option>
-            <option value="direct">Direct (Fără proxy - doar streamuri native CORS)</option>
-          </select>
-
-          <div id="custom-proxy-group" class="form-group hidden">
-            <label for="custom-proxy-url">URL Proxy Personalizat:</label>
-            <input type="text" id="custom-proxy-url" placeholder="https://workerul-tau.workers.dev/proxy?url=">
-            <small>Poți folosi un Cloudflare Worker gratuit sau serverul Node.js inclus.</small>
-          </div>
-
-          <div class="form-group info-box">
-            <h4>Scurtături Telecomandă / Tastatură:</h4>
-            <ul>
-              <li><strong>Săgeți Sus / Jos:</strong> Navigare listă canale</li>
-              <li><strong>Săgeți Stânga / Dreapta:</strong> Comutare între Categorii & Canale</li>
-              <li><strong>Enter / OK:</strong> Redare canal selectat</li>
-              <li><strong>F:</strong> Ecran complet</li>
-              <li><strong>G:</strong> Ghid TV (Program EPG)</li>
-              <li><strong>M:</strong> Mute / Unmute</li>
-              <li><strong>0-9:</strong> Salt direct la numărul canalului</li>
-            </ul>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button id="btn-save-settings" class="btn-primary">Salvează și Închide</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- EPG Program Guide Modal (Responsive Desktop + Mobile) -->
-    <div id="epg-modal" class="modal hidden">
-      <div class="modal-content epg-modal-content">
-        <div class="modal-header epg-modal-header">
-          <div class="epg-header-title-wrap">
-            <h3>📅 Ghid TV (Program EPG)</h3>
-            <span id="epg-sync-status" class="epg-sync-badge">Ghid Activ</span>
-          </div>
-          <button id="btn-close-epg-modal" class="btn-icon" title="Închide Ghid TV">&times;</button>
-        </div>
-        <div class="epg-toolbar">
-          <div class="epg-mobile-tabs" id="epg-mobile-tabs">
-            <button id="epg-tab-channels" class="epg-mobile-tab active">📺 Canale Acum</button>
-            <button id="epg-tab-schedule" class="epg-mobile-tab">🗓️ Program Canal</button>
-          </div>
-          <div class="search-box full-width epg-search-box">
-            <span class="search-icon-symbol">🔍</span>
-            <input type="text" id="epg-search-input" placeholder="Caută canal sau emisiune..." autocomplete="off">
-            <button id="btn-clear-epg-search" class="btn-clear-icon hidden">&times;</button>
-          </div>
-        </div>
-        <div class="epg-guide-body" id="epg-guide-body">
-          <aside class="epg-channels-pane" id="epg-channels-pane">
-            <!-- Dynamic channel list -->
-          </aside>
-          <section class="epg-schedule-pane" id="epg-schedule-pane">
-            <div class="epg-channel-hero" id="epg-channel-hero">
-              <button id="btn-epg-back-channels" class="epg-back-btn" title="Înapoi la lista de canale">← Canale</button>
-              <img id="epg-hero-logo" class="epg-hero-logo" src="logos/acasa4k.png" alt="">
-              <div class="epg-hero-meta">
-                <h4 id="epg-hero-name">Selectează un canal</h4>
-                <span id="epg-hero-group">Program TV</span>
-              </div>
-              <button id="btn-epg-watch" class="btn-primary epg-watch-btn">▶ Vizionează</button>
-            </div>
-            <div class="epg-day-filters" id="epg-day-filters">
-              <button class="epg-day-pill active" data-day="today">Azi</button>
-              <button class="epg-day-pill" data-day="tomorrow">Mâine</button>
-              <button class="epg-day-pill" data-day="all">Toate (48h)</button>
-            </div>
-            <div class="epg-timeline-list" id="epg-timeline-list">
-              <!-- Dynamic timeline -->
-            </div>
-          </section>
-        </div>
-      </div>
-    </div>
-
-    <!-- About Modal (Despre FloLite 4.5) -->
-    <div id="about-modal" class="modal hidden">
-      <div class="modal-content about-modal-content">
-        <div class="modal-header">
-          <h3>ℹ️ Despre FloLite Universal</h3>
-          <button id="btn-close-about" class="btn-icon">&times;</button>
-        </div>
-        <div class="modal-body about-scroll-body">
-          <div class="about-hero">
-            <span class="about-badge-version">v4.5.0-PRO (Build 450 - Optistream EPG &amp; Track Edition)</span>
-            <h4>Ecosistem Multi-Platform: Smartphone • Android TV • Android Auto • Web PWA</h4>
-          </div>
-
-          <div class="about-section info-box">
-            <h4>📊 Diagnostic Web & Sistem Live:</h4>
-            <ul id="about-diagnostics-list">
-              <li><strong>Mod Redare:</strong> <span id="diag-hls-mode">HLS.js + mpegts.js Hybrid (Hardware Accelerated)</span></li>
-              <li><strong>Screen Wake Lock:</strong> <span id="diag-wakelock">Suportat (Ecran aprins automat la video)</span></li>
-              <li><strong>Media Session API:</strong> <span id="diag-mediasession">Activ (Integrare notificări & Bluetooth/Auto)</span></li>
-              <li><strong>Canale Catalog:</strong> <span id="diag-channels-count">302 posturi TV & Radio</span></li>
-              <li><strong>Proxy Activ:</strong> <span id="diag-proxy-status">Cloudflare Functions / Native CORS proxy</span></li>
-            </ul>
-          </div>
-
-          <div class="about-section">
-            <h4 class="about-section-title">📖 Povestea Proiectului (De unde am plecat și unde am ajuns):</h4>
-            <div class="timeline-item">
-              <span class="timeline-tag">Etapa 1: Origini & Provocări (v1.0)</span>
-              <p>Player hibrid clasic VideoView + ExoPlayer cu consum ridicat de memorie (250-400 MB), blocaje de Garbage Collector și instabilitate pe televizoare cu hardware limitat.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-tag">Etapa 2: Optimizarea Motorului TV (v2.0)</span>
-              <p>Arhitectură Zero-Allocation cu pool de buffere ThreadLocal de 32 KB, cache de sesiune 10 min, decodare hardware 4K HEVC, încărcare asincronă cu LruCache pentru 199 de logo-uri și debloating Philips Android TV (reducere RAM la 10-13 MB, latență GC &lt; 1 ms).</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-tag">Etapa 3: Expansiunea Web & Public Cloud (v2.5)</span>
-              <p>Portare PWA responsive pe Cloudflare Pages & Functions și Render.com cu zero costuri, player Hls.js universal și vizualizator audio animat tip Winamp.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-tag">Etapa 4: Unificarea Mobilă & Ecosistemul Auto (v3.0)</span>
-              <p>Screen Wake Lock automat la video, rezolvare 199 logo-uri HD oficiale, Google Cast / Chromecast nativ pe Wi-Fi și modul dedicat Android Auto (Developer Mode) cu comenzi de pe volan și consolă.</p>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-tag">Etapa 5: Biblioteca Video VOD & Cartoonix Live (v4.0 - Prezent)</span>
-              <p>Integrare completă VOD: Biblioteca Video cu HUB Cartoonix (85 Seriale • 3528 Episoade) și Cinepub (543 Filme Românești Online), canale Live Cartoonix (Boomerang, Minimax, Cartoon Network, General), subtitrări românești automate și controale Optistream.</p>
-            </div>
-          </div>
-
-          <div class="about-section">
-            <h4 class="about-section-title">📝 Jurnal de Versiuni (Changelog Complet):</h4>
-            <ul class="changelog-list">
-              <li><strong>v4.5.0-PRO:</strong> Ghid TV (EPG) complet interactiv pentru Desktop și Mobile (program pe 48h, căutare emisiuni, redare directă); motor hibrid HLS.js + mpegts.js pentru pornire instantanee pe CME HbbTV (PRO TV, Pro Arena, Acasă TV, Pro Cinema) și rescriere directă CDN AntenaPlay (Antena 1, Antena 3, Happy, Antena Stars); selecție completă Server Stream (cu salvare), Pistă Audio (implicit Română) și Subtitrări; auto-hide corect în Ecran Complet și 302 canale TV &amp; Radio sincronizate.</li>
-              <li><strong>v4.0.0:</strong> Biblioteca Video VOD (Cartoonix + Cinepub 543 filme), Canale Live Cartoonix (Boomerang, Minimax, Cartoon Network), subtitrări automate în română, 291 canale TV/Radio.</li>
-              <li><strong>v3.0.0-PRO:</strong> Screen Wake Lock API, Web Cast Integration, MediaSession API (Android Auto/Bluetooth), Paritate completă TV/Mobile/Web, 199 Sigle HD.</li>
-              <li><strong>v2.5.0:</strong> PWA responsive, Cloudflare Functions Serverless Proxy, Winamp Audio Equalizer.</li>
-              <li><strong>v2.0.0:</strong> Zero-Allocation Stream Proxy, Pipeline 4K HEVC, Philips TV Safe Debloat.</li>
-              <li><strong>v1.5.0:</strong> Proxy local multi-thread, suport EPG, Favorite.</li>
-              <li><strong>v1.0.0:</strong> Prototip inițial Flo TV.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button id="btn-about-close" class="btn-primary">Închide</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js?v=450"></script>
+    <footer>
+      Flo Lite TV 5.0 • Suport tehnic &amp; licențe: gagiomen@gmail.com
+    </footer>
+  </main>
 </body>
 </html>
