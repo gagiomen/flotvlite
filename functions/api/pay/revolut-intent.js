@@ -17,9 +17,16 @@ export async function onRequestPost(context) {
     const body = await request.json();
     const pairingCode = String(body.pairing_code || "").trim().toUpperCase();
     const senderName = String(body.sender_name || "").trim().slice(0, 60);
+    const openedApp = Boolean(body.opened_app);
     const provider = PROVIDERS[body.provider] ? body.provider : "revolut";
     const cfg = PROVIDERS[provider];
     if (!pairingCode) return jsonResponse({ error: "pairing_code lipsă" }, 400);
+    if (!openedApp) {
+      return jsonResponse({ error: `Apasă întâi pe butonul de plată ${cfg.label} și finalizează transferul.` }, 400);
+    }
+    if (senderName.length < 3) {
+      return jsonResponse({ error: `Introdu numele titularului ${cfg.label} din care ai trimis plata (min. 3 caractere).` }, 400);
+    }
 
     const lic = await env.DB.prepare("SELECT id, pairing_code FROM licenses WHERE pairing_code = ?").bind(pairingCode).first();
     if (!lic) return jsonResponse({ error: "Cod TV negăsit" }, 404);
@@ -38,7 +45,7 @@ export async function onRequestPost(context) {
     const payId = randomId(cfg.prefix);
     const amountEur = `${env.PAYPAL_PRICE_EUR || DEFAULT_PRICE_EUR} ${env.PAYPAL_CURRENCY || "EUR"}`;
     const charged = cfg.charged || amountEur;
-    const note = `${cfg.label} ${pairingCode}` + (senderName ? ` (${senderName})` : "");
+    const note = `Declarat ${cfg.label} ${pairingCode} • Titular: ${senderName}`;
     await env.DB
       .prepare(
         "INSERT INTO payments (id, license_id, provider, external_tx_id, amount_ron, currency, amount_charged, status, note, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)"

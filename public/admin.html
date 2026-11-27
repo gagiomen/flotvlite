@@ -26,7 +26,8 @@
     .b-pending { background:rgba(245,158,11,0.2); color:#fde68a; }
     .b-exp { background:rgba(239,68,68,0.18); color:#fca5a5; }
     .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    .hidden { display:none; }
+    .hidden { display:none !important; }
+    .dash-stack { display:flex; flex-direction:column; gap:18px; }
   </style>
 </head>
 <body>
@@ -39,7 +40,7 @@
       </div>
     </div>
 
-    <div id="dash" class="hidden" style="display:flex;flex-direction:column;gap:18px;">
+    <div id="dash" class="hidden dash-stack">
       <div class="card">
         <h2>💳 Plăți (PayPal / Revolut / Vouchere)</h2>
         <table>
@@ -118,17 +119,22 @@
           const tdSt = document.createElement('td');
           const sp = document.createElement('span');
           sp.className = `badge ${pending ? 'b-pending' : 'b-active'}`;
-          sp.textContent = p.status;
+          sp.textContent = pending ? 'neverificată (pending)' : p.status;
           tdSt.appendChild(sp);
           tr.appendChild(tdSt);
           addCell(tr, p.note || '');
           const tdAct = document.createElement('td');
+          tdAct.className = 'row';
           if (pending) {
             const btn = document.createElement('button');
             btn.className = 'ok';
             btn.dataset.approve = p.id;
             btn.textContent = '✅ Confirmă +30z';
-            tdAct.appendChild(btn);
+            const btnDel = document.createElement('button');
+            btnDel.className = 'danger';
+            btnDel.dataset.reject = p.id;
+            btnDel.textContent = '❌ Șterge';
+            tdAct.append(btn, btnDel);
           } else {
             tdAct.textContent = '-';
           }
@@ -197,6 +203,9 @@
       const t = e.target;
       if (t.dataset.approve) {
         await api('/api/admin/licenses', { method: 'POST', body: JSON.stringify({ action: 'approve_payment', payment_id: t.dataset.approve, days: 30 }) });
+        refresh();
+      } else if (t.dataset.reject) {
+        await api('/api/admin/licenses', { method: 'POST', body: JSON.stringify({ action: 'reject_payment', payment_id: t.dataset.reject }) });
         refresh();
       } else if (t.dataset.ext) {
         await api('/api/admin/licenses', { method: 'POST', body: JSON.stringify({ action: 'extend', license_id: t.dataset.ext, days: 30 }) });

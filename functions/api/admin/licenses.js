@@ -81,6 +81,13 @@ export async function onRequestPost(context) {
       return jsonResponse({ ok: true, license: updated });
     }
 
+    if (action === "reject_payment") {
+      const payId = String(body.payment_id || "");
+      if (!payId) return jsonResponse({ error: "payment_id lipsă" }, 400);
+      await env.DB.prepare("DELETE FROM payments WHERE id = ? AND status = 'pending'").bind(payId).run();
+      return jsonResponse({ ok: true, deleted: payId });
+    }
+
     if (action === "set_status") {
       const licId = String(body.license_id || "");
       const newStatus = body.status === "banned" ? "banned" : "active";

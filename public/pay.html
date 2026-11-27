@@ -155,12 +155,16 @@
           <span id="paypal-me-label">Plătește prin PayPal.me</span>
         </a>
         <div class="note">
-          La mesaj/notă trece obligatoriu codul TV:
+          1. Deschide linkul de mai sus și trece la mesaj codul TV:
           <span id="copy-pp-chip" class="copy-ref">--</span>
         </div>
-        <button id="btn-paypal-me-paid" class="btn btn-secondary" style="margin-top:10px;padding:11px;font-size:13px;">
-          Am trimis plata PayPal (Notifică Admin)
-        </button>
+        <div id="paypal-me-step2" class="hidden" style="margin-top:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+          <div class="note" style="margin-top:0;">2. Abia după ce ai trimis banii în PayPal, scrie numele tău PayPal pentru verificare:</div>
+          <input id="paypal-me-sender" type="text" placeholder="Nume titular PayPal" maxlength="50" style="width:100%;margin-top:8px;text-transform:none;letter-spacing:0;">
+          <button id="btn-paypal-me-paid" class="btn btn-secondary" style="margin-top:8px;padding:11px;font-size:13px;">
+            Am finalizat transferul PayPal (Cere Activare)
+          </button>
+        </div>
       </div>
 
       <div id="revolut-section" class="hidden" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
@@ -168,12 +172,16 @@
           <span>Plătește 6 LEI prin Revolut</span>
         </a>
         <div class="note">
-          La mesaj/referință trece obligatoriu codul TV:
+          1. Deschide Revolut și trece la mesaj codul TV:
           <span id="copy-ref-chip" class="copy-ref">--</span>
         </div>
-        <button id="btn-revolut-paid" class="btn btn-secondary" style="margin-top:10px;padding:11px;font-size:13px;">
-          Am trimis plata Revolut (Notifică Admin)
-        </button>
+        <div id="revolut-step2" class="hidden" style="margin-top:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);">
+          <div class="note" style="margin-top:0;">2. Abia după ce ai trimis cei 6 LEI în Revolut, scrie numele tău Revolut pentru verificare:</div>
+          <input id="revolut-sender" type="text" placeholder="Nume titular Revolut (ex: Ion Popescu)" maxlength="50" style="width:100%;margin-top:8px;text-transform:none;letter-spacing:0;">
+          <button id="btn-revolut-paid" class="btn btn-secondary" style="margin-top:8px;padding:11px;font-size:13px;">
+            Am finalizat transferul Revolut (Cere Activare)
+          </button>
+        </div>
       </div>
     </div>
 
@@ -210,10 +218,14 @@
       btnPaypalMeLink: document.getElementById('btn-paypal-me-link'),
       paypalMeLabel: document.getElementById('paypal-me-label'),
       copyPpChip: document.getElementById('copy-pp-chip'),
+      paypalMeStep2: document.getElementById('paypal-me-step2'),
+      paypalMeSender: document.getElementById('paypal-me-sender'),
       btnPaypalMePaid: document.getElementById('btn-paypal-me-paid'),
       revolutSection: document.getElementById('revolut-section'),
       btnRevolutLink: document.getElementById('btn-revolut-link'),
       copyRefChip: document.getElementById('copy-ref-chip'),
+      revolutStep2: document.getElementById('revolut-step2'),
+      revolutSender: document.getElementById('revolut-sender'),
       btnRevolutPaid: document.getElementById('btn-revolut-paid'),
       voucherInput: document.getElementById('voucher-input'),
       btnRedeem: document.getElementById('btn-redeem')
@@ -349,7 +361,12 @@
       el.btnPaypal.textContent = 'Plătește Automat cu PayPal';
     });
 
-    function bindManualPayment(chipEl, btnEl, provider, label) {
+    function bindManualPayment(linkEl, step2El, chipEl, senderEl, btnEl, provider, label) {
+      let openedApp = false;
+      linkEl.addEventListener('click', () => {
+        openedApp = true;
+        step2El.classList.remove('hidden');
+      });
       chipEl.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(currentCode);
@@ -357,17 +374,23 @@
         } catch {}
       });
       btnEl.addEventListener('click', async () => {
+        const senderName = (senderEl.value || '').trim();
+        if (senderName.length < 3) {
+          showBanner('err', `Scrie numele titularului din aplicația ${label} ca să putem verifica plata.`);
+          senderEl.focus();
+          return;
+        }
         btnEl.disabled = true;
         try {
           const res = await fetch('/api/pay/revolut-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pairing_code: currentCode, provider })
+            body: JSON.stringify({ pairing_code: currentCode, provider, sender_name: senderName, opened_app: openedApp })
           });
+          const data = await res.json();
           if (res.ok) {
-            showBanner('ok', `✅ Notificare ${label} trimisă pentru ${currentCode}! După confirmarea plății, TV-ul se deblochează automat.`);
+            showBanner('ok', `✅ Cerere trimisă pentru ${currentCode} (${senderName})! După ce verificăm încasarea în ${label}, TV-ul se deblochează automat.`);
           } else {
-            const data = await res.json();
             showBanner('err', data.error || 'Eroare la trimiterea notificării.');
           }
         } catch {
@@ -377,8 +400,8 @@
       });
     }
 
-    bindManualPayment(el.copyPpChip, el.btnPaypalMePaid, 'paypal_me', 'PayPal');
-    bindManualPayment(el.copyRefChip, el.btnRevolutPaid, 'revolut', 'Revolut');
+    bindManualPayment(el.btnPaypalMeLink, el.paypalMeStep2, el.copyPpChip, el.paypalMeSender, el.btnPaypalMePaid, 'paypal_me', 'PayPal');
+    bindManualPayment(el.btnRevolutLink, el.revolutStep2, el.copyRefChip, el.revolutSender, el.btnRevolutPaid, 'revolut', 'Revolut');
 
     el.btnRedeem.addEventListener('click', async () => {
       const code = (el.voucherInput.value || '').trim().toUpperCase();
