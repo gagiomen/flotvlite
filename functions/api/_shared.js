@@ -234,3 +234,52 @@ export async function signSessionToken(secret, licenseId, expiresAt) {
   const b64 = btoa(String.fromCharCode(...new Uint8Array(sig)));
   return `${msg}.${b64}`;
 }
+
+export async function verifySessionToken(secret, token) {
+  if (!secret || !token) return null;
+  const parts = String(token).split(".");
+  if (parts.length !== 3) return null;
+  const [licenseId, expStr, sigB64] = parts;
+  const expiresAt = Number(expStr);
+  if (!licenseId || licenseId.length < 6 || !Number.isFinite(expiresAt) || expiresAt < Date.now()) {
+    return null;
+  }
+  const expected = await signSessionToken(secret, licenseId, expStr);
+  if (!constantTimeEqual(String(token), expected)) return null;
+  return { licenseId, expiresAt };
+}
+
+export function isSafeExternalMediaUrl(rawUrl) {
+  try {
+    const u = new URL(rawUrl);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return false;
+    const host = u.hostname.toLowerCase();
+    if (
+      host === "localhost" ||
+      host.endsWith(".local") ||
+      host.endsWith(".internal") ||
+      host.includes(":")
+    ) {
+      return false;
+    }
+    const ipv4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (ipv4) {
+      const a = Number(ipv4[1]);
+      const b = Number(ipv4[2]);
+      if (
+        a === 0 ||
+        a === 10 ||
+        a === 127 ||
+        (a === 169 && b === 254) ||
+        (a === 172 && b >= 16 && b <= 31) ||
+        (a === 192 && b === 168) ||
+        a >= 224
+      ) {
+        return false;
+      }
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
