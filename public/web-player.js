@@ -2,7 +2,13 @@ document.addEventListener('error', (ev) => {
   const el = ev.target;
   if (el && el.tagName === 'IMG' && !el.dataset.fbApplied) {
     el.dataset.fbApplied = '1';
-    el.src = '/logos/acasa4k.png';
+    if (el.classList && (el.classList.contains('vod-card-thumb') || el.classList.contains('vod-detail-poster'))) {
+      el.src = el.dataset.vodType === 'cinepub' ? '/logos/cinepub.png' : '/logos/cartoonix.png';
+    } else if (state.currentMode === 'radio') {
+      el.src = '/logos/Radio939.png';
+    } else {
+      el.src = '/logos/acasa4k.png';
+    }
   }
 }, true);
 
@@ -135,13 +141,21 @@ async function bootstrapLicensedPlayer(playAfter = true) {
     }
   } catch {}
 
-  state.channels = Array.isArray(boot.channels) ? boot.channels : [];
+  state.channels = (Array.isArray(boot.channels) ? boot.channels : []).filter(
+    c => !(c.group && c.group.toLowerCase().includes('international')) && !(c.id && String(c.id).startsWith('Intl:'))
+  );
   state.tvChannels = state.channels.filter(c => !c.is_radio);
   state.radioChannels = state.channels.filter(c => c.is_radio);
   state.epg = epgRes || {};
 
+  // Restore Radio icon on radio channels without explicit PNG
+  state.radioChannels.forEach(r => {
+    if (!r.logo) r.logo = 'logos/Radio939.png';
+  });
+
+  ensureVodCatalogLoaded().catch(() => {});
   const savedMode = localStorage.getItem('flolite_last_mode') || 'tv';
-  switchMode(savedMode === 'vod' ? 'tv' : savedMode, playAfter);
+  switchMode(savedMode, playAfter);
   return true;
 }
 
@@ -847,7 +861,7 @@ function resolveStreamUrl(channel, streamObj, forceProxy = false) {
   const refSuffix = referer ? `&ref=${encodeURIComponent(referer)}` : '';
 
   if (!forceProxy && !isLocalHost && isCanaleTvBlockedOnCf(rawUrl) && state.proxyMode !== 'custom') {
-    return `/api/stream-proxy?st=${encodeURIComponent(currentBootSessionToken)}&url=${encodeURIComponent(rawUrl)}${refSuffix}`;
+    return `https://rundle.tv/proxy5.php?src=${encodeURIComponent(rawUrl)}`;
   }
 
   if (!forceProxy && !referer && isCorsDirectCdn(rawUrl) && (state.proxyMode === 'auto' || state.proxyMode === 'relative')) {
@@ -935,37 +949,42 @@ function playChannel(channel) {
   const forceProxy = !!channel._forceProxyOnce;
   channel._forceProxyOnce = false;
 
-  // Handle Cartoonix Live 24/7 Channels
+  // Handle Cartoonix Live 24/7 Channels (live API with deterministic D1 VOD catalog fallback)
   if (rawUrl && (rawUrl.startsWith('cartoonix://') || (channel.group && channel.group.toLowerCase() === 'cartoonix'))) {
     const channelKey = rawUrl.startsWith('cartoonix://') ? rawUrl.replace('cartoonix://', '') : '__all__';
-    fetch(`https://cartoonix.ro/api/live/now?channel=${encodeURIComponent(channelKey)}`, {
-      headers: {
-        'Authorization': `Bearer ${CARTOONIX_BEARER_TOKEN}`
+    ensureVodCatalogLoaded().then(() => {
+      let pool = state.cartoonixCatalog || [];
+      if (channelKey !== '__all__') {
+        const sub = pool.filter(s => s.channel && s.channel.toLowerCase() === channelKey.toLowerCase());
+        if (sub.length > 0) pool = sub;
       }
-    })
-    .then(r => r.json())
-    .then(json => {
-      const cur = json.data && json.data.current ? json.data.current : (json.current || null);
-      const offset = json.data && json.data.offset !== undefined ? json.data.offset : (json.offset || 0);
-      if (cur && cur.video_url) {
-        const streamUrl = 'https://cartoonix.ro/api' + encodeUriPath(cur.video_url);
-        dom.video.src = streamUrl;
-        dom.video.onloadedmetadata = () => {
-          if (offset > 0 && offset < dom.video.duration) {
-            dom.video.currentTime = offset;
-          }
-        };
-        dom.video.play().catch(e => console.warn('Cartoonix play error:', e));
+      if (!pool.length) {
         dom.spinner.classList.add('hidden');
-        dom.btnPlayPause.textContent = '⏸';
-        if (cur.show_title) {
-          dom.osdEpgTitle.textContent = `${cur.show_title} - ${cur.episode_title || ''}`;
-          dom.osdEpgNow.classList.remove('hidden');
-        }
+        return;
       }
-    })
-    .catch(err => {
-      console.warn('Cartoonix live fetch error:', err);
+      const nowSec = Math.floor(Date.now() / 1000);
+      const show = pool[Math.floor(nowSec / 1200) % pool.length];
+      const eps = show.episodes || [];
+      if (!eps.length) return;
+      const ep = eps[Math.floor(nowSec / 600) % eps.length];
+      const streamUrl = 'https://cartoonix.ro/api' + encodeUriPath(ep.video_url);
+      const offset = nowSec % 600;
+      dom.video.src = streamUrl;
+      dom.video.onloadedmetadata = () => {
+        if (offset > 0 && dom.video.duration && offset < dom.video.duration) {
+          dom.video.currentTime = offset;
+        }
+      };
+      dom.video.play().catch(e => console.warn('Cartoonix play error:', e));
+      dom.spinner.classList.add('hidden');
+      dom.btnPlayPause.textContent = '⏸';
+      if (dom.osdEpgTitle && show.title) {
+        dom.osdEpgTitle.textContent = `${show.title} - ${ep.title || ''}`;
+        if (dom.osdEpgNow) dom.osdEpgNow.classList.remove('hidden');
+      }
+    }).catch(err => {
+      console.warn('Cartoonix live fallback error:', err);
+      dom.spinner.classList.add('hidden');
     });
     return;
   }
@@ -2384,23 +2403,29 @@ function encodeUriPath(path) {
   return path.split('/').map(part => encodeURIComponent(part)).join('/');
 }
 
-// VOD Library: Cartoonix & Cinepub
+// VOD Library: Cartoonix & Cinepub (Authenticated via Cloudflare D1)
+async function ensureVodCatalogLoaded() {
+  if (state.vodLoaded || !currentBootSessionToken) return;
+  try {
+    const res = await fetch(`/api/vod/catalog?st=${encodeURIComponent(currentBootSessionToken)}`);
+    if (!res.ok) return;
+    const vodData = await res.json();
+    state.cartoonixCatalog = Array.isArray(vodData.cartoonix) ? vodData.cartoonix : [];
+    const cineObj = vodData.cinepub || {};
+    state.cinepubCatalog = Array.isArray(cineObj.movies) ? cineObj.movies : (Array.isArray(cineObj) ? cineObj : []);
+    if (state.cartoonixCatalog.length || state.cinepubCatalog.length) {
+      state.vodLoaded = true;
+    }
+  } catch (e) {
+    console.error('Error loading VOD catalogs:', e);
+  }
+}
+
 async function loadAndRenderVod() {
   if (!state.vodLoaded) {
     dom.spinner.classList.remove('hidden');
-    try {
-      const [cartoonixRes, cinepubRes] = await Promise.all([
-        fetch('cartoonix_catalog.json').then(r => r.json()).catch(() => []),
-        fetch('cinepub_catalog.json').then(r => r.json()).catch(() => ({ movies: [] }))
-      ]);
-      state.cartoonixCatalog = Array.isArray(cartoonixRes) ? cartoonixRes : [];
-      state.cinepubCatalog = Array.isArray(cinepubRes.movies) ? cinepubRes.movies : (Array.isArray(cinepubRes) ? cinepubRes : []);
-      state.vodLoaded = true;
-    } catch (e) {
-      console.error('Error loading VOD catalogs:', e);
-    } finally {
-      dom.spinner.classList.add('hidden');
-    }
+    await ensureVodCatalogLoaded();
+    dom.spinner.classList.add('hidden');
   }
 
   renderVodUI();
@@ -2501,7 +2526,7 @@ function renderVodGrid() {
       const poster = movie.poster || 'logos/cinepub.png';
       card.innerHTML = `
         <div class="vod-card-thumb-wrap">
-          <img class="vod-card-thumb" src="${poster}" alt="${movie.title}" loading="lazy">
+          <img class="vod-card-thumb" data-vod-type="cinepub" src="${poster}" alt="${movie.title}" loading="lazy">
           <span class="vod-card-badge" style="color: #F59E0B;">Cinepub</span>
         </div>
         <div class="vod-card-info">
@@ -2568,7 +2593,7 @@ function openCinepubDetails(movie) {
 
   dom.vodModalBody.innerHTML = `
     <div class="vod-detail-hero">
-      <img src="${poster}" class="vod-detail-poster" alt="${movie.title}">
+      <img src="${poster}" data-vod-type="cinepub" class="vod-detail-poster" alt="${movie.title}">
       <div class="vod-detail-meta">
         <h4 class="vod-detail-title">${movie.title}</h4>
         <div class="vod-detail-badges">

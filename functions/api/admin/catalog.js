@@ -31,24 +31,31 @@ export async function onRequestPost(context) {
 
   try {
     const body = await request.json();
-    const channels = body.channels;
-    if (!Array.isArray(channels) || channels.length === 0) {
+    const ALLOWED_IDS = new Set(["main", "vod_cinepub", "vod_cartoonix_0", "vod_cartoonix_1"]);
+    const catalogId = ALLOWED_IDS.has(body.catalog_id) ? body.catalog_id : "main";
+    const payload = catalogId === "main" ? body.channels : body.payload;
+
+    if (catalogId === "main" && (!Array.isArray(payload) || payload.length === 0)) {
       return jsonResponse({ error: "channels[] array required" }, 400);
     }
+    if (catalogId !== "main" && !payload) {
+      return jsonResponse({ error: "payload required" }, 400);
+    }
 
-    const existing = await env.DB.prepare("SELECT version FROM stream_catalog WHERE id = 'main'").first();
+    const existing = await env.DB.prepare("SELECT version FROM stream_catalog WHERE id = ?").bind(catalogId).first();
     const nextVersion = existing ? Number(existing.version || 1) + 1 : 1;
     const now = Date.now();
-    const payloadStr = JSON.stringify(channels);
+    const payloadStr = JSON.stringify(payload);
 
     await env.DB
       .prepare(
-        "INSERT INTO stream_catalog (id, payload_json, version, updated_at) VALUES ('main', ?, ?, ?) ON CONFLICT(id) DO UPDATE SET payload_json = excluded.payload_json, version = excluded.version, updated_at = excluded.updated_at"
+        "INSERT INTO stream_catalog (id, payload_json, version, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET payload_json = excluded.payload_json, version = excluded.version, updated_at = excluded.updated_at"
       )
-      .bind(payloadStr, nextVersion, now)
+      .bind(catalogId, payloadStr, nextVersion, now)
       .run();
 
-    return jsonResponse({ ok: true, count: channels.length, version: nextVersion, updated_at: now });
+    const count = Array.isArray(payload) ? payload.length : (Array.isArray(payload.movies) ? payload.movies.length : 1);
+    return jsonResponse({ ok: true, catalog_id: catalogId, count, version: nextVersion, updated_at: now });
   } catch (err) {
     return jsonResponse({ error: err.message || "Catalog upload error" }, 400);
   }
